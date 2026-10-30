@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Reporter')}"></head>
+<body>
+<header th:replace="~{layout :: nav}"></header>
+<main>
+    <p class="kicker">Demo catalog</p>
+    <h1>Reports, searched like a ticket queue.</h1>
+    <p class="lede">The catalog lives in memory and is loaded from a JSON file at startup. Search from the reports page, or read one record directly.</p>
+    <ul class="links">
+        <li><a href="/reports">Reports</a></li>
+        <li><a href="/reports/RPT-1">Sample report</a></li>
+        <li><a href="/swagger-ui.html" target="_blank" rel="noopener noreferrer">Swagger UI</a></li>
+        <li><a href="/v3/api-docs" target="_blank" rel="noopener noreferrer">OpenAPI document</a></li>
+    </ul>
+</main>
+</body>
+</html>

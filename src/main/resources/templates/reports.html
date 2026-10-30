@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Reports')}"></head>
+<body>
+<header th:replace="~{layout :: nav}"></header>
+<main>
+    <p class="kicker">Catalog</p>
+    <h1>Reports</h1>
+    <details class="create-panel">
+    <summary>New report</summary>
+    <form id="create-form" class="create">
+        <p class="hint wide"><span class="mark">*</span> Required</p>
+        <div>
+            <label for="title">Title</label>
+            <input id="title" name="title" required maxlength="200">
+        </div>
+        <div>
+            <label for="author">Author</label>
+            <input id="author" name="author" required placeholder="jane.roe">
+        </div>
+        <div class="wide">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" required rows="3"></textarea>
+        </div>
+        <div>
+            <label for="assignee">Assignee</label>
+            <input id="assignee" name="assignee" placeholder="optional">
+        </div>
+        <div>
+            <label for="tags">Tags</label>
+            <input id="tags" name="tags" placeholder="login, auth">
+        </div>
+        <div>
+            <label for="status">Status</label>
+            <select id="status" name="status">
+                <option value="">Open</option>
+                <option>OPEN</option>
+                <option>IN_PROGRESS</option>
+                <option>RESOLVED</option>
+                <option>CLOSED</option>
+            </select>
+        </div>
+        <div>
+            <label for="priority">Priority</label>
+            <select id="priority" name="priority">
+                <option value="">None</option>
+                <option>LOW</option>
+                <option>MEDIUM</option>
+                <option>HIGH</option>
+                <option>CRITICAL</option>
+            </select>
+        </div>
+        <div>
+            <label for="type">Type</label>
+            <select id="type" name="type">
+                <option value="">None</option>
+                <option>BUG</option>
+                <option>STORY</option>
+                <option>TASK</option>
+            </select>
+        </div>
+        <p id="create-error" class="error" hidden></p>
+        <button type="submit">Create</button>
+    </form>
+    </details>
+    <form id="search-form" class="search">
+        <label for="query">Query</label>
+        <input id="query" name="query" type="text" spellcheck="false" placeholder="title = Login AND author = 'john.doe'" autocomplete="off">
+        <button type="submit">Search</button>
+    </form>
+    <p id="query-error" class="error" hidden></p>
+    <p id="page-summary" class="summary"></p>
+    <div class="table-wrap">
+        <table>
+            <thead>
+            <tr>
+                <th><button type="button" data-sort="id">Id</button></th>
+                <th><button type="button" data-sort="title">Title</button></th>
+                <th><button type="button" data-sort="status">Status</button></th>
+                <th><button type="button" data-sort="author">Author</button></th>
+                <th><button type="button" data-sort="priority">Priority</button></th>
+                <th><button type="button" data-sort="updatedOn">Updated</button></th>
+            </tr>
+            </thead>
+            <tbody id="report-rows"></tbody>
+        </table>
+    </div>
+    <nav id="pager" class="pager" aria-label="Pages"></nav>
+</main>
+<script type="module" src="/js/pages/reports.js"></script>
+<script type="module" src="/js/pages/create.js"></script>
+</body>
+</html>

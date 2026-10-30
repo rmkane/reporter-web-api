@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title}">Reporter</title>
+    <link rel="icon" th:href="@{/favicon.ico}" sizes="32x32">
+    <link rel="icon" th:href="@{/favicon.svg}" type="image/svg+xml">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<nav th:fragment="nav">
+    <a class="brand" href="/">Reporter</a>
+    <a href="/reports">Reports</a>
+    <a href="/swagger-ui.html" target="_blank" rel="noopener noreferrer">API</a>
+</nav>
+</body>
+</html>

@@ -1,0 +1,4 @@
+FROM maven:3.9.9-eclipse-temurin-21
+WORKDIR /app
+EXPOSE 8080 8787 35729
+CMD ["mvn", "-B", "spring-boot:run", "-Dspring-boot.run.profiles=dev", "-Dspring-boot.run.jvmArguments=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8787"]

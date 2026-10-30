@@ -1,0 +1,15 @@
+services:
+  reporter-web-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8080:8080"
+      - "8787:8787"
+      - "35729:35729"
+    volumes:
+      - ./:/app
+      - ./logs:/app/logs
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+    working_dir: /app

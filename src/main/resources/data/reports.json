@@ -1,0 +1,459 @@
+[
+  {
+    "id": "RPT-1",
+    "title": "Login",
+    "description": "The sign-in form accepts the demo password and still returns an error.",
+    "status": "OPEN",
+    "tags": [
+      "login",
+      "auth"
+    ],
+    "author": "john.doe",
+    "assignee": "sam.patel",
+    "priority": "HIGH",
+    "type": "BUG",
+    "createdOn": "2026-01-06T16:00:00Z",
+    "updatedOn": "2026-01-08T18:00:00Z"
+  },
+  {
+    "id": "RPT-2",
+    "title": "Checkout total drops a cent",
+    "description": "The order summary is one cent lower than the line items.",
+    "status": "RESOLVED",
+    "tags": [
+      "billing"
+    ],
+    "author": "alex.kim",
+    "assignee": "jane.roe",
+    "priority": "CRITICAL",
+    "type": "BUG",
+    "createdOn": "2026-01-07T17:00:00Z",
+    "updatedOn": "2026-01-10T19:00:00Z"
+  },
+  {
+    "id": "RPT-3",
+    "title": "Report export times out",
+    "description": "CSV export stops after a few thousand rows.",
+    "status": "CLOSED",
+    "tags": [
+      "export",
+      "api"
+    ],
+    "author": "sam.patel",
+    "assignee": "john.doe",
+    "priority": "MEDIUM",
+    "type": "BUG",
+    "createdOn": "2026-01-08T18:00:00Z",
+    "updatedOn": "2026-01-12T20:00:00Z"
+  },
+  {
+    "id": "RPT-4",
+    "title": "Saved filter disappears",
+    "description": "A saved search is gone after the next visit.",
+    "status": "OPEN",
+    "tags": [
+      "search",
+      "ui"
+    ],
+    "author": "john.doe",
+    "assignee": "alex.kim",
+    "priority": "LOW",
+    "type": "BUG",
+    "createdOn": "2026-01-09T19:00:00Z",
+    "updatedOn": "2026-01-10T21:00:00Z"
+  },
+  {
+    "id": "RPT-5",
+    "title": "Assignee board is empty",
+    "description": "The board for an assignee shows no open work.",
+    "status": "IN_PROGRESS",
+    "tags": [
+      "ui"
+    ],
+    "author": "jane.roe",
+    "assignee": "sam.patel",
+    "priority": "MEDIUM",
+    "type": "STORY",
+    "createdOn": "2026-01-10T15:00:00Z",
+    "updatedOn": "2026-01-12T17:00:00Z"
+  },
+  {
+    "id": "RPT-6",
+    "title": "Nightly digest skips Sundays",
+    "description": "The Sunday mail never leaves the queue.",
+    "status": "RESOLVED",
+    "tags": [
+      "email"
+    ],
+    "author": "alex.kim",
+    "assignee": "jane.roe",
+    "priority": "LOW",
+    "type": "BUG",
+    "createdOn": "2026-01-11T16:00:00Z",
+    "updatedOn": "2026-01-14T18:00:00Z"
+  },
+  {
+    "id": "RPT-7",
+    "title": "Search highlights the wrong field",
+    "description": "Matches are drawn on the description instead of the title.",
+    "status": "CLOSED",
+    "tags": [
+      "search"
+    ],
+    "author": "sam.patel",
+    "assignee": "john.doe",
+    "priority": "HIGH",
+    "type": "BUG",
+    "createdOn": "2026-01-12T17:00:00Z",
+    "updatedOn": "2026-01-16T19:00:00Z"
+  },
+  {
+    "id": "RPT-8",
+    "title": "Bulk edit clears tags",
+    "description": "Applying a status change removes every tag.",
+    "status": "OPEN",
+    "tags": [
+      "tags",
+      "api"
+    ],
+    "author": "john.doe",
+    "assignee": "alex.kim",
+    "priority": "HIGH",
+    "type": "BUG",
+    "createdOn": "2026-01-13T18:00:00Z",
+    "updatedOn": "2026-01-14T20:00:00Z"
+  },
+  {
+    "id": "RPT-9",
+    "title": "Password reset email is late",
+    "description": "Reset mail arrives long after the request.",
+    "status": "IN_PROGRESS",
+    "tags": [
+      "auth",
+      "email"
+    ],
+    "author": "jane.roe",
+    "assignee": "sam.patel",
+    "priority": "MEDIUM",
+    "type": "BUG",
+    "createdOn": "2026-01-14T19:00:00Z",
+    "updatedOn": "2026-01-16T21:00:00Z"
+  },
+  {
+    "id": "RPT-10",
+    "title": "Dashboard cards overlap",
+    "description": "The summary cards cover the pager on a narrow window.",
+    "status": "RESOLVED",
+    "tags": [
+      "ui"
+    ],
+    "author": "alex.kim",
+    "assignee": "jane.roe",
+    "priority": "LOW",
+    "type": "BUG",
+    "createdOn": "2026-01-15T15:00:00Z",
+    "updatedOn": "2026-01-18T17:00:00Z"
+  },
+  {
+    "id": "RPT-11",
+    "title": "API token expires early",
+    "description": "A fresh token is rejected before its stated expiry.",
+    "status": "CLOSED",
+    "tags": [
+      "api",
+      "auth"
+    ],
+    "author": "sam.patel",
+    "assignee": "john.doe",
+    "priority": "CRITICAL",
+    "type": "BUG",
+    "createdOn": "2026-01-16T16:00:00Z",
+    "updatedOn": "2026-01-20T18:00:00Z"
+  },
+  {
+    "id": "RPT-12",
+    "title": "Comment mentions do not notify",
+    "description": "An @mention does not send mail.",
+    "status": "OPEN",
+    "tags": [
+      "email"
+    ],
+    "author": "john.doe",
+    "assignee": "alex.kim",
+    "priority": "MEDIUM",
+    "type": "STORY",
+    "createdOn": "2026-01-17T17:00:00Z",
+    "updatedOn": "2026-01-18T19:00:00Z"
+  },
+  {
+    "id": "RPT-13",
+    "title": "CSV import drops the last row",
+    "description": "The final record in an import file is skipped.",
+    "status": "IN_PROGRESS",
+    "tags": [
+      "import"
+    ],
+    "author": "jane.roe",
+    "assignee": "sam.patel",
+    "priority": "HIGH",
+    "type": "BUG",
+    "createdOn": "2026-01-18T18:00:00Z",
+    "updatedOn": "2026-01-20T20:00:00Z"
+  },
+  {
+    "id": "RPT-14",
+    "title": "Dark mode flickers",
+    "description": "The theme flashes light on the first paint.",
+    "status": "RESOLVED",
+    "tags": [
+      "ui"
+    ],
+    "author": "alex.kim",
+    "assignee": "jane.roe",
+    "priority": "LOW",
+    "type": "BUG",
+    "createdOn": "2026-01-19T19:00:00Z",
+    "updatedOn": "2026-01-22T21:00:00Z"
+  },
+  {
+    "id": "RPT-15",
+    "title": "Status change is not audited",
+    "description": "Moving a report to resolved writes no history.",
+    "status": "CLOSED",
+    "tags": [
+      "audit"
+    ],
+    "author": "sam.patel",
+    "assignee": "john.doe",
+    "priority": "MEDIUM",
+    "type": "STORY",
+    "createdOn": "2026-01-20T15:00:00Z",
+    "updatedOn": "2026-01-24T17:00:00Z"
+  },
+  {
+    "id": "RPT-16",
+    "title": "Priority sort is unstable",
+    "description": "Equal priorities change order between page loads.",
+    "status": "OPEN",
+    "tags": [
+      "search"
+    ],
+    "author": "john.doe",
+    "assignee": "alex.kim",
+    "priority": "MEDIUM",
+    "type": "BUG",
+    "createdOn": "2026-01-21T16:00:00Z",
+    "updatedOn": "2026-01-22T18:00:00Z"
+  },
+  {
+    "id": "RPT-17",
+    "title": "Attachment preview is blank",
+    "description": "Image attachments open an empty pane.",
+    "status": "IN_PROGRESS",
+    "tags": [
+      "files"
+    ],
+    "author": "jane.roe",
+    "assignee": "sam.patel",
+    "priority": "HIGH",
+    "type": "BUG",
+    "createdOn": "2026-01-22T17:00:00Z",
+    "updatedOn": "2026-01-24T19:00:00Z"
+  },
+  {
+    "id": "RPT-18",
+    "title": "Sprint name is truncated",
+    "description": "Long sprint names lose the last word.",
+    "status": "RESOLVED",
+    "tags": [
+      "ui"
+    ],
+    "author": "alex.kim",
+    "assignee": "jane.roe",
+    "priority": "LOW",
+    "type": "BUG",
+    "createdOn": "2026-01-23T18:00:00Z",
+    "updatedOn": "2026-01-26T20:00:00Z"
+  },
+  {
+    "id": "RPT-19",
+    "title": "Webhook retries forever",
+    "description": "A failed webhook is posted again without a limit.",
+    "status": "CLOSED",
+    "tags": [
+      "api"
+    ],
+    "author": "sam.patel",
+    "assignee": "john.doe",
+    "priority": "CRITICAL",
+    "type": "BUG",
+    "createdOn": "2026-01-24T19:00:00Z",
+    "updatedOn": "2026-01-28T21:00:00Z"
+  },
+  {
+    "id": "RPT-20",
+    "title": "Author filter ignores quotes",
+    "description": "A quoted author value is parsed as two words.",
+    "status": "OPEN",
+    "tags": [
+      "search"
+    ],
+    "author": "john.doe",
+    "assignee": "alex.kim",
+    "priority": "HIGH",
+    "type": "STORY",
+    "createdOn": "2026-01-25T15:00:00Z",
+    "updatedOn": "2026-01-26T17:00:00Z"
+  },
+  {
+    "id": "RPT-21",
+    "title": "Mobile nav covers the pager",
+    "description": "The navigation bar sits on top of the page controls.",
+    "status": "IN_PROGRESS",
+    "tags": [
+      "ui"
+    ],
+    "author": "jane.roe",
+    "assignee": "sam.patel",
+    "priority": "MEDIUM",
+    "type": "BUG",
+    "createdOn": "2026-01-26T16:00:00Z",
+    "updatedOn": "2026-01-28T18:00:00Z"
+  },
+  {
+    "id": "RPT-22",
+    "title": "Closed reports stay on the board",
+    "description": "Closed items remain in the open column.",
+    "status": "RESOLVED",
+    "tags": [
+      "ui"
+    ],
+    "author": "alex.kim",
+    "assignee": "jane.roe",
+    "priority": "MEDIUM",
+    "type": "BUG",
+    "createdOn": "2026-01-27T17:00:00Z",
+    "updatedOn": "2026-01-30T19:00:00Z"
+  },
+  {
+    "id": "RPT-23",
+    "title": "Time zone shifts created dates",
+    "description": "Created dates move a day when the client is west of UTC.",
+    "status": "CLOSED",
+    "tags": [
+      "api"
+    ],
+    "author": "sam.patel",
+    "assignee": "john.doe",
+    "priority": "HIGH",
+    "type": "BUG",
+    "createdOn": "2026-01-28T18:00:00Z",
+    "updatedOn": "2026-02-01T20:00:00Z"
+  },
+  {
+    "id": "RPT-24",
+    "title": "Duplicate tag on save",
+    "description": "Saving a report appends a tag it already has.",
+    "status": "OPEN",
+    "tags": [
+      "tags"
+    ],
+    "author": "john.doe",
+    "assignee": "alex.kim",
+    "priority": "LOW",
+    "type": "BUG",
+    "createdOn": "2026-01-29T19:00:00Z",
+    "updatedOn": "2026-01-30T21:00:00Z"
+  },
+  {
+    "id": "RPT-25",
+    "title": "Story points cannot be cleared",
+    "description": "An empty points field is stored as zero.",
+    "status": "IN_PROGRESS",
+    "tags": [
+      "ui"
+    ],
+    "author": "jane.roe",
+    "assignee": "sam.patel",
+    "priority": "LOW",
+    "type": "STORY",
+    "createdOn": "2026-01-30T15:00:00Z",
+    "updatedOn": "2026-02-01T17:00:00Z"
+  },
+  {
+    "id": "RPT-26",
+    "title": "Login rate limit is too strict",
+    "description": "A second attempt within a minute is blocked.",
+    "status": "RESOLVED",
+    "tags": [
+      "login",
+      "auth"
+    ],
+    "author": "john.doe",
+    "assignee": "jane.roe",
+    "priority": "HIGH",
+    "type": "BUG",
+    "createdOn": "2026-01-31T16:00:00Z",
+    "updatedOn": "2026-02-03T18:00:00Z"
+  },
+  {
+    "id": "RPT-27",
+    "title": "Description loses line breaks",
+    "description": "Blank lines in the description are collapsed.",
+    "status": "CLOSED",
+    "tags": [
+      "ui"
+    ],
+    "author": "sam.patel",
+    "assignee": "john.doe",
+    "priority": "MEDIUM",
+    "type": "BUG",
+    "createdOn": "2026-02-01T17:00:00Z",
+    "updatedOn": "2026-02-05T19:00:00Z"
+  },
+  {
+    "id": "RPT-28",
+    "title": "Reporter link 404s",
+    "description": "The link from a card opens a missing page.",
+    "status": "OPEN",
+    "tags": [
+      "ui"
+    ],
+    "author": "john.doe",
+    "assignee": "alex.kim",
+    "priority": "MEDIUM",
+    "type": "BUG",
+    "createdOn": "2026-02-02T18:00:00Z",
+    "updatedOn": "2026-02-03T20:00:00Z"
+  },
+  {
+    "id": "RPT-29",
+    "title": "High priority mail is silent",
+    "description": "Critical reports do not send a notice.",
+    "status": "IN_PROGRESS",
+    "tags": [
+      "email"
+    ],
+    "author": "jane.roe",
+    "assignee": "sam.patel",
+    "priority": "CRITICAL",
+    "type": "STORY",
+    "createdOn": "2026-02-03T19:00:00Z",
+    "updatedOn": "2026-02-05T21:00:00Z"
+  },
+  {
+    "id": "RPT-30",
+    "title": "Task template omits the author",
+    "description": "A task created from the template has no author.",
+    "status": "RESOLVED",
+    "tags": [
+      "api"
+    ],
+    "author": "alex.kim",
+    "assignee": "jane.roe",
+    "priority": "LOW",
+    "type": "TASK",
+    "createdOn": "2026-02-04T15:00:00Z",
+    "updatedOn": "2026-02-07T17:00:00Z"
+  }
+]

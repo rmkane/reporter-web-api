@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: reporter-web-api
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+        max-page-size: 50
+        serialization-mode: via-dto
+
+server:
+  port: 8080
+
+reporter:
+  seed:
+    location: classpath:data/reports.json
+
+logging:
+  file:
+    path: logs
+  level:
+    org.acme.reporter: DEBUG
