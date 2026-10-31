@@ -1,5 +1,7 @@
 package org.acme.reporter;
 
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.not;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -24,14 +26,20 @@ class ReporterWebAppTest {
     mockMvc
         .perform(get("/"))
         .andExpect(status().isOk())
-        .andExpect(content().string(org.hamcrest.Matchers.containsString("Reports")));
+        .andExpect(content().string(containsString("Dashboard")))
+        .andExpect(content().string(containsString("Login")))
+        .andExpect(content().string(not(containsString("Breadcrumb"))));
     mockMvc
         .perform(get("/reports"))
         .andExpect(status().isOk())
-        .andExpect(content().string(org.hamcrest.Matchers.containsString("query")));
+        .andExpect(content().string(containsString("query")))
+        .andExpect(content().string(containsString("Breadcrumb")))
+        .andExpect(content().string(containsString("aria-current=\"page\"")));
     mockMvc
         .perform(get("/reports/RPT-1"))
         .andExpect(status().isOk())
-        .andExpect(content().string(org.hamcrest.Matchers.containsString("Login")));
+        .andExpect(content().string(containsString("Login")))
+        .andExpect(content().string(containsString("Breadcrumb")))
+        .andExpect(content().string(containsString("RPT-1")));
   }
 }

@@ -1,18 +1,25 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout :: head('Reporter')}"></head>
-<body>
-<header th:replace="~{layout :: nav}"></header>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: page('Dashboard', ~{::main})}">
 <main>
-    <p class="kicker">Demo catalog</p>
-    <h1>Reports, searched like a ticket queue.</h1>
-    <p class="lede">The catalog lives in memory and is loaded from a JSON file at startup. Search from the reports page, or read one record directly.</p>
-    <ul class="links">
-        <li><a href="/reports">Reports</a></li>
-        <li><a href="/reports/RPT-1">Sample report</a></li>
-        <li><a href="/swagger-ui.html" target="_blank" rel="noopener noreferrer">Swagger UI</a></li>
-        <li><a href="/v3/api-docs" target="_blank" rel="noopener noreferrer">OpenAPI document</a></li>
-    </ul>
+    <p class="kicker">Dashboard</p>
+    <h1>Tasks that still need attention.</h1>
+    <p class="lede">Open and in-progress reports, highest priority first.</p>
+    <section class="stats" aria-label="Report counts">
+        <div><strong th:text="${dashboard.open}">0</strong><span>Open</span></div>
+        <div><strong th:text="${dashboard.inProgress}">0</strong><span>In progress</span></div>
+        <div><strong th:text="${dashboard.resolved}">0</strong><span>Resolved</span></div>
+        <div><strong th:text="${dashboard.closed}">0</strong><span>Closed</span></div>
+    </section>
+    <ol class="tasks" th:if="${!dashboard.tasks.empty}">
+        <li th:each="task : ${dashboard.tasks}" th:classappend="${task.priority}">
+            <a th:href="@{/reports/{id}(id=${task.id})}" th:text="${task.id}">RPT-1</a>
+            <a class="title" th:href="@{/reports/{id}(id=${task.id})}" th:text="${task.title}">Login</a>
+            <span class="pill" th:text="${task.status}">OPEN</span>
+            <span class="pill" th:text="${task.priority}">HIGH</span>
+            <span class="pill" th:text="${task.type}">BUG</span>
+        </li>
+    </ol>
+    <p class="lede" th:if="${dashboard.tasks.empty}">Nothing is open or in progress.</p>
+    <p class="links"><a href="/reports">All reports</a></p>
 </main>
-</body>
 </html>

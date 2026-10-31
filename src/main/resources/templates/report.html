@@ -1,8 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout :: head(${report.title})}"></head>
-<body>
-<header th:replace="~{layout :: nav}"></header>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: page(${report.title}, ~{::main})}">
 <main>
     <p class="kicker" th:text="${report.id}">RPT-1</p>
     <h1 th:text="${report.title}">Title</h1>
@@ -21,10 +18,8 @@
     </ul>
     <p id="delete-error" class="error" hidden></p>
     <p class="actions">
-        <a href="/reports">Back to reports</a>
         <button type="button" id="delete-report" th:data-id="${report.id}">Delete</button>
     </p>
+    <script type="module" src="/js/pages/report.js"></script>
 </main>
-<script type="module" src="/js/pages/report.js"></script>
-</body>
 </html>

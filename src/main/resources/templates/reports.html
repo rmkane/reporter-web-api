@@ -1,8 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout :: head('Reports')}"></head>
-<body>
-<header th:replace="~{layout :: nav}"></header>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: page('Reports', ~{::main})}">
 <main>
     <p class="kicker">Catalog</p>
     <h1>Reports</h1>
@@ -86,8 +83,7 @@
         </table>
     </div>
     <nav id="pager" class="pager" aria-label="Pages"></nav>
+    <script type="module" src="/js/pages/reports.js"></script>
+    <script type="module" src="/js/pages/create.js"></script>
 </main>
-<script type="module" src="/js/pages/reports.js"></script>
-<script type="module" src="/js/pages/create.js"></script>
-</body>
 </html>
