@@ -66,7 +66,7 @@ function Show-Help {
         @{ Name = 'package'; Help = 'Package the jar without tests' },
         @{ Name = 'run'; Help = 'Start the packaged jar in the background' },
         @{ Name = 'stop'; Help = 'Stop the packaged jar' },
-        @{ Name = 'debug'; Help = 'Start the packaged jar with JDWP on port 8787' },
+        @{ Name = 'debug'; Help = 'Run from source with the dev profile and JDWP on port 8787' },
         @{ Name = 'dev'; Help = 'Run from source with DevTools restart and LiveReload' },
         @{ Name = 'test'; Help = 'Run the unit tests' },
         @{ Name = 'integration'; Help = 'Run the integration tests' },
@@ -101,10 +101,11 @@ switch ($Target) {
         }
     }
     'debug' {
-        Invoke-Maven @('-DskipTests', 'package')
-        Stop-Quiet
-        $proc = Start-Jar @($DebugOpts, '-jar', $Jar)
-        Write-Host "Debugger listening on port 8787 (pid $($proc.Id))" -ForegroundColor Green
+        Invoke-Maven @(
+            'spring-boot:run',
+            '-Dspring-boot.run.profiles=dev',
+            "-Dspring-boot.run.jvmArguments=$DebugOpts"
+        )
     }
     'dev' { Invoke-Maven @('spring-boot:run', '-Dspring-boot.run.profiles=dev') }
     'test' { Invoke-Maven @('test') }

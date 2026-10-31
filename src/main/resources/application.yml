@@ -12,6 +12,7 @@ server:
   port: 8080
 
 reporter:
+  github: https://github.com/rmkane/reporter-web-api
   seed:
     location: classpath:data/reports.json
 

@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Attach to Reporter",
+      "request": "attach",
+      "hostName": "localhost",
+      "port": 8787,
+      "projectName": "reporter-web-api"
+    }
+  ]
+}

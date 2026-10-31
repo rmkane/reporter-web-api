@@ -33,26 +33,38 @@
 
 body {
     margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     background: var(--paper);
     color: var(--ink);
     font-family: var(--sans);
     line-height: 1.5;
 }
 
-header.site nav {
+header.site nav, footer.site {
     display: flex;
     gap: 1.25rem;
     align-items: baseline;
     padding: 1rem 1.5rem;
-    border-bottom: 1px solid var(--line);
     background: var(--card);
 }
 
-header.site a { color: var(--ink); text-decoration: none; }
-header.site a:hover { color: var(--accent); }
+header.site nav { border-bottom: 1px solid var(--line); }
+footer.site {
+    margin-top: auto;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid var(--line);
+}
+footer.site a { display: inline-flex; align-items: center; gap: 0.4rem; }
+footer.site svg { width: 1.05rem; height: 1.05rem; fill: currentColor; }
+
+header.site a, footer.site a { color: var(--ink); text-decoration: none; }
+header.site a:hover, footer.site a:hover { color: var(--accent); }
 .brand { font-family: var(--font); font-size: 1.35rem; margin-right: auto; }
 
-.page { max-width: 64rem; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+.page { max-width: 64rem; margin: 0 auto; padding: 2rem 1.5rem; width: 100%; }
 
 .crumbs { margin: 0 0 1.25rem; }
 .crumbs ol {

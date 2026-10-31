@@ -12,11 +12,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.test.web.servlet.MockMvc;
 
-@SpringBootTest
+import org.acme.reporter.config.ReporterProperties;
+
+@SpringBootTest(properties = "reporter.github=https://github.com/example/reporter-web-api")
 @AutoConfigureMockMvc
 class ReporterWebAppTest {
 
   @Autowired private MockMvc mockMvc;
+
+  @Autowired private ReporterProperties properties;
 
   @Test
   void contextLoads() {}
@@ -28,6 +32,9 @@ class ReporterWebAppTest {
         .andExpect(status().isOk())
         .andExpect(content().string(containsString("Dashboard")))
         .andExpect(content().string(containsString("Login")))
+        .andExpect(content().string(containsString(properties.github())))
+        .andExpect(
+            content().string(not(containsString("https://github.com/rmkane/reporter-web-api"))))
         .andExpect(content().string(not(containsString("Breadcrumb"))));
     mockMvc
         .perform(get("/reports"))

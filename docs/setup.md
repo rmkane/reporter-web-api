@@ -1,6 +1,6 @@
 # Setup
 
-The app is a Spring Boot process. `make run` packages the jar and starts it in the background. `make stop` ends that process. `make debug` starts the same jar with the debugger listening on port **8787**. `make dev` runs from source with DevTools restart and LiveReload. From PowerShell, `.\make.ps1` accepts the same Maven targets (`test`, `integration`, `build`, `dev`, and the rest listed by `.\make.ps1 help`).
+The app is a Spring Boot process. `make run` packages the jar and starts it in the background. `make stop` ends that process. `make dev` runs from source with DevTools restart and LiveReload. `make debug` does the same with the `dev` profile and the debugger listening on port **8787**. From PowerShell, `.\make.ps1` accepts the same Maven targets (`test`, `integration`, `build`, `dev`, and the rest listed by `.\make.ps1 help`).
 
 Docker:
 

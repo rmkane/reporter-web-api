@@ -16,7 +16,8 @@ logs/
 *.iml
 
 # VS Code
-.vscode/
+.vscode/*
+!.vscode/launch.json
 
 # OS
 .DS_Store

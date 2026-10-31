@@ -42,11 +42,8 @@ stop: ## Stop the packaged jar
 		printf '$(YELLOW)Not running$(RESET)\n'; \
 	fi
 
-debug: package ## Start the packaged jar with JDWP on port 8787
-	@$(MAKE) --no-print-directory stop-quiet
-	@mkdir -p logs
-	@java $(DEBUG_OPTS) -jar $(JAR) >> logs/console.out 2>&1 & echo $$! > $(PID_FILE)
-	@printf '$(GREEN)Debugger$(RESET) listening on port 8787 (pid %s)\n' "$$(cat $(PID_FILE))"
+debug: ## Run from source with the dev profile and JDWP on port 8787
+	mvn -B spring-boot:run -Dspring-boot.run.profiles=dev -Dspring-boot.run.jvmArguments="$(DEBUG_OPTS)"
 
 dev: ## Run from source with DevTools restart and LiveReload
 	mvn -B spring-boot:run -Dspring-boot.run.profiles=dev
