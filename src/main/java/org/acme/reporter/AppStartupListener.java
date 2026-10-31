@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import org.acme.reporter.config.ApiDocsConfig;
 import org.acme.reporter.config.SwaggerUiConfig;
+import org.acme.reporter.util.Envs;
 
 @Slf4j
 @Component
@@ -46,12 +47,11 @@ public class AppStartupListener implements ApplicationListener<ApplicationReadyE
   }
 
   static String resolvePort(Environment environment) {
-    return environment.getProperty(
-        "local.server.port", environment.getProperty("server.port", DEFAULT_PORT));
+    return Envs.resolve(environment, DEFAULT_PORT, "local.server.port", "server.port");
   }
 
   static String resolveContextPath(Environment environment) {
-    return environment.getProperty("server.servlet.context-path", DEFAULT_CONTEXT_PATH);
+    return Envs.resolve(environment, DEFAULT_CONTEXT_PATH, "server.servlet.context-path");
   }
 
   static String resolveHealthPath(WebEndpointProperties endpoints) {
