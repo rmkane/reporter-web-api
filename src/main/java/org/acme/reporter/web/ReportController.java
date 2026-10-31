@@ -3,8 +3,10 @@ package org.acme.reporter.web;
 import java.net.URI;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -36,17 +38,21 @@ public class ReportController {
 
   @GetMapping
   @Operation(summary = "List reports")
+  @PageableAsQueryParam
   public Page<Report> list(
-      @PageableDefault(size = 10, sort = "updatedOn", direction = Sort.Direction.DESC)
+      @Parameter(hidden = true)
+          @PageableDefault(size = 10, sort = "updatedOn", direction = Sort.Direction.DESC)
           Pageable pageable) {
     return reports.list(pageable);
   }
 
   @PostMapping("/search")
   @Operation(summary = "Search reports")
+  @PageableAsQueryParam
   public Page<Report> search(
       @RequestBody ReportQuery query,
-      @PageableDefault(size = 10, sort = "updatedOn", direction = Sort.Direction.DESC)
+      @Parameter(hidden = true)
+          @PageableDefault(size = 10, sort = "updatedOn", direction = Sort.Direction.DESC)
           Pageable pageable) {
     return reports.search(query, pageable);
   }
