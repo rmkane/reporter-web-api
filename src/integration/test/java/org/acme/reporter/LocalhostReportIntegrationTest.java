@@ -1,16 +1,36 @@
 package org.acme.reporter;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.http.HttpStatus;
 import tools.jackson.databind.JsonNode;
 
 @Tag("integration")
-class LocalhostReportIntegrationTest extends AbstractIntegrationTest {
+@TestInstance(Lifecycle.PER_CLASS)
+class LocalhostReportIntegrationTest extends AbstractReportApiTest {
+
+  @BeforeAll
+  void requireRunningServer() {
+    try (Socket socket = new Socket()) {
+      socket.connect(new InetSocketAddress(host(), port()), 1_000);
+    } catch (IOException ex) {
+      fail(
+          "No server is listening at "
+              + baseUrl()
+              + ". Start the app before the integration tests.",
+          ex);
+    }
+  }
 
   @Test
   void readsHostPortAndPathFromProperties() {

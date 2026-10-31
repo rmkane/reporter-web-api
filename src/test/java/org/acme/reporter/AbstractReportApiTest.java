@@ -30,7 +30,7 @@ import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.json.JsonMapper;
 
 @Slf4j
-public abstract class AbstractIntegrationTest {
+public abstract class AbstractReportApiTest {
 
   protected static final Path OUTPUT_PATH = Path.of("target", "integration");
 
@@ -219,7 +219,7 @@ public abstract class AbstractIntegrationTest {
   }
 
   private Call send(RestClient.RequestHeadersSpec<?> request) {
-    return request.exchange(AbstractIntegrationTest::read);
+    return request.exchange(AbstractReportApiTest::read);
   }
 
   private static Call read(HttpRequest request, ClientHttpResponse response) throws IOException {

@@ -21,7 +21,7 @@ import org.acme.reporter.web.CreateReportRequest;
 import org.acme.reporter.web.UpdateReportRequest;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class ReportApiIntegrationTest extends AbstractIntegrationTest {
+class ReportApiIntegrationTest extends AbstractReportApiTest {
 
   @Test
   void listsReports() {

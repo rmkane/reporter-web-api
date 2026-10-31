@@ -117,7 +117,7 @@
                         </goals>
                         <configuration>
                             <sources>
-                                <source>integration/test/java</source>
+                                <source>src/integration/test/java</source>
                             </sources>
                         </configuration>
                     </execution>
@@ -133,7 +133,7 @@
                         <includes>
                             <include>src/main/java/**/*.java</include>
                             <include>src/test/java/**/*.java</include>
-                            <include>integration/test/java/**/*.java</include>
+                            <include>src/integration/test/java/**/*.java</include>
                         </includes>
                         <googleJavaFormat>
                             <version>${google-java-format.version}</version>
