@@ -18,7 +18,12 @@ public class AppStartupListener implements ApplicationListener<ApplicationReadyE
     String root = "http://localhost:" + port + contextPath;
     StartupContext context =
         new StartupContext(
-            port, root + "/", root + "/reports", root + "/swagger-ui.html", root + "/v3/api-docs");
+            port,
+            root + "/",
+            root + "/reports",
+            root + "/swagger-ui.html",
+            root + "/v3/api-docs",
+            root + "/actuator/health");
     log.info(format(context));
   }
 
@@ -30,9 +35,15 @@ public class AppStartupListener implements ApplicationListener<ApplicationReadyE
                 - Reports: %s
                 - Swagger UI: %s
                 - OpenAPI: %s
+                - Health: %s
                 """
         .formatted(
-            context.port(), context.root(), context.reports(), context.swagger(), context.openApi())
+            context.port(),
+            context.root(),
+            context.reports(),
+            context.swagger(),
+            context.openApi(),
+            context.health())
         .strip();
   }
 }

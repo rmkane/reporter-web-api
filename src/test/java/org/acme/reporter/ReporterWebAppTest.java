@@ -48,5 +48,9 @@ class ReporterWebAppTest {
         .andExpect(content().string(containsString("Login")))
         .andExpect(content().string(containsString("Breadcrumb")))
         .andExpect(content().string(containsString("RPT-1")));
+    mockMvc
+        .perform(get("/actuator/health"))
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString("\"status\":\"UP\"")));
   }
 }

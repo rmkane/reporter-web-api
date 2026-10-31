@@ -1,6 +1,11 @@
 spring:
   application:
     name: reporter-web-api
+  cache:
+    type: caffeine
+    cache-names: reports,report-lists,report-searches
+    caffeine:
+      spec: maximumSize=200,expireAfterWrite=5m,recordStats
   data:
     web:
       pageable:
@@ -15,6 +20,27 @@ reporter:
   github: https://github.com/rmkane/reporter-web-api
   seed:
     location: classpath:data/reports.json
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,caches
+  endpoint:
+    health:
+      show-details: always
+  info:
+    env:
+      enabled: true
+    java:
+      enabled: true
+    os:
+      enabled: true
+
+info:
+  app:
+    name: ${spring.application.name}
+    description: Demo report API with an in-memory catalog
 
 logging:
   file:
