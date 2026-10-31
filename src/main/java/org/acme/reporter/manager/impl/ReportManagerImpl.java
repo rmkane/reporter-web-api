@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import org.acme.reporter.manager.ReportManager;
 import org.acme.reporter.model.Report;
@@ -46,14 +47,13 @@ public class ReportManagerImpl implements ReportManager {
   @Override
   public Report create(CreateReportRequest request) {
     Instant now = Instant.now();
-    List<String> tags = request.tags() == null ? List.of() : List.copyOf(request.tags());
     Report report =
         new Report(
             nextId(),
             request.title().trim(),
             request.description().trim(),
-            request.status() == null ? ReportStatus.OPEN : request.status(),
-            tags,
+            keep(request.status(), ReportStatus.OPEN),
+            keep(request.tags(), List.of()),
             request.author().trim(),
             blankToNull(request.assignee()),
             request.priority(),
@@ -70,12 +70,12 @@ public class ReportManagerImpl implements ReportManager {
             current.id(),
             keep(request.title(), current.title()),
             keep(request.description(), current.description()),
-            request.status() == null ? current.status() : request.status(),
-            request.tags() == null ? current.tags() : List.copyOf(request.tags()),
+            keep(request.status(), current.status()),
+            keep(request.tags(), current.tags()),
             keep(request.author(), current.author()),
-            request.assignee() == null ? current.assignee() : request.assignee().trim(),
-            request.priority() == null ? current.priority() : request.priority(),
-            request.type() == null ? current.type() : request.type(),
+            keep(request.assignee(), current.assignee()),
+            keep(request.priority(), current.priority()),
+            keep(request.type(), current.type()),
             current.createdOn(),
             Instant.now());
     return repository.save(updated);
@@ -97,12 +97,20 @@ public class ReportManagerImpl implements ReportManager {
     return "RPT-" + (max + 1);
   }
 
+  private static <T> T keep(T incoming, T current) {
+    return incoming == null ? current : incoming;
+  }
+
   private static String keep(String incoming, String current) {
     return incoming == null ? current : incoming.trim();
   }
 
+  private static List<String> keep(List<String> incoming, List<String> current) {
+    return incoming == null ? current : List.copyOf(incoming);
+  }
+
   private static String blankToNull(String value) {
-    if (value == null || value.isBlank()) {
+    if (!StringUtils.hasText(value)) {
       return null;
     }
     return value.trim();

@@ -25,6 +25,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestClient;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.json.JsonMapper;
@@ -101,7 +102,7 @@ public abstract class AbstractReportApiTest {
 
   private static String property(String key, String fallback) {
     String value = ENVIRONMENT.getProperty(key);
-    if (value == null || value.isBlank()) {
+    if (!StringUtils.hasText(value)) {
       return fallback;
     }
     return value.trim();
