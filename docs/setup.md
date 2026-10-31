@@ -4,7 +4,7 @@ The app is a Spring Boot process. `make run` packages the jar and starts it in t
 
 Docker:
 
-- `make up` builds and starts the packaged jar.
+- `make up` builds and starts the packaged jar. The image checks `/actuator/health`.
 - `make dev-up` mounts the source tree, publishes ports 8080, 8787, and 35729, and runs with the `dev` profile.
 - `make down` and `make dev-down` stop those stacks.
 

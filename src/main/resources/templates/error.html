@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: page('Error', ~{::main})}">
+<main>
+    <p class="kicker" th:text="${status}">404</p>
+    <h1 th:text="${error}">Not Found</h1>
+    <p class="lede">That page is not available.</p>
+    <p class="links"><a href="/">Back to the dashboard</a></p>
+</main>
+</html>

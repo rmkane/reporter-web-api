@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import org.acme.reporter.config.ReporterProperties;
@@ -52,5 +53,10 @@ class ReporterWebAppTest {
         .perform(get("/actuator/health"))
         .andExpect(status().isOk())
         .andExpect(content().string(containsString("\"status\":\"UP\"")));
+    mockMvc
+        .perform(get("/missing-page").accept(MediaType.TEXT_HTML))
+        .andExpect(status().isNotFound())
+        .andExpect(content().string(containsString("Not Found")))
+        .andExpect(content().string(containsString("Back to the dashboard")));
   }
 }

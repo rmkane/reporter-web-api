@@ -3,20 +3,23 @@ package org.acme.reporter.web;
 import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
-import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import org.acme.reporter.error.InvalidReportQueryException;
 import org.acme.reporter.error.ReportNotFoundException;
 
 @Slf4j
-@RestControllerAdvice
+@Order(Ordered.HIGHEST_PRECEDENCE)
+@RestControllerAdvice(annotations = RestController.class)
 public class ApiExceptionHandler {
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -62,12 +65,6 @@ public class ApiExceptionHandler {
   ResponseEntity<ApiError> missing(ReportNotFoundException exception) {
     return ResponseEntity.status(HttpStatus.NOT_FOUND)
         .body(new ApiError(HttpStatus.NOT_FOUND.value(), exception.getMessage()));
-  }
-
-  @ExceptionHandler(NoResourceFoundException.class)
-  ResponseEntity<ApiError> missingResource(NoResourceFoundException exception) {
-    return ResponseEntity.status(HttpStatus.NOT_FOUND)
-        .body(new ApiError(HttpStatus.NOT_FOUND.value(), exception.getBody().getDetail()));
   }
 
   @ExceptionHandler(Exception.class)

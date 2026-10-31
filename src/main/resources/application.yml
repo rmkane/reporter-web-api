@@ -15,6 +15,9 @@ spring:
 
 server:
   port: 8080
+  shutdown: graceful
+  compression:
+    enabled: true
 
 reporter:
   github: https://github.com/rmkane/reporter-web-api
@@ -32,6 +35,8 @@ management:
   info:
     env:
       enabled: true
+    git:
+      mode: simple
     java:
       enabled: true
     os:
@@ -45,5 +50,3 @@ info:
 logging:
   file:
     path: logs
-  level:
-    org.acme.reporter: DEBUG
