@@ -84,11 +84,9 @@ public final class ReportQueries {
     List<String> expected = values(value);
     return switch (operator) {
       case "=", "IN" ->
-          actual.stream()
-              .anyMatch(tag -> expected.stream().anyMatch(item -> tag.equalsIgnoreCase(item)));
+          actual.stream().anyMatch(tag -> expected.stream().anyMatch(tag::equalsIgnoreCase));
       case "!=" ->
-          actual.stream()
-              .noneMatch(tag -> expected.stream().anyMatch(item -> tag.equalsIgnoreCase(item)));
+          actual.stream().noneMatch(tag -> expected.stream().anyMatch(tag::equalsIgnoreCase));
       case "~" ->
           actual.stream().anyMatch(tag -> expected.stream().anyMatch(item -> contains(tag, item)));
       case "!~" ->

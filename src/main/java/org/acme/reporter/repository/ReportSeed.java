@@ -23,7 +23,7 @@ public class ReportSeed {
   public List<Report> load() {
     String location = seed.location();
     try (InputStream input = new DefaultResourceLoader().getResource(location).getInputStream()) {
-      return jsonMapper.readValue(input, new TypeReference<List<Report>>() {});
+      return jsonMapper.readValue(input, new TypeReference<>() {});
     } catch (IOException ex) {
       throw new IllegalStateException("Could not read seed file: " + location, ex);
     }

@@ -31,6 +31,8 @@ class OpenApiConfigTest {
 
   @Autowired private MockMvc mockMvc;
 
+  @Autowired private ApiDocsConfig apiDocs;
+
   @Test
   void openApiBeanDescribesTheApplication() {
     assertThat(openAPI.getInfo().getTitle()).isEqualTo("Reporter Web API");
@@ -43,7 +45,7 @@ class OpenApiConfigTest {
     JsonNode spec =
         jsonMapper.readTree(
             mockMvc
-                .perform(get("/v3/api-docs"))
+                .perform(get(apiDocs.path()))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
@@ -117,7 +119,7 @@ class OpenApiConfigTest {
   @Test
   void jsonMapperReadsTheSeedDocument() throws Exception {
     try (InputStream input = new ClassPathResource("data/reports.json").getInputStream()) {
-      List<Report> reports = jsonMapper.readValue(input, new TypeReference<List<Report>>() {});
+      List<Report> reports = jsonMapper.readValue(input, new TypeReference<>() {});
       assertThat(jsonMapper).isInstanceOf(JsonMapper.class);
       assertThat(reports).isNotEmpty();
       assertThat(reports.getFirst().id()).isEqualTo("RPT-1");

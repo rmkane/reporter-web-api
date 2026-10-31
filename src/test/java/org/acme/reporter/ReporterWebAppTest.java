@@ -14,14 +14,21 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import org.acme.reporter.config.ReporterProperties;
+import org.acme.reporter.config.SwaggerUiConfig;
 
-@SpringBootTest(properties = "reporter.github=https://github.com/example/reporter-web-api")
+@SpringBootTest(
+    properties = {
+      "reporter.github=https://github.com/example/reporter-web-api",
+      "springdoc.swagger-ui.path=/custom-swagger"
+    })
 @AutoConfigureMockMvc
 class ReporterWebAppTest {
 
   @Autowired private MockMvc mockMvc;
 
   @Autowired private ReporterProperties properties;
+
+  @Autowired private SwaggerUiConfig swaggerUi;
 
   @Test
   void contextLoads() {}
@@ -34,8 +41,10 @@ class ReporterWebAppTest {
         .andExpect(content().string(containsString("Dashboard")))
         .andExpect(content().string(containsString("Login")))
         .andExpect(content().string(containsString(properties.github())))
+        .andExpect(content().string(containsString(swaggerUi.path())))
         .andExpect(
             content().string(not(containsString("https://github.com/rmkane/reporter-web-api"))))
+        .andExpect(content().string(not(containsString("/swagger-ui.html"))))
         .andExpect(content().string(not(containsString("Breadcrumb"))));
     mockMvc
         .perform(get("/reports"))
