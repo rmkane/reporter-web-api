@@ -1,15 +1,23 @@
 #!/usr/bin/env bash
-# Scan a jar with Trivy and write JSON, CSV, and HTML reports to target/scan.
-# Exits 0 when clean, 3 when Trivy finds vulnerabilities at TRIVY_SEVERITY, and
-# with Trivy's own code on any other error.
+# Scan a jar or a Docker image with Trivy and write JSON, CSV, and HTML reports
+# of every severity to target/scan/<kind>. Exits 0 when clean, 3 when Trivy finds
+# vulnerabilities at TRIVY_FAIL_ON, and with Trivy's own code on any other error.
 set -euo pipefail
 
 root="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$root"
 
-jar="${1:?usage: scripts/scan.sh <jar>}"
-severity="${TRIVY_SEVERITY:-HIGH,CRITICAL}"
-out="target/scan"
+usage="usage: scripts/scan.sh jar <path> | image <ref>"
+kind="${1:?$usage}"
+subject="${2:?$usage}"
+fail_on="${TRIVY_FAIL_ON:-HIGH,CRITICAL}"
+out="target/scan/$kind"
+
+case "$kind" in
+    jar) mode=rootfs ;;
+    image) mode=image ;;
+    *) echo "$usage" >&2; exit 1 ;;
+esac
 
 if ! command -v trivy >/dev/null 2>&1; then
     echo "trivy not found, see https://trivy.dev" >&2
@@ -18,16 +26,20 @@ fi
 
 mkdir -p "$out"
 
-status=0
-trivy rootfs -q --scanners vuln --severity "$severity" --exit-code 3 -f json -o "$out/trivy.json" "$jar" || status=$?
-if [ "$status" -ne 0 ] && [ "$status" -ne 3 ]; then
-    exit "$status"
-fi
-
+trivy "$mode" -q --scanners vuln -f json -o "$out/trivy.json" "$subject"
 trivy convert -q -f template -t @scan/csv.tpl -o "$out/trivy.csv" "$out/trivy.json"
 trivy convert -q -f template -t @scan/html.tpl -o "$out/report.html" "$out/trivy.json"
 cp scan/index.html "$out/index.html"
-{ printf 'window.TRIVY_REPORT = '; cat "$out/trivy.json"; printf ';\n'; } > "$out/trivy.js"
+{
+    printf 'window.TRIVY_FAIL_ON = "%s";\n' "$fail_on"
+    printf 'window.TRIVY_REPORT = '
+    cat "$out/trivy.json"
+    printf ';\n'
+} > "$out/trivy.js"
 
 echo "Wrote $out (trivy.json, trivy.csv, report.html, index.html)"
+
+# Print the findings at TRIVY_FAIL_ON, if any, and fail on them.
+status=0
+trivy convert -q --severity "$fail_on" --exit-code 3 -f table "$out/trivy.json" || status=$?
 exit "$status"

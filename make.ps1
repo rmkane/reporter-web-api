@@ -17,6 +17,7 @@ Set-Location $PSScriptRoot
 
 $Root = $PSScriptRoot
 $Jar = Join-Path $Root 'target/reporter-web-api-0.1.0-SNAPSHOT.jar'
+$Image = 'reporter-web-api:latest'
 $PidFile = Join-Path $Root '.reporter-web-api.pid'
 $DebugOpts = '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8787'
 
@@ -80,7 +81,9 @@ function Show-Help {
             @{ Name = 'integration'; Help = 'Run the integration tests' },
             @{ Name = 'lint'; Help = 'Check Java formatting' },
             @{ Name = 'format'; Help = 'Format Java with Google Java Format' },
-            @{ Name = 'scan'; Help = 'Scan the jar with Trivy and write JSON, CSV, and HTML reports' }
+            @{ Name = 'scan'; Help = 'Scan the jar and the Docker image with Trivy' },
+            @{ Name = 'scan-jar'; Help = 'Scan the jar and write reports to target/scan/jar' },
+            @{ Name = 'scan-image'; Help = 'Scan the Docker image and write reports to target/scan/image' }
         )
     }
     foreach ($group in $groups.Keys) {
@@ -125,10 +128,32 @@ switch ($Target) {
     'integration' { Invoke-Maven @('test', '-Pintegration') }
     'lint' { Invoke-Maven @('spotless:check') }
     'format' { Invoke-Maven @('spotless:apply') }
+    'scan-jar' {
+        Invoke-Maven @('-DskipTests', 'package')
+        & (Join-Path $Root 'scripts/scan.ps1') jar $Jar
+        exit $LASTEXITCODE
+    }
+    'scan-image' {
+        & docker compose build
+        if ($LASTEXITCODE -ne 0) {
+            exit $LASTEXITCODE
+        }
+        & (Join-Path $Root 'scripts/scan.ps1') image $Image
+        exit $LASTEXITCODE
+    }
     'scan' {
         Invoke-Maven @('-DskipTests', 'package')
-        & (Join-Path $Root 'scripts/scan.ps1') $Jar
-        exit $LASTEXITCODE
+        & (Join-Path $Root 'scripts/scan.ps1') jar $Jar
+        $status = $LASTEXITCODE
+        & docker compose build
+        if ($LASTEXITCODE -ne 0) {
+            exit $LASTEXITCODE
+        }
+        & (Join-Path $Root 'scripts/scan.ps1') image $Image
+        if ($LASTEXITCODE -ne 0) {
+            $status = $LASTEXITCODE
+        }
+        exit $status
     }
     default {
         Write-Host "Unknown target: $Target" -ForegroundColor Yellow

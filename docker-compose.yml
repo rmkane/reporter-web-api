@@ -1,6 +1,7 @@
 services:
   reporter-web-api:
     build: .
+    image: reporter-web-api:latest
     ports:
       - "8080:8080"
     volumes:

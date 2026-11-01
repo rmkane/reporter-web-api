@@ -6,9 +6,19 @@ CYAN   := $(shell bash -c 'printf "\033[36m"')
 
 SHELL := bash
 .DEFAULT_GOAL := help
-.PHONY: help hooks install build package clean run stop dev debug test integration lint format scan image up down dev-up dev-down stop-quiet
+# General
+.PHONY: help hooks
+# Build
+.PHONY: install build package clean
+# Run
+.PHONY: run stop dev debug stop-quiet
+# Quality
+.PHONY: test integration lint format scan scan-jar scan-image
+# Docker
+.PHONY: image up down dev-up dev-down
 
 JAR := target/reporter-web-api-0.1.0-SNAPSHOT.jar
+IMAGE := reporter-web-api:latest
 PID_FILE := .reporter-web-api.pid
 DEBUG_OPTS := -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8787
 
@@ -70,8 +80,17 @@ lint: ## Check Java formatting
 format: ## Format Java with Google Java Format
 	mvn -B spotless:apply
 
-scan: package ## Scan the jar with Trivy and write JSON, CSV, and HTML reports
-	@bash scripts/scan.sh $(JAR)
+scan: ## Scan the jar and the Docker image with Trivy
+	@status=0; \
+		$(MAKE) --no-print-directory scan-jar || status=$$?; \
+		$(MAKE) --no-print-directory scan-image || status=$$?; \
+		exit $$status
+
+scan-jar: package ## Scan the jar and write reports to target/scan/jar
+	@bash scripts/scan.sh jar $(JAR)
+
+scan-image: image ## Scan the Docker image and write reports to target/scan/image
+	@bash scripts/scan.sh image $(IMAGE)
 
 ##@ Docker
 image: ## Build the production image

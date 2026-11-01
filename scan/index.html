@@ -45,11 +45,30 @@
     main { max-width: 1200px; margin: 0 auto; }
     h1 { margin: 0 0 4px; font-size: 20px; }
     .meta { margin: 0 0 16px; color: var(--muted); }
-    .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 16px; }
-    .count { padding: 2px 10px; border: 1px solid var(--border); border-radius: 999px; }
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1fr minmax(240px, 320px);
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 640px) {
+      .toolbar { grid-template-columns: 1fr; }
+    }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .count {
+      display: inline-flex;
+      align-items: center;
+      height: 28px;
+      padding: 0 10px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      line-height: 1;
+    }
+    .count[hidden] { display: none; }
+    .verdict { border-color: currentColor; }
     input {
-      margin-left: auto;
-      min-width: 280px;
+      width: 100%;
       padding: 6px 10px;
       border: 1px solid var(--border);
       border-radius: 6px;
@@ -78,15 +97,19 @@
   <main>
     <h1>Trivy scan</h1>
     <p class="meta" id="meta">Loading…</p>
-    <div class="bar">
-      <div id="counts" class="bar"></div>
-      <input id="filter" type="search" placeholder="Filter by package, CVE, or title">
+    <div class="toolbar">
+      <div class="chips">
+        <span id="verdict" class="count verdict" hidden></span>
+        <div id="counts" class="chips"></div>
+      </div>
+      <input id="filter" type="search" placeholder="Filter by target, package, CVE, or title">
     </div>
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
             <th>Severity</th>
+            <th>Target</th>
             <th>Package</th>
             <th>Installed</th>
             <th>Fixed</th>
@@ -98,7 +121,7 @@
       </table>
     </div>
   </main>
-  <!-- trivy.js sets window.TRIVY_REPORT so the page also works from file://. -->
+  <!-- trivy.js sets window.TRIVY_REPORT (and TRIVY_FAIL_ON) so the page also works from file://. -->
   <script src="trivy.js" onerror="void 0"></script>
   <script>
     const SEVERITIES = ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW', 'UNKNOWN'];
@@ -150,7 +173,7 @@
       if (vulns.length === 0) {
         const tr = document.createElement('tr');
         const td = cell('No vulnerabilities', 'empty');
-        td.colSpan = 6;
+        td.colSpan = 7;
         tr.append(td);
         rows.replaceChildren(tr);
         return;
@@ -170,6 +193,7 @@
         }
         tr.append(
           cell(v.Severity, `nowrap sev sev-${v.Severity}`),
+          cell(v.Target),
           cell(v.PkgName),
           cell(v.InstalledVersion, 'nowrap'),
           cell(v.FixedVersion),
@@ -182,15 +206,24 @@
     loadReport()
       .then((report) => {
         const vulns = flatten(report);
+        const failOn = window.TRIVY_FAIL_ON?.split(',');
         const created = report.CreatedAt ? new Date(report.CreatedAt).toLocaleString() : 'unknown time';
         document.getElementById('meta').textContent =
-          `${report.ArtifactName ?? 'Unknown artifact'} · scanned ${created} · ${vulns.length} findings`;
+          [report.ArtifactName ?? 'Unknown artifact', `scanned ${created}`, `${vulns.length} findings`,
+            failOn && `fails on ${failOn.join(', ')}`].filter(Boolean).join(' · ');
+        if (failOn) {
+          const failing = vulns.filter((v) => failOn.includes(v.Severity)).length;
+          const verdict = document.getElementById('verdict');
+          verdict.textContent = failing ? `FAIL ${failing}` : 'PASS';
+          verdict.className = `count verdict sev ${failing ? 'sev-CRITICAL' : 'sev-LOW'}`;
+          verdict.hidden = false;
+        }
         renderCounts(vulns);
         renderRows(vulns);
         document.getElementById('filter').addEventListener('input', (event) => {
           const query = event.target.value.trim().toLowerCase();
           renderRows(vulns.filter((v) =>
-            [v.PkgName, v.VulnerabilityID, v.Title, v.Severity].some((s) => s?.toLowerCase().includes(query))));
+            [v.Target, v.PkgName, v.VulnerabilityID, v.Title, v.Severity].some((s) => s?.toLowerCase().includes(query))));
         });
       })
       .catch((error) => {
