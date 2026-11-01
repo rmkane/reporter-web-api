@@ -79,7 +79,8 @@ function Show-Help {
             @{ Name = 'package'; Help = 'Package the jar without tests' },
             @{ Name = 'clean'; Help = 'Remove build output' },
             @{ Name = 'theme'; Help = 'Generate theme.css and the favicon from themes/$env:THEME.json (default ember)' },
-            @{ Name = 'themes'; Help = 'List the available UI themes' }
+            @{ Name = 'themes'; Help = 'List the available UI themes' },
+            @{ Name = 'previews'; Help = 'Draw a preview card for every theme in themes/previews' }
         )
         'Run'     = @(
             @{ Name = 'run'; Help = 'Start the packaged jar in the background' },
@@ -121,6 +122,7 @@ switch ($Target) {
         Invoke-Python @('scripts/generate_icons.py', '--theme', $theme)
     }
     'themes' { Invoke-Python @('scripts/theme.py', '--list') }
+    'previews' { Invoke-Python @('scripts/theme_preview.py') }
     'run' {
         Invoke-Maven @('-DskipTests', 'package')
         Stop-Quiet

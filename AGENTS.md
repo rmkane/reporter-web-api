@@ -15,6 +15,7 @@
 
 - Colors, radii, shadows, and fonts come from the tokens in `static/css/theme.css` (primary, secondary, accent, status, and neutral roles, with light and dark values). `app.css` uses only those variables, never raw colors.
 - `theme.css` and the favicon are generated: edit a theme in `themes/` and run `make theme THEME=<name>`, and `make themes` lists them. A new token goes in `scripts/theme.py` and in every theme file. No literal colors outside `themes/`.
+- After adding or editing a theme, run `make previews` to redraw its card in `themes/previews/` and the gallery in `themes/README.md`.
 - The reports page keeps the create form collapsed. Mark required fields. Open Swagger and OpenAPI links in a new tab.
 - The startup log is a ready line, a blank line, then a bulleted list of URLs.
 

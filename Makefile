@@ -9,7 +9,7 @@ SHELL := bash
 # General
 .PHONY: help hooks
 # Build
-.PHONY: install build package clean theme themes
+.PHONY: install build package clean theme themes previews
 # Run
 .PHONY: run stop dev debug stop-quiet
 # Quality
@@ -51,6 +51,9 @@ theme: ## Generate theme.css and the favicon from themes/$(THEME).json (THEME=em
 
 themes: ## List the available UI themes
 	@python3 scripts/theme.py --list
+
+previews: ## Draw a preview card for every theme in themes/previews
+	python3 scripts/theme_preview.py
 
 ##@ Run
 run: package ## Start the packaged jar in the background
