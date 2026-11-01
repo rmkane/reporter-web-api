@@ -118,11 +118,11 @@ switch ($Target) {
     }
     'theme' {
         $theme = if ($env:THEME) { $env:THEME } else { 'ember' }
-        Invoke-Python @('scripts/theme.py', $theme)
-        Invoke-Python @('scripts/generate_icons.py', '--theme', $theme)
+        Invoke-Python @('scripts/theme/generate_css.py', $theme)
+        Invoke-Python @('scripts/theme/generate_icons.py', '--theme', $theme)
     }
-    'themes' { Invoke-Python @('scripts/theme.py', '--list') }
-    'previews' { Invoke-Python @('scripts/theme_preview.py') }
+    'themes' { Invoke-Python @('scripts/theme/generate_css.py', '--list') }
+    'previews' { Invoke-Python @('scripts/theme/generate_previews.py') }
     'run' {
         Invoke-Maven @('-DskipTests', 'package')
         Stop-Quiet
@@ -151,15 +151,15 @@ switch ($Target) {
     'integration' { Invoke-Maven @('test', '-Pintegration') }
     'lint' {
         Invoke-Maven @('spotless:check')
-        Invoke-Python @('scripts/annotation_order.py', '--check')
+        Invoke-Python @('scripts/lint/annotation_order.py', '--check')
     }
     'format' {
         Invoke-Maven @('spotless:apply')
-        Invoke-Python @('scripts/annotation_order.py', '--fix')
+        Invoke-Python @('scripts/lint/annotation_order.py', '--fix')
     }
     'scan-jar' {
         Invoke-Maven @('-DskipTests', 'package')
-        & (Join-Path $Root 'scripts/scan.ps1') jar $Jar
+        & (Join-Path $Root 'scripts/scan/scan.ps1') jar $Jar
         exit $LASTEXITCODE
     }
     'scan-image' {
@@ -167,18 +167,18 @@ switch ($Target) {
         if ($LASTEXITCODE -ne 0) {
             exit $LASTEXITCODE
         }
-        & (Join-Path $Root 'scripts/scan.ps1') image $Image
+        & (Join-Path $Root 'scripts/scan/scan.ps1') image $Image
         exit $LASTEXITCODE
     }
     'scan' {
         Invoke-Maven @('-DskipTests', 'package')
-        & (Join-Path $Root 'scripts/scan.ps1') jar $Jar
+        & (Join-Path $Root 'scripts/scan/scan.ps1') jar $Jar
         $status = $LASTEXITCODE
         & docker compose build
         if ($LASTEXITCODE -ne 0) {
             exit $LASTEXITCODE
         }
-        & (Join-Path $Root 'scripts/scan.ps1') image $Image
+        & (Join-Path $Root 'scripts/scan/scan.ps1') image $Image
         if ($LASTEXITCODE -ne 0) {
             $status = $LASTEXITCODE
         }

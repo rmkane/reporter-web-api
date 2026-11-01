@@ -29,7 +29,7 @@ help: ## Show available commands
 	@awk -v bold='$(BOLD)' -v reset='$(RESET)' -v green='$(GREEN)' -v yellow='$(YELLOW)' 'BEGIN { FS = ":.*##" } /^##@/ { printf "\n%s%s%s\n", bold, substr($$0, 5), reset } /^[a-zA-Z0-9_-]+:.*##/ { printf "  %s%-12s%s %s\n", green, $$1, reset, $$2 }' $(MAKEFILE_LIST)
 
 hooks: ## Install the git hooks
-	bash scripts/setup-git-hooks.sh
+	bash scripts/git/setup-hooks.sh
 
 ##@ Build
 install: ## Resolve Maven dependencies
@@ -46,14 +46,14 @@ clean: ## Remove build output
 	@rm -f $(PID_FILE)
 
 theme: ## Generate theme.css and the favicon from themes/$(THEME).json (THEME=ember)
-	python3 scripts/theme.py $(THEME)
-	python3 scripts/generate_icons.py --theme $(THEME)
+	python3 scripts/theme/generate_css.py $(THEME)
+	python3 scripts/theme/generate_icons.py --theme $(THEME)
 
 themes: ## List the available UI themes
-	@python3 scripts/theme.py --list
+	@python3 scripts/theme/generate_css.py --list
 
 previews: ## Draw a preview card for every theme in themes/previews
-	python3 scripts/theme_preview.py
+	python3 scripts/theme/generate_previews.py
 
 ##@ Run
 run: package ## Start the packaged jar in the background
@@ -87,11 +87,11 @@ integration: ## Run the integration tests
 
 lint: ## Check Java formatting and class annotation order
 	mvn -B spotless:check
-	python3 scripts/annotation_order.py --check
+	python3 scripts/lint/annotation_order.py --check
 
 format: ## Format Java and fix class annotation order
 	mvn -B spotless:apply
-	python3 scripts/annotation_order.py --fix
+	python3 scripts/lint/annotation_order.py --fix
 
 scan: ## Scan the jar and the Docker image with Trivy
 	@status=0; \
@@ -100,10 +100,10 @@ scan: ## Scan the jar and the Docker image with Trivy
 		exit $$status
 
 scan-jar: package ## Scan the jar and write reports to target/scan/jar
-	@bash scripts/scan.sh jar $(JAR)
+	@bash scripts/scan/scan.sh jar $(JAR)
 
 scan-image: image ## Scan the Docker image and write reports to target/scan/image
-	@bash scripts/scan.sh image $(IMAGE)
+	@bash scripts/scan/scan.sh image $(IMAGE)
 
 ##@ Docker
 image: ## Build the production image

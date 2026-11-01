@@ -7,8 +7,8 @@
   Exits 0 when clean, 3 when Trivy finds vulnerabilities at TRIVY_FAIL_ON, and
   with Trivy's own code on any other error.
 .EXAMPLE
-  .\scripts\scan.ps1 jar target/reporter-web-api-0.1.0-SNAPSHOT.jar
-  .\scripts\scan.ps1 image reporter-web-api:latest
+  .\scripts\scan\scan.ps1 jar target/reporter-web-api-0.1.0-SNAPSHOT.jar
+  .\scripts\scan\scan.ps1 image reporter-web-api:latest
 #>
 param(
     [Parameter(Mandatory = $true, Position = 0)]
@@ -21,7 +21,7 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
-$Root = Split-Path -Parent $PSScriptRoot
+$Root = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 Set-Location $Root
 
 $Mode = if ($Kind -eq 'jar') { 'rootfs' } else { 'image' }

@@ -14,7 +14,7 @@
 ## UI and logging
 
 - Colors, radii, shadows, and fonts come from the tokens in `static/css/theme.css` (primary, secondary, accent, status, and neutral roles, with light and dark values). `app.css` uses only those variables, never raw colors.
-- `theme.css` and the favicon are generated: edit a theme in `themes/` and run `make theme THEME=<name>`, and `make themes` lists them. A new token goes in `scripts/theme.py` and in every theme file. No literal colors outside `themes/`.
+- `theme.css` and the favicon are generated: edit a theme in `themes/` and run `make theme THEME=<name>`, and `make themes` lists them. A new token goes in `scripts/theme/themes.py` and in every theme file. No literal colors outside `themes/`.
 - After adding or editing a theme, run `make previews` to redraw its card in `themes/previews/` and the gallery in `themes/README.md`.
 - The reports page keeps the create form collapsed. Mark required fields. Open Swagger and OpenAPI links in a new tab.
 - The startup log is a ready line, a blank line, then a bulleted list of URLs.
@@ -24,7 +24,7 @@
 - Format Java with Spotless and Google Java Format (`make format`, `make lint`, or `.\make.ps1 format` and `.\make.ps1 lint`).
 - `org.acme` imports are the last group. Import classes. Do not use fully qualified names.
 - Prefer Lombok to boilerplate: `@RequiredArgsConstructor` for constructor injection, `@Slf4j` for logging, and `@Getter`, `@Builder`, or `@Value` where a class needs them. Use records for plain data. Write a constructor by hand only when it does more than assign fields.
-- Order class annotations by tier: status, logging, documentation, role, role modifiers, serialization, Lombok structure, compiler. Keep source order within a tier. [scripts/annotation_order.json](scripts/annotation_order.json) lists each tier's annotations. `make format` fixes the order and `make lint` checks it. Add a new annotation to that file before using it.
+- Order class annotations by tier: status, logging, documentation, role, role modifiers, serialization, Lombok structure, compiler. Keep source order within a tier. [scripts/lint/annotation_order.json](scripts/lint/annotation_order.json) lists each tier's annotations. `make format` fixes the order and `make lint` checks it. Add a new annotation to that file before using it.
 - A class of static helpers uses `@UtilityClass`, which makes it final, adds a private constructor, and makes every member static. Leave out `final` and `static` on it, and call its members through the class name, since static imports of them do not compile. Use `@NoArgsConstructor(access = AccessLevel.PRIVATE)` only on an instantiable class that needs a hidden no-argument constructor.
 
 ## Testing

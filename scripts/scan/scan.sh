@@ -4,10 +4,10 @@
 # vulnerabilities at TRIVY_FAIL_ON, and with Trivy's own code on any other error.
 set -euo pipefail
 
-root="$(cd "$(dirname "$0")/.." && pwd)"
+root="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$root"
 
-usage="usage: scripts/scan.sh jar <path> | image <ref>"
+usage="usage: scripts/scan/scan.sh jar <path> | image <ref>"
 kind="${1:?$usage}"
 subject="${2:?$usage}"
 fail_on="${TRIVY_FAIL_ON:-HIGH,CRITICAL}"

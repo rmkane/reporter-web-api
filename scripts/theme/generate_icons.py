@@ -1,14 +1,14 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """Create the report favicon from one list of shapes, in a theme's colors.
 
 Shapes draw themselves as SVG and as pixels. The SVG is written directly.
 The pixel image is drawn at 256 pixels and downscaled with Lanczos into
 favicon.ico at 16, 32, and 48. Colors come from the theme's "icon" section.
 
-The ICO needs Pillow (python -m pip install pillow); without it, only the SVG
-is written.
+The ICO needs Pillow (brew install pillow on macOS); without it, only the SVG
+is written. Each file is rewritten only when its content changes.
 
-    ./scripts/generate_icons.py --theme ember
+    scripts/theme/generate_icons.py --theme ember
 """
 
 import argparse
@@ -17,9 +17,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Protocol
 
-from theme import InvalidTheme, load_theme, resolve
+from themes import ROOT, InvalidTheme, display, load_theme, resolve, status, write_text
 
-ROOT = Path(__file__).resolve().parents[1]
 SVG_PATH = ROOT / "src/main/resources/static/favicon.svg"
 ICO_PATH = ROOT / "src/main/resources/static/favicon.ico"
 VIEW = 64
@@ -139,12 +138,7 @@ def svg_document(shapes: tuple[Shape, ...], outline: Ring | None = None) -> str:
 
 def write_svg(path: Path, shapes: tuple[Shape, ...], outline: Ring | None = None) -> bool:
     """Write the SVG unless it already has this content. Returns whether it wrote."""
-    document = svg_document(shapes, outline)
-    if path.exists() and path.read_text(encoding="utf-8") == document:
-        return False
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(document, encoding="utf-8")
-    return True
+    return write_text(path, svg_document(shapes, outline))
 
 
 def rasterize(shapes: tuple[Shape, ...], master: int):
@@ -215,13 +209,13 @@ def rgba(fill: str) -> tuple[int, int, int, int]:
     )
 
 
-def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Generate the report favicon SVG and ICO")
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--theme", default=DEFAULT_THEME, help="theme name in themes/ or a JSON path")
     parser.add_argument("--svg", type=Path, default=SVG_PATH)
     parser.add_argument("--ico", type=Path, default=ICO_PATH)
     parser.add_argument("--sizes", type=icon_sizes, default=SIZES)
-    return parser.parse_args()
+    return parser.parse_args(argv)
 
 
 def icon_sizes(value: str) -> tuple[int, ...]:
@@ -236,8 +230,8 @@ def has_pillow() -> bool:
     return True
 
 
-def main() -> int:
-    args = parse_args()
+def main(argv: list[str] | None = None) -> int:
+    args = parse_args(argv)
     try:
         colors = load_theme(resolve(args.theme))["icon"]
     except InvalidTheme as error:
@@ -245,18 +239,14 @@ def main() -> int:
         return 1
     shapes = report(colors)
     # The SVG adds the dark-mode ring; the ICO is a fixed bitmap, so it goes without.
-    print(f"{status(write_svg(args.svg, shapes, ring(colors)))} {args.svg}")
+    print(f"{status(write_svg(args.svg, shapes, ring(colors)))} {display(args.svg)}")
     if not has_pillow():
-        print(f"Skipped {args.ico}: install Pillow to redraw it (python -m pip install pillow)")
+        print(f"Skipped {display(args.ico)}: install Pillow to redraw it (brew install pillow)")
         return 0
     wrote = write_ico(rasterize(shapes, MASTER), args.ico, args.sizes)
     listed = ", ".join(str(size) for size in sorted(args.sizes))
-    print(f"{status(wrote)} {args.ico} ({listed})")
+    print(f"{status(wrote)} {display(args.ico)} ({listed})")
     return 0
-
-
-def status(wrote: bool) -> str:
-    return "Wrote" if wrote else "Unchanged"
 
 
 if __name__ == "__main__":
