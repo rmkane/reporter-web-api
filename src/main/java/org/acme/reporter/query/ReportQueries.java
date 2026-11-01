@@ -7,17 +7,25 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
+import lombok.experimental.UtilityClass;
 import tools.jackson.databind.JsonNode;
 
 import org.acme.reporter.error.InvalidReportQueryException;
+import org.acme.reporter.model.Priority;
 import org.acme.reporter.model.Report;
+import org.acme.reporter.model.ReportStatus;
+import org.acme.reporter.model.ReportType;
 
-public final class ReportQueries {
+@UtilityClass
+public class ReportQueries {
 
-  private ReportQueries() {}
+  private final Set<String> RANGE_OPERATORS = Set.of(">", ">=", "<", "<=");
 
-  public static void validate(ReportQuery query) {
+  private final Set<String> TAG_OPERATORS = Set.of("=", "!=", "~", "!~", "IN");
+
+  public void validate(ReportQuery query) {
     if (query == null) {
       throw new InvalidReportQueryException("Query is required");
     }
@@ -36,20 +44,11 @@ public final class ReportQueries {
         }
         validate(not.child());
       }
-      case ReportQuery.Clause clause -> {
-        ReportFields.requireField(clause.field());
-        ReportFields.requireOperator(clause.operator());
-        if (clause.value() == null || clause.value().isNull()) {
-          throw new InvalidReportQueryException("Clause value is required");
-        }
-        if ("IN".equals(clause.operator()) && !clause.value().isArray()) {
-          throw new InvalidReportQueryException("IN requires a list of values");
-        }
-      }
+      case ReportQuery.Clause clause -> validateClause(clause);
     }
   }
 
-  public static boolean matches(Report report, ReportQuery query) {
+  public boolean matches(Report report, ReportQuery query) {
     return switch (query) {
       case ReportQuery.And and -> and.children().stream().allMatch(child -> matches(report, child));
       case ReportQuery.Or or -> or.children().stream().anyMatch(child -> matches(report, child));
@@ -58,13 +57,45 @@ public final class ReportQueries {
     };
   }
 
-  private static boolean matchesClause(Report report, ReportQuery.Clause clause) {
+  // Checks values as well as shape, so a bad query fails the same way whatever data is stored.
+  private void validateClause(ReportQuery.Clause clause) {
+    String field = clause.field();
+    String operator = clause.operator();
+    ReportFields.requireField(field);
+    ReportFields.requireOperator(operator);
+    JsonNode value = clause.value();
+    if (value == null || value.isNull()) {
+      throw new InvalidReportQueryException("Clause value is required");
+    }
+    if ("IN".equals(operator) && !value.isArray()) {
+      throw new InvalidReportQueryException("IN requires a list of values");
+    }
+    if (RANGE_OPERATORS.contains(operator) && value.isArray()) {
+      throw new InvalidReportQueryException(operator + " requires a single value");
+    }
+    if ("tags".equals(field) && !TAG_OPERATORS.contains(operator)) {
+      throw new InvalidReportQueryException("Operator " + operator + " is not supported for tags");
+    }
+    for (String item : values(value)) {
+      if (isEnum(field)) {
+        rank(field, item);
+      } else if (isTimestamp(field)) {
+        parseTime(item);
+      }
+    }
+  }
+
+  private boolean matchesClause(Report report, ReportQuery.Clause clause) {
     String operator = clause.operator();
     if ("tags".equals(clause.field())) {
       return matchesTags(report.tags(), operator, clause.value());
     }
     String actual = text(report, clause.field());
     List<String> expected = values(clause.value());
+    // A missing value is neither above nor below anything.
+    if (RANGE_OPERATORS.contains(operator) && actual == null) {
+      return false;
+    }
     return switch (operator) {
       case "=" -> expected.stream().anyMatch(value -> equalsValue(clause.field(), actual, value));
       case "!=" -> expected.stream().noneMatch(value -> equalsValue(clause.field(), actual, value));
@@ -79,7 +110,7 @@ public final class ReportQueries {
     };
   }
 
-  private static boolean matchesTags(List<String> tags, String operator, JsonNode value) {
+  private boolean matchesTags(List<String> tags, String operator, JsonNode value) {
     List<String> actual = tags == null ? List.of() : tags;
     List<String> expected = values(value);
     return switch (operator) {
@@ -97,7 +128,7 @@ public final class ReportQueries {
     };
   }
 
-  private static String text(Report report, String field) {
+  private String text(Report report, String field) {
     return switch (field) {
       case "id" -> report.id();
       case "title" -> report.title();
@@ -113,47 +144,79 @@ public final class ReportQueries {
     };
   }
 
-  private static boolean equalsValue(String field, String actual, String expected) {
+  private boolean equalsValue(String field, String actual, String expected) {
     if (actual == null || expected == null) {
       return false;
     }
     if (isTimestamp(field)) {
+      // A bare date matches any time on that UTC day.
+      LocalDate day = parseDate(expected);
+      if (day != null) {
+        return LocalDate.ofInstant(Instant.parse(actual), ZoneOffset.UTC).equals(day);
+      }
       return parseTime(actual).equals(parseTime(expected));
     }
     return actual.equalsIgnoreCase(expected);
   }
 
-  private static boolean contains(String actual, String expected) {
+  private boolean contains(String actual, String expected) {
     return actual.toLowerCase(Locale.ROOT).contains(expected.toLowerCase(Locale.ROOT));
   }
 
-  private static int compare(String field, String actual, String expected) {
-    if (actual == null) {
-      return -1;
-    }
+  private int compare(String field, String actual, String expected) {
     if (isTimestamp(field)) {
       return parseTime(actual).compareTo(parseTime(expected));
+    }
+    if (isEnum(field)) {
+      return Integer.compare(rank(field, actual), rank(field, expected));
     }
     return actual.compareToIgnoreCase(expected);
   }
 
-  private static boolean isTimestamp(String field) {
+  private boolean isTimestamp(String field) {
     return "createdOn".equals(field) || "updatedOn".equals(field);
   }
 
-  private static Instant parseTime(String value) {
+  private boolean isEnum(String field) {
+    return "status".equals(field) || "priority".equals(field) || "type".equals(field);
+  }
+
+  /** Declared order, so {@code priority > LOW} means MEDIUM, HIGH, and CRITICAL. */
+  private int rank(String field, String value) {
+    String name = value.toUpperCase(Locale.ROOT);
     try {
-      return Instant.parse(value);
-    } catch (DateTimeParseException ignored) {
-      try {
-        return LocalDate.parse(value).atStartOfDay().toInstant(ZoneOffset.UTC);
-      } catch (DateTimeParseException ex) {
-        throw new InvalidReportQueryException("Invalid date: " + value);
-      }
+      return switch (field) {
+        case "status" -> ReportStatus.valueOf(name).ordinal();
+        case "priority" -> Priority.valueOf(name).ordinal();
+        case "type" -> ReportType.valueOf(name).ordinal();
+        default -> throw new InvalidReportQueryException("Unknown field: " + field);
+      };
+    } catch (IllegalArgumentException ex) {
+      throw new InvalidReportQueryException("Unknown " + field + ": " + value);
     }
   }
 
-  private static List<String> values(JsonNode node) {
+  private Instant parseTime(String value) {
+    try {
+      return Instant.parse(value);
+    } catch (DateTimeParseException ignored) {
+      LocalDate day = parseDate(value);
+      if (day == null) {
+        throw new InvalidReportQueryException("Invalid date: " + value);
+      }
+      return day.atStartOfDay().toInstant(ZoneOffset.UTC);
+    }
+  }
+
+  private LocalDate parseDate(String value) {
+    try {
+      return LocalDate.parse(value);
+    } catch (DateTimeParseException ex) {
+      return null;
+    }
+  }
+
+  private List<String> values(JsonNode node) {
     if (node == null || node.isNull()) {
       return List.of();
     }
@@ -165,14 +228,14 @@ public final class ReportQueries {
     return List.of(scalar(node));
   }
 
-  private static String scalar(JsonNode node) {
+  private String scalar(JsonNode node) {
     if (node.isString()) {
       return node.stringValue();
     }
     return node.toString().replace("\"", "");
   }
 
-  private static void requireChildren(List<ReportQuery> children, String label) {
+  private void requireChildren(List<ReportQuery> children, String label) {
     if (children == null || children.isEmpty()) {
       throw new InvalidReportQueryException(label + " requires at least one clause");
     }

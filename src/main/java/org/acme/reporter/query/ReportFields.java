@@ -2,13 +2,15 @@ package org.acme.reporter.query;
 
 import java.util.Set;
 
+import lombok.experimental.UtilityClass;
 import org.springframework.data.domain.Sort;
 
 import org.acme.reporter.error.InvalidReportQueryException;
 
-public final class ReportFields {
+@UtilityClass
+public class ReportFields {
 
-  public static final Set<String> NAMES =
+  public final Set<String> NAMES =
       Set.of(
           "id",
           "title",
@@ -22,12 +24,9 @@ public final class ReportFields {
           "createdOn",
           "updatedOn");
 
-  private static final Set<String> OPERATORS =
-      Set.of("=", "!=", "~", "!~", ">", ">=", "<", "<=", "IN");
+  private final Set<String> OPERATORS = Set.of("=", "!=", "~", "!~", ">", ">=", "<", "<=", "IN");
 
-  private ReportFields() {}
-
-  public static void requireSort(Sort sort) {
+  public void requireSort(Sort sort) {
     if (sort == null || sort.isUnsorted()) {
       return;
     }
@@ -38,13 +37,13 @@ public final class ReportFields {
     }
   }
 
-  public static void requireOperator(String operator) {
+  public void requireOperator(String operator) {
     if (operator == null || !OPERATORS.contains(operator)) {
       throw new InvalidReportQueryException("Unknown operator: " + operator);
     }
   }
 
-  public static void requireField(String field) {
+  public void requireField(String field) {
     if (!NAMES.contains(field)) {
       throw new InvalidReportQueryException("Unknown field: " + field);
     }

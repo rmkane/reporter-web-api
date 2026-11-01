@@ -18,4 +18,10 @@ Clauses use `field operator value`. Operators are `=`, `!=`, `~`, `!~`, `>`, `>=
 }
 ```
 
-`~` is a case-insensitive contains match. `tags` matches membership. An unknown field or operator is a 400. See [pagination and sorting](pagination-and-sorting.md).
+`~` is a case-insensitive contains match. `tags` matches membership and supports `=`, `!=`, `~`, `!~`, and `IN`.
+
+- `status`, `priority`, and `type` compare in declared order, so `priority > LOW` means `MEDIUM`, `HIGH`, and `CRITICAL`. Status runs `OPEN`, `IN_PROGRESS`, `RESOLVED`, `CLOSED`.
+- `createdOn` and `updatedOn` take an instant (`2026-01-15T09:30:00Z`) or a date (`2026-01-15`). A date with `=`, `!=`, or `IN` matches any time on that UTC day. With a range operator it means the start of that day.
+- Range operators (`>`, `>=`, `<`, `<=`) take a single value and never match a report whose field is empty. `!=` and `!~` do match empty fields.
+
+An unknown field, operator, enum name, or unparseable date is a 400, whatever reports are stored. See [pagination and sorting](pagination-and-sorting.md).
