@@ -20,6 +20,8 @@
 
 - Format Java with Spotless and Google Java Format (`make format`, `make lint`, or `.\make.ps1 format` and `.\make.ps1 lint`).
 - `org.acme` imports are the last group. Import classes. Do not use fully qualified names.
+- Prefer Lombok to boilerplate: `@RequiredArgsConstructor` for constructor injection, `@Slf4j` for logging, and `@Getter`, `@Builder`, or `@Value` where a class needs them. Use records for plain data. Write a constructor by hand only when it does more than assign fields.
+- A class of static helpers uses `@UtilityClass`, which makes it final, adds a private constructor, and makes every member static. Leave out `final` and `static` on it, and call its members through the class name, since static imports of them do not compile. Use `@NoArgsConstructor(access = AccessLevel.PRIVATE)` only on an instantiable class that needs a hidden no-argument constructor.
 
 ## Testing
 
