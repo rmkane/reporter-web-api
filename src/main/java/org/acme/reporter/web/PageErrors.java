@@ -13,8 +13,8 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import org.acme.reporter.error.ReportNotFoundException;
 
-@Order(Ordered.LOWEST_PRECEDENCE)
 @ControllerAdvice
+@Order(Ordered.LOWEST_PRECEDENCE)
 public class PageErrors {
 
   @ExceptionHandler(NoResourceFoundException.class)

@@ -18,8 +18,8 @@ import org.acme.reporter.error.InvalidReportQueryException;
 import org.acme.reporter.error.ReportNotFoundException;
 
 @Slf4j
-@Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice(annotations = RestController.class)
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class ApiExceptionHandler {
 
   @ExceptionHandler(MethodArgumentNotValidException.class)

@@ -26,10 +26,10 @@ import org.acme.reporter.model.Report;
 import org.acme.reporter.query.ReportQuery;
 import org.acme.reporter.service.ReportService;
 
-@RestController
-@RequiredArgsConstructor
-@RequestMapping("/api/reports")
 @Tag(name = "Reports")
+@RestController
+@RequestMapping("/api/reports")
+@RequiredArgsConstructor
 public class ReportController {
 
   private final ReportService reports;
