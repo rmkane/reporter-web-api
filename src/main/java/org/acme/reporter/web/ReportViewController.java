@@ -3,6 +3,7 @@ package org.acme.reporter.web;
 import java.util.Comparator;
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,13 +16,10 @@ import org.acme.reporter.model.ReportStatus;
 import org.acme.reporter.service.ReportService;
 
 @Controller
+@RequiredArgsConstructor
 public class ReportViewController {
 
   private final ReportService reports;
-
-  public ReportViewController(ReportService reports) {
-    this.reports = reports;
-  }
 
   @GetMapping("/")
   public String home(Model model) {

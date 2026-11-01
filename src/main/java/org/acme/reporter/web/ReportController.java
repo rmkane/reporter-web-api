@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,15 +27,12 @@ import org.acme.reporter.query.ReportQuery;
 import org.acme.reporter.service.ReportService;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/reports")
 @Tag(name = "Reports")
 public class ReportController {
 
   private final ReportService reports;
-
-  public ReportController(ReportService reports) {
-    this.reports = reports;
-  }
 
   @GetMapping
   @Operation(summary = "List reports")
