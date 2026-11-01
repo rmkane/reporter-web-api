@@ -42,10 +42,64 @@
         <google-java-format.version>1.36.1</google-java-format.version>
         <!-- Plugin versions -->
         <build-helper.version>3.6.0</build-helper.version>
+        <!-- Patch versions (override Spring Boot managed versions; remove once Boot catches up) -->
+        <jackson-bom.version>3.1.7</jackson-bom.version> <!-- Spring Boot 4.1.1 manages 3.1.5 -->
+        <jackson-2-bom.version>2.21.7</jackson-2-bom.version> <!-- Spring Boot 4.1.1 manages 2.21.5 -->
+        <tomcat.version>11.0.25</tomcat.version> <!-- Spring Boot 4.1.1 manages 11.0.24 -->
         <!-- Integration test -->
         <surefire.groups></surefire.groups>
         <surefire.excludedGroups>integration</surefire.excludedGroups>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!--
+              Jackson 3 BOM.
+              jackson-core: CVE-2026-89407, CVE-2026-89425
+              jackson-databind: CVE-2026-19032, CVE-2026-68497, CVE-2026-83557, CVE-2026-91776, CVE-2026-91777
+            -->
+            <dependency>
+                <groupId>tools.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--
+              Jackson 2 BOM (pulled in by springdoc).
+              jackson-core: CVE-2026-89407, CVE-2026-89425
+              jackson-databind: CVE-2026-19032, CVE-2026-68497, CVE-2026-83557, CVE-2026-91776, CVE-2026-91777
+            -->
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson-2-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--
+              Tomcat core.
+              CVE-2026-65182, CVE-2026-65637, CVE-2026-65905, CVE-2026-68525
+            -->
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-core</artifactId>
+                <version>${tomcat.version}</version>
+            </dependency>
+            <!-- Tomcat EL. No CVEs; kept in step with tomcat-embed-core. -->
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-el</artifactId>
+                <version>${tomcat.version}</version>
+            </dependency>
+            <!-- Tomcat WebSocket. No CVEs; kept in step with tomcat-embed-core. -->
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-websocket</artifactId>
+                <version>${tomcat.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <!-- Web MVC -->
