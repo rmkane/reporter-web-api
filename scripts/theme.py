@@ -166,9 +166,13 @@ def write_theme(theme_arg, output):
     path = resolve(theme_arg)
     theme = load_theme(path)
     source = path.resolve().relative_to(ROOT) if path.resolve().is_relative_to(ROOT) else path
-    output.write_text(render_css(theme, source))
-    print(f"Wrote {output.relative_to(ROOT) if output.is_relative_to(ROOT) else output} "
-          f"from {source}")
+    css = render_css(theme, source)
+    shown = output.relative_to(ROOT) if output.is_relative_to(ROOT) else output
+    if output.exists() and output.read_text() == css:
+        print(f"Unchanged {shown}")
+        return EXIT_OK
+    output.write_text(css)
+    print(f"Wrote {shown} from {source}")
     return EXIT_OK
 
 

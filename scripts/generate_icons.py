@@ -98,9 +98,14 @@ def svg_document(shapes: tuple[Shape, ...]) -> str:
     )
 
 
-def write_svg(path: Path, shapes: tuple[Shape, ...]) -> None:
+def write_svg(path: Path, shapes: tuple[Shape, ...]) -> bool:
+    """Write the SVG unless it already has this content. Returns whether it wrote."""
+    document = svg_document(shapes)
+    if path.exists() and path.read_text(encoding="utf-8") == document:
+        return False
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(svg_document(shapes), encoding="utf-8")
+    path.write_text(document, encoding="utf-8")
+    return True
 
 
 def rasterize(shapes: tuple[Shape, ...], master: int):
@@ -120,9 +125,33 @@ def downscale(image, size: int):
     return image.resize((size, size), Image.Resampling.LANCZOS)
 
 
-def write_ico(master, path: Path, sizes: tuple[int, ...]) -> None:
+def same_pixels(path: Path, frames) -> bool:
+    """Whether the ICO at path holds exactly these frames, compared pixel by pixel.
+
+    ICO bytes vary between Pillow versions, so comparing pixels keeps a
+    regenerated icon from showing as changed when it looks the same.
+    """
+    from PIL import Image
+
+    if not path.exists():
+        return False
+    with Image.open(path) as existing:
+        if set(existing.info.get("sizes", ())) != {frame.size for frame in frames}:
+            return False
+        for frame in frames:
+            existing.size = frame.size
+            existing.load()
+            if existing.convert("RGBA").tobytes() != frame.convert("RGBA").tobytes():
+                return False
+    return True
+
+
+def write_ico(master, path: Path, sizes: tuple[int, ...]) -> bool:
+    """Write the ICO unless it already has these pixels. Returns whether it wrote."""
     ordered = tuple(sorted(sizes, reverse=True))
     frames = [downscale(master, size) for size in ordered]
+    if same_pixels(path, frames):
+        return False
     path.parent.mkdir(parents=True, exist_ok=True)
     frames[0].save(
         path,
@@ -130,6 +159,7 @@ def write_ico(master, path: Path, sizes: tuple[int, ...]) -> None:
         sizes=[(size, size) for size in ordered],
         append_images=frames[1:],
     )
+    return True
 
 
 def num(value: float) -> str:
@@ -174,15 +204,18 @@ def main() -> int:
     except InvalidTheme as error:
         print(error, file=sys.stderr)
         return 1
-    write_svg(args.svg, shapes)
-    print(f"Wrote {args.svg}")
+    print(f"{status(write_svg(args.svg, shapes))} {args.svg}")
     if not has_pillow():
         print(f"Skipped {args.ico}: install Pillow to redraw it (python -m pip install pillow)")
         return 0
-    write_ico(rasterize(shapes, MASTER), args.ico, args.sizes)
+    wrote = write_ico(rasterize(shapes, MASTER), args.ico, args.sizes)
     listed = ", ".join(str(size) for size in sorted(args.sizes))
-    print(f"Wrote {args.ico} ({listed})")
+    print(f"{status(wrote)} {args.ico} ({listed})")
     return 0
+
+
+def status(wrote: bool) -> str:
+    return "Wrote" if wrote else "Unchanged"
 
 
 if __name__ == "__main__":
