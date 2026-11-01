@@ -1,0 +1,1286 @@
+{
+  "SchemaVersion": 2,
+  "Trivy": {
+    "Version": "0.76.1"
+  },
+  "ReportID": "01a194b4-fa98-7b69-85b1-1289e493d263",
+  "CreatedAt": "2026-10-31T21:24:11.032751-04:00",
+  "ArtifactName": "target/reporter-web-api-0.1.0-SNAPSHOT.jar",
+  "ArtifactType": "filesystem",
+  "Results": [
+    {
+      "Target": "Java",
+      "Class": "lang-pkgs",
+      "Type": "jar",
+      "Packages": [
+        {
+          "Name": "ch.qos.logback:logback-classic",
+          "Identifier": {
+            "PURL": "pkg:maven/ch.qos.logback/logback-classic@1.5.38",
+            "UID": "e26c3e64d701f0ee"
+          },
+          "Version": "1.5.38",
+          "Licenses": [
+            "EPL-2.0",
+            "LGPL-2.1-only"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/logback-classic-1.5.38.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "ch.qos.logback:logback-core",
+          "Identifier": {
+            "PURL": "pkg:maven/ch.qos.logback/logback-core@1.5.38",
+            "UID": "a6c60db8df011386"
+          },
+          "Version": "1.5.38",
+          "Licenses": [
+            "EPL-2.0",
+            "LGPL-2.1-only"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/logback-core-1.5.38.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "com.fasterxml.jackson.core:jackson-annotations",
+          "Identifier": {
+            "PURL": "pkg:maven/com.fasterxml.jackson.core/jackson-annotations@2.21",
+            "UID": "da40c412494f2c10"
+          },
+          "Version": "2.21",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/jackson-annotations-2.21.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "com.fasterxml.jackson.core:jackson-core",
+          "Identifier": {
+            "PURL": "pkg:maven/com.fasterxml.jackson.core/jackson-core@2.21.5",
+            "UID": "6534434976b648f1"
+          },
+          "Version": "2.21.5",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/jackson-core-2.21.5.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "com.fasterxml.jackson.core:jackson-databind",
+          "Identifier": {
+            "PURL": "pkg:maven/com.fasterxml.jackson.core/jackson-databind@2.21.5",
+            "UID": "8beb44c491f634c1"
+          },
+          "Version": "2.21.5",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/jackson-databind-2.21.5.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml",
+          "Identifier": {
+            "PURL": "pkg:maven/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml@2.21.5",
+            "UID": "7e82ab14a12d4c0c"
+          },
+          "Version": "2.21.5",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/jackson-dataformat-yaml-2.21.5.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "com.fasterxml.jackson.datatype:jackson-datatype-jsr310",
+          "Identifier": {
+            "PURL": "pkg:maven/com.fasterxml.jackson.datatype/jackson-datatype-jsr310@2.21.5",
+            "UID": "4383e2ad1eb8cd15"
+          },
+          "Version": "2.21.5",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/jackson-datatype-jsr310-2.21.5.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "com.fasterxml:classmate",
+          "Identifier": {
+            "PURL": "pkg:maven/com.fasterxml/classmate@1.7.3",
+            "UID": "ff29502fc48ccf46"
+          },
+          "Version": "1.7.3",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/classmate-1.7.3.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "com.github.ben-manes.caffeine:caffeine",
+          "Identifier": {
+            "PURL": "pkg:maven/com.github.ben-manes.caffeine/caffeine@3.2.4",
+            "UID": "9d93405b7b6331f8"
+          },
+          "Version": "3.2.4",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/caffeine-3.2.4.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "com.google.errorprone:error_prone_annotations",
+          "Identifier": {
+            "PURL": "pkg:maven/com.google.errorprone/error_prone_annotations@2.49.0",
+            "UID": "35ab78d79010728b"
+          },
+          "Version": "2.49.0",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/error_prone_annotations-2.49.0.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "commons-logging:commons-logging",
+          "Identifier": {
+            "PURL": "pkg:maven/commons-logging/commons-logging@1.3.6",
+            "UID": "91556e0ed9a7596a"
+          },
+          "Version": "1.3.6",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/commons-logging-1.3.6.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "io.micrometer:micrometer-commons",
+          "Identifier": {
+            "PURL": "pkg:maven/io.micrometer/micrometer-commons@1.17.1",
+            "UID": "4658d9fa6c556e68"
+          },
+          "Version": "1.17.1",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/micrometer-commons-1.17.1.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "io.micrometer:micrometer-core",
+          "Identifier": {
+            "PURL": "pkg:maven/io.micrometer/micrometer-core@1.17.1",
+            "UID": "ebe4b2940da78403"
+          },
+          "Version": "1.17.1",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/micrometer-core-1.17.1.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "io.micrometer:micrometer-jakarta9",
+          "Identifier": {
+            "PURL": "pkg:maven/io.micrometer/micrometer-jakarta9@1.17.1",
+            "UID": "826ff110d7a93615"
+          },
+          "Version": "1.17.1",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/micrometer-jakarta9-1.17.1.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "io.micrometer:micrometer-observation",
+          "Identifier": {
+            "PURL": "pkg:maven/io.micrometer/micrometer-observation@1.17.1",
+            "UID": "653efa62ed4f7539"
+          },
+          "Version": "1.17.1",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/micrometer-observation-1.17.1.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "io.swagger.core.v3:swagger-annotations-jakarta",
+          "Identifier": {
+            "PURL": "pkg:maven/io.swagger.core.v3/swagger-annotations-jakarta@2.2.55",
+            "UID": "c7a5ce6a3c7d4519"
+          },
+          "Version": "2.2.55",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/swagger-annotations-jakarta-2.2.55.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "io.swagger.core.v3:swagger-core-jakarta",
+          "Identifier": {
+            "PURL": "pkg:maven/io.swagger.core.v3/swagger-core-jakarta@2.2.55",
+            "UID": "f91839bb592cb18c"
+          },
+          "Version": "2.2.55",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/swagger-core-jakarta-2.2.55.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "io.swagger.core.v3:swagger-models-jakarta",
+          "Identifier": {
+            "PURL": "pkg:maven/io.swagger.core.v3/swagger-models-jakarta@2.2.55",
+            "UID": "8279f09df080cbc3"
+          },
+          "Version": "2.2.55",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/swagger-models-jakarta-2.2.55.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "jakarta.activation:jakarta.activation-api",
+          "Identifier": {
+            "PURL": "pkg:maven/jakarta.activation/jakarta.activation-api@2.1.4",
+            "UID": "35aba868af1728fb"
+          },
+          "Version": "2.1.4",
+          "Licenses": [
+            "BSD-3-Clause"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/jakarta.activation-api-2.1.4.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "jakarta.annotation:jakarta.annotation-api",
+          "Identifier": {
+            "PURL": "pkg:maven/jakarta.annotation/jakarta.annotation-api@3.0.0",
+            "UID": "5c123b2432e7c600"
+          },
+          "Version": "3.0.0",
+          "Licenses": [
+            "EPL-2.0",
+            "GPL-2.0-with-classpath-exception"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/jakarta.annotation-api-3.0.0.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "jakarta.validation:jakarta.validation-api",
+          "Identifier": {
+            "PURL": "pkg:maven/jakarta.validation/jakarta.validation-api@3.1.1",
+            "UID": "634fb2e40b330277"
+          },
+          "Version": "3.1.1",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/jakarta.validation-api-3.1.1.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "jakarta.xml.bind:jakarta.xml.bind-api",
+          "Identifier": {
+            "PURL": "pkg:maven/jakarta.xml.bind/jakarta.xml.bind-api@4.0.5",
+            "UID": "3f947e554312f743"
+          },
+          "Version": "4.0.5",
+          "Licenses": [
+            "BSD-3-Clause"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/jakarta.xml.bind-api-4.0.5.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.acme.reporter:reporter-web-api",
+          "Identifier": {
+            "PURL": "pkg:maven/org.acme.reporter/reporter-web-api@0.1.0-SNAPSHOT",
+            "UID": "b857e8045a7fee29"
+          },
+          "Version": "0.1.0-SNAPSHOT",
+          "Licenses": [
+            "MIT"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.apache.commons:commons-lang3",
+          "Identifier": {
+            "PURL": "pkg:maven/org.apache.commons/commons-lang3@3.20.0",
+            "UID": "622c7dbafd5d55c6"
+          },
+          "Version": "3.20.0",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/commons-lang3-3.20.0.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.apache.logging.log4j:log4j-api",
+          "Identifier": {
+            "PURL": "pkg:maven/org.apache.logging.log4j/log4j-api@2.25.5",
+            "UID": "85e612b8fe68c997"
+          },
+          "Version": "2.25.5",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/log4j-api-2.25.5.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.apache.logging.log4j:log4j-to-slf4j",
+          "Identifier": {
+            "PURL": "pkg:maven/org.apache.logging.log4j/log4j-to-slf4j@2.25.5",
+            "UID": "6c1091d22c41b885"
+          },
+          "Version": "2.25.5",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/log4j-to-slf4j-2.25.5.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.apache.tomcat.embed:tomcat-embed-core",
+          "Identifier": {
+            "PURL": "pkg:maven/org.apache.tomcat.embed/tomcat-embed-core@11.0.24",
+            "UID": "22dcf8b3b5927564"
+          },
+          "Version": "11.0.24",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/tomcat-embed-core-11.0.24.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.apache.tomcat.embed:tomcat-embed-el",
+          "Identifier": {
+            "PURL": "pkg:maven/org.apache.tomcat.embed/tomcat-embed-el@11.0.24",
+            "UID": "e889e9a4ac25cee"
+          },
+          "Version": "11.0.24",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/tomcat-embed-el-11.0.24.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.apache.tomcat.embed:tomcat-embed-websocket",
+          "Identifier": {
+            "PURL": "pkg:maven/org.apache.tomcat.embed/tomcat-embed-websocket@11.0.24",
+            "UID": "17387a20eb3cf6d1"
+          },
+          "Version": "11.0.24",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/tomcat-embed-websocket-11.0.24.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.attoparser:attoparser",
+          "Identifier": {
+            "PURL": "pkg:maven/org.attoparser/attoparser@2.0.7.RELEASE",
+            "UID": "21b71be101bbf587"
+          },
+          "Version": "2.0.7.RELEASE",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/attoparser-2.0.7.RELEASE.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.hdrhistogram:HdrHistogram",
+          "Identifier": {
+            "PURL": "pkg:maven/org.hdrhistogram/HdrHistogram@2.2.2",
+            "UID": "555272fa8d416380"
+          },
+          "Version": "2.2.2",
+          "Licenses": [
+            "CC0-1.0",
+            "BSD-2-Clause"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/HdrHistogram-2.2.2.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.hibernate.validator:hibernate-validator",
+          "Identifier": {
+            "PURL": "pkg:maven/org.hibernate.validator/hibernate-validator@9.1.3.Final",
+            "UID": "dbd57ce9299c9caa"
+          },
+          "Version": "9.1.3.Final",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/hibernate-validator-9.1.3.Final.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.jboss.logging:jboss-logging",
+          "Identifier": {
+            "PURL": "pkg:maven/org.jboss.logging/jboss-logging@3.6.3.Final",
+            "UID": "da996e4c7212fd67"
+          },
+          "Version": "3.6.3.Final",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/jboss-logging-3.6.3.Final.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.jspecify:jspecify",
+          "Identifier": {
+            "PURL": "pkg:maven/org.jspecify/jspecify@1.0.1",
+            "UID": "f11ba3bac65c90d4"
+          },
+          "Version": "1.0.1",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/jspecify-1.0.1.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.slf4j:jul-to-slf4j",
+          "Identifier": {
+            "PURL": "pkg:maven/org.slf4j/jul-to-slf4j@2.0.18",
+            "UID": "fe3f81d422c2407c"
+          },
+          "Version": "2.0.18",
+          "Licenses": [
+            "MIT"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/jul-to-slf4j-2.0.18.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.slf4j:slf4j-api",
+          "Identifier": {
+            "PURL": "pkg:maven/org.slf4j/slf4j-api@2.0.18",
+            "UID": "d8f5225b51d6d840"
+          },
+          "Version": "2.0.18",
+          "Licenses": [
+            "MIT"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/slf4j-api-2.0.18.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springdoc:springdoc-openapi-starter-common",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springdoc/springdoc-openapi-starter-common@3.1.1",
+            "UID": "99425dfdbf3e323d"
+          },
+          "Version": "3.1.1",
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/springdoc-openapi-starter-common-3.1.1.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springdoc:springdoc-openapi-starter-webmvc-api",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springdoc/springdoc-openapi-starter-webmvc-api@3.1.1",
+            "UID": "e14c7e8419db6410"
+          },
+          "Version": "3.1.1",
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/springdoc-openapi-starter-webmvc-api-3.1.1.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springdoc:springdoc-openapi-starter-webmvc-ui",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springdoc/springdoc-openapi-starter-webmvc-ui@3.1.1",
+            "UID": "101228aca0b85e5"
+          },
+          "Version": "3.1.1",
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/springdoc-openapi-starter-webmvc-ui-3.1.1.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springframework.boot:spring-boot",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springframework.boot/spring-boot@4.1.1",
+            "UID": "5f5263c09d94d482"
+          },
+          "Version": "4.1.1",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/spring-boot-4.1.1.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springframework.boot:spring-boot-actuator",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springframework.boot/spring-boot-actuator@4.1.1",
+            "UID": "86764ef6f7505b0f"
+          },
+          "Version": "4.1.1",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/spring-boot-actuator-4.1.1.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springframework.boot:spring-boot-actuator-autoconfigure",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springframework.boot/spring-boot-actuator-autoconfigure@4.1.1",
+            "UID": "38d7910a445cef54"
+          },
+          "Version": "4.1.1",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/spring-boot-actuator-autoconfigure-4.1.1.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springframework.boot:spring-boot-autoconfigure",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springframework.boot/spring-boot-autoconfigure@4.1.1",
+            "UID": "618addc4840ec106"
+          },
+          "Version": "4.1.1",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/spring-boot-autoconfigure-4.1.1.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springframework.boot:spring-boot-cache",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springframework.boot/spring-boot-cache@4.1.1",
+            "UID": "5751a2f99487b4f2"
+          },
+          "Version": "4.1.1",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/spring-boot-cache-4.1.1.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springframework.boot:spring-boot-data-commons",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springframework.boot/spring-boot-data-commons@4.1.1",
+            "UID": "a6210c7963c7b164"
+          },
+          "Version": "4.1.1",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/spring-boot-data-commons-4.1.1.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springframework.boot:spring-boot-health",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springframework.boot/spring-boot-health@4.1.1",
+            "UID": "9896f892372e230f"
+          },
+          "Version": "4.1.1",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/spring-boot-health-4.1.1.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springframework.boot:spring-boot-http-converter",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springframework.boot/spring-boot-http-converter@4.1.1",
+            "UID": "83e4a1158121866a"
+          },
+          "Version": "4.1.1",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/spring-boot-http-converter-4.1.1.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springframework.boot:spring-boot-jackson",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springframework.boot/spring-boot-jackson@4.1.1",
+            "UID": "99569ebae2e0246"
+          },
+          "Version": "4.1.1",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/spring-boot-jackson-4.1.1.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springframework.boot:spring-boot-jarmode-tools",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springframework.boot/spring-boot-jarmode-tools@4.1.1",
+            "UID": "50666b10a6a93bf1"
+          },
+          "Version": "4.1.1",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/spring-boot-jarmode-tools-4.1.1.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springframework.boot:spring-boot-micrometer-metrics",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springframework.boot/spring-boot-micrometer-metrics@4.1.1",
+            "UID": "a0d5235d170ba717"
+          },
+          "Version": "4.1.1",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/spring-boot-micrometer-metrics-4.1.1.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springframework.boot:spring-boot-micrometer-observation",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springframework.boot/spring-boot-micrometer-observation@4.1.1",
+            "UID": "e09fee4163395bf8"
+          },
+          "Version": "4.1.1",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/spring-boot-micrometer-observation-4.1.1.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springframework.boot:spring-boot-persistence",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springframework.boot/spring-boot-persistence@4.1.1",
+            "UID": "411751d27d357481"
+          },
+          "Version": "4.1.1",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/spring-boot-persistence-4.1.1.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springframework.boot:spring-boot-servlet",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springframework.boot/spring-boot-servlet@4.1.1",
+            "UID": "248ca0c20c292129"
+          },
+          "Version": "4.1.1",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/spring-boot-servlet-4.1.1.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springframework.boot:spring-boot-thymeleaf",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springframework.boot/spring-boot-thymeleaf@4.1.1",
+            "UID": "c8c8bc9cae36220c"
+          },
+          "Version": "4.1.1",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/spring-boot-thymeleaf-4.1.1.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springframework.boot:spring-boot-tomcat",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springframework.boot/spring-boot-tomcat@4.1.1",
+            "UID": "4efc0359360a3e75"
+          },
+          "Version": "4.1.1",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/spring-boot-tomcat-4.1.1.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springframework.boot:spring-boot-validation",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springframework.boot/spring-boot-validation@4.1.1",
+            "UID": "4b707ab601dfa03"
+          },
+          "Version": "4.1.1",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/spring-boot-validation-4.1.1.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springframework.boot:spring-boot-web-server",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springframework.boot/spring-boot-web-server@4.1.1",
+            "UID": "2da6f654a555eb04"
+          },
+          "Version": "4.1.1",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/spring-boot-web-server-4.1.1.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springframework.boot:spring-boot-webmvc",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springframework.boot/spring-boot-webmvc@4.1.1",
+            "UID": "3d4948adeaf25b79"
+          },
+          "Version": "4.1.1",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/spring-boot-webmvc-4.1.1.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springframework.data:spring-data-commons",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springframework.data/spring-data-commons@4.1.1",
+            "UID": "440dd6f6ea957a56"
+          },
+          "Version": "4.1.1",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/spring-data-commons-4.1.1.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springframework:spring-aop",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springframework/spring-aop@7.0.9",
+            "UID": "db135e92ac992d3e"
+          },
+          "Version": "7.0.9",
+          "Licenses": [
+            "Apache-2.0",
+            "BSD-3-Clause"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/spring-aop-7.0.9.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springframework:spring-beans",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springframework/spring-beans@7.0.9",
+            "UID": "6eaef94681f85987"
+          },
+          "Version": "7.0.9",
+          "Licenses": [
+            "Apache-2.0",
+            "BSD-3-Clause"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/spring-beans-7.0.9.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springframework:spring-context",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springframework/spring-context@7.0.9",
+            "UID": "4ad8c67575ae7d1a"
+          },
+          "Version": "7.0.9",
+          "Licenses": [
+            "Apache-2.0",
+            "BSD-3-Clause"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/spring-context-7.0.9.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springframework:spring-context-support",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springframework/spring-context-support@7.0.9",
+            "UID": "f347fe3eeb2cff29"
+          },
+          "Version": "7.0.9",
+          "Licenses": [
+            "Apache-2.0",
+            "BSD-3-Clause"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/spring-context-support-7.0.9.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springframework:spring-core",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springframework/spring-core@7.0.9",
+            "UID": "a404a5b1c88c50f3"
+          },
+          "Version": "7.0.9",
+          "Licenses": [
+            "Apache-2.0",
+            "BSD-3-Clause"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/spring-core-7.0.9.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springframework:spring-expression",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springframework/spring-expression@7.0.9",
+            "UID": "1345d8b92b8ffdca"
+          },
+          "Version": "7.0.9",
+          "Licenses": [
+            "Apache-2.0",
+            "BSD-3-Clause"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/spring-expression-7.0.9.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springframework:spring-tx",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springframework/spring-tx@7.0.9",
+            "UID": "eb43cd7ea4c5deda"
+          },
+          "Version": "7.0.9",
+          "Licenses": [
+            "Apache-2.0",
+            "BSD-3-Clause"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/spring-tx-7.0.9.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springframework:spring-web",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springframework/spring-web@7.0.9",
+            "UID": "656c7a926fdbf9e4"
+          },
+          "Version": "7.0.9",
+          "Licenses": [
+            "Apache-2.0",
+            "BSD-3-Clause"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/spring-web-7.0.9.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.springframework:spring-webmvc",
+          "Identifier": {
+            "PURL": "pkg:maven/org.springframework/spring-webmvc@7.0.9",
+            "UID": "4cb2894d8b60b8da"
+          },
+          "Version": "7.0.9",
+          "Licenses": [
+            "Apache-2.0",
+            "BSD-3-Clause"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/spring-webmvc-7.0.9.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.thymeleaf:thymeleaf",
+          "Identifier": {
+            "PURL": "pkg:maven/org.thymeleaf/thymeleaf@3.1.5.RELEASE",
+            "UID": "9fa21ac6b20e5493"
+          },
+          "Version": "3.1.5.RELEASE",
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/thymeleaf-3.1.5.RELEASE.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.thymeleaf:thymeleaf-spring6",
+          "Identifier": {
+            "PURL": "pkg:maven/org.thymeleaf/thymeleaf-spring6@3.1.5.RELEASE",
+            "UID": "13f7cf7a0af629dd"
+          },
+          "Version": "3.1.5.RELEASE",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/thymeleaf-spring6-3.1.5.RELEASE.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.unbescape:unbescape",
+          "Identifier": {
+            "PURL": "pkg:maven/org.unbescape/unbescape@1.1.6.RELEASE",
+            "UID": "82016e5ed91756d5"
+          },
+          "Version": "1.1.6.RELEASE",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/unbescape-1.1.6.RELEASE.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.webjars:swagger-ui",
+          "Identifier": {
+            "PURL": "pkg:maven/org.webjars/swagger-ui@5.32.14",
+            "UID": "a5a19a7be98b80a9"
+          },
+          "Version": "5.32.14",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/swagger-ui-5.32.14.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.webjars:webjars-locator-lite",
+          "Identifier": {
+            "PURL": "pkg:maven/org.webjars/webjars-locator-lite@1.1.4",
+            "UID": "bb98e56bfeeaefab"
+          },
+          "Version": "1.1.4",
+          "Licenses": [
+            "MIT"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/webjars-locator-lite-1.1.4.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "org.yaml:snakeyaml",
+          "Identifier": {
+            "PURL": "pkg:maven/org.yaml/snakeyaml@2.6",
+            "UID": "98831407a6d07c1e"
+          },
+          "Version": "2.6",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/snakeyaml-2.6.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "tools.jackson.core:jackson-core",
+          "Identifier": {
+            "PURL": "pkg:maven/tools.jackson.core/jackson-core@3.1.5",
+            "UID": "c7698dab2b88dd7b"
+          },
+          "Version": "3.1.5",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/jackson-core-3.1.5.jar",
+          "AnalyzedBy": "jar"
+        },
+        {
+          "Name": "tools.jackson.core:jackson-databind",
+          "Identifier": {
+            "PURL": "pkg:maven/tools.jackson.core/jackson-databind@3.1.5",
+            "UID": "501a46259123c6d9"
+          },
+          "Version": "3.1.5",
+          "Licenses": [
+            "Apache-2.0"
+          ],
+          "FilePath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/jackson-databind-3.1.5.jar",
+          "AnalyzedBy": "jar"
+        }
+      ],
+      "Vulnerabilities": [
+        {
+          "VulnerabilityID": "CVE-2026-89407",
+          "VendorIDs": [
+            "GHSA-p6pp-m3f8-5c89"
+          ],
+          "PkgName": "com.fasterxml.jackson.core:jackson-core",
+          "PkgPath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/jackson-core-2.21.5.jar",
+          "PkgIdentifier": {
+            "PURL": "pkg:maven/com.fasterxml.jackson.core/jackson-core@2.21.5",
+            "UID": "6534434976b648f1"
+          },
+          "InstalledVersion": "2.21.5",
+          "FixedVersion": "2.18.11, 2.21.7, 2.22.3",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-89407",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory Maven",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Amaven"
+          },
+          "Fingerprint": "sha256:fe9dc6fbc03361e277738776851154f8ece5faadc1ad4329f9b61207e6df0fd6",
+          "Title": "com.fasterxml.jackson/jackson-core: tools.jackson.core/jackson-core: Jackson-core: Denial of Service via regular expression backtracking",
+          "Description": "NumberInput.looksLikeValidNumber() in FasterXML jackson-core pre-validates \"stringified numbers\" with two regular expressions: PATTERN_FLOAT ([+-]?[0-9]*[\\.]?[0-9]+([eE][+-]?[0-9]+)?), present since 2.17.0, and PATTERN_FLOAT_TRAILING_DOT, added in 2.17.2. PATTERN_FLOAT places adjacent quantifiers over the same character class -- an optional [0-9]* run, an optional dot, then a required [0-9]+ run -- so input that ultimately fails to match forces Java's backtracking engine to retry every possible split point of the digit run. \n\n\n\nMatching cost therefore grows with the square of the input length. \n\n\n\nAn attacker who can supply JSON that an application deserializes into a numeric target type reaches this method through jackson-databind's default String-to-number coercion (StdDeserializer and NumberDeserializers for BigDecimal, BigInteger, Double and Float). \n\n\n\nBecause StreamReadConstraints.maxStringLength defaults to 20,000,000 characters, no constraint bounds the input before it reaches the regex. \n\n\n\nTesting by the reporter confirmed O(n^2) growth across five consecutive input-size doublings, with a single 160,000-character string consuming roughly 74 seconds in one call; a small number of concurrent requests of ordinary body size can therefore exhaust a server's request-handling thread pool. \n\n\n\nThe affected method does not exist before 2.17.0, so 2.16.x and earlier releases are not affected. \n\n\n\nThe fix replaces both regular expressions with a hand-rolled single-pass scan.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-400",
+            "CWE-1333"
+          ],
+          "VendorSeverity": {
+            "alma": 2,
+            "amazon": 3,
+            "ghsa": 3,
+            "oracle-oval": 3,
+            "redhat": 2,
+            "rocky": 3
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 5.9
+            }
+          },
+          "References": [
+            "https://access.redhat.com/errata/RHSA-2026:86706",
+            "https://access.redhat.com/errata/RHSA-2026:92408"
+          ],
+          "PublishedDate": "2026-09-22T15:17:21.053Z",
+          "LastModifiedDate": "2026-09-22T20:00:03.713Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-68497",
+          "VendorIDs": [
+            "GHSA-q4xh-88c3-wmh7"
+          ],
+          "PkgName": "com.fasterxml.jackson.core:jackson-databind",
+          "PkgPath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/jackson-databind-2.21.5.jar",
+          "PkgIdentifier": {
+            "PURL": "pkg:maven/com.fasterxml.jackson.core/jackson-databind@2.21.5",
+            "UID": "8beb44c491f634c1"
+          },
+          "InstalledVersion": "2.21.5",
+          "FixedVersion": "2.18.10, 2.21.6, 2.22.2",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-68497",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory Maven",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Amaven"
+          },
+          "Fingerprint": "sha256:64925f94bedf57ffe938e2ed80f68afd9007cf02ece8fa000177306fa97421b1",
+          "Title": "com.fasterxml.jackson.core/jackson-databind: tools.jackson.core/jackson-databind: jackson-databind: CPU Denial of Service via unbounded numeric parsing",
+          "Description": "jackson-databind binds a JSON string to a javax.xml.datatype.Duration or javax.xml.datatype.XMLGregorianCalendar field by passing the raw string verbatim to DatatypeFactory.newDuration(value) or newXMLGregorianCalendar(value) in CoreXMLDeserializers.Std._deserialize. These deserializers are registered by default with no opt-in, so a plain ObjectMapper or JsonMapper with no polymorphic typing and no special configuration reaches this path. The XML Schema lexical grammar permits numeric components of arbitrary length, which the JDK materializes through the native BigInteger(String) and BigDecimal(String) constructors, both quadratic in digit count. Because the digits sit inside a JSON string token rather than a JSON number token, jackson-core's StreamReadConstraints.maxNumberLength guard never applies; jackson's own NumberDeserializers call validateIntegerLength or validateFPLength before parsing a stringified number, but the XML datatype deserializer omits that pre-check. An unauthenticated attacker can therefore submit a single request of a few megabytes, such as a Duration value consisting of the letter P followed by several million digits and the letter Y, and force tens of seconds to several minutes of single-threaded CPU work; a handful of concurrent requests can saturate a server's worker threads. This affects com.fasterxml.jackson.core:jackson-databind from 2.0.0 before 2.18.10, from 2.19.0 before 2.21.6, and from 2.22.0 before 2.22.2, and tools.jackson.core:jackson-databind from 3.0.0 before 3.1.6 and from 3.2.0 before 3.2.2. Users should upgrade to 2.18.10, 2.21.6, 2.22.2, 3.1.6, or 3.2.2.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-400",
+            "CWE-1333"
+          ],
+          "VendorSeverity": {
+            "alma": 3,
+            "amazon": 3,
+            "ghsa": 3,
+            "oracle-oval": 3,
+            "redhat": 3,
+            "rocky": 3,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/errata/RHSA-2026:77648",
+            "https://access.redhat.com/errata/RHSA-2026:80504"
+          ],
+          "PublishedDate": "2026-09-11T16:17:39.61Z",
+          "LastModifiedDate": "2026-09-18T19:34:36.657Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-65182",
+          "VendorIDs": [
+            "GHSA-gcx9-497g-6cp6"
+          ],
+          "PkgName": "org.apache.tomcat.embed:tomcat-embed-core",
+          "PkgPath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/tomcat-embed-core-11.0.24.jar",
+          "PkgIdentifier": {
+            "PURL": "pkg:maven/org.apache.tomcat.embed/tomcat-embed-core@11.0.24",
+            "UID": "22dcf8b3b5927564"
+          },
+          "InstalledVersion": "11.0.24",
+          "FixedVersion": "11.0.25, 10.1.58, 9.0.121",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-65182",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory Maven",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Amaven"
+          },
+          "Fingerprint": "sha256:23b703f2117f4eee194a890f51d72d8648c6ec5ba3c8564e856b520b41d60fb1",
+          "Title": "tomcat: Apache Tomcat: Security constraint bypass due to improper access control",
+          "Description": "Improper Access Control, Incorrect Authorization vulnerability in Apache Tomcat leads to security constraint bypass if a constraint for a longer path is specified before a more restrictive constraint for a shorter sub-path.\n\n\n\nThis issue affects Apache Tomcat: from 11.0.0-M1 through 11.0.24, from 10.1.0-M1 through 10.1.57, from 9.0.0.M1 through 9.0.120, from 8.5.0 through 8.5.100, from 7.0.0 through 7.0.109.\n\n\n\nUsers are recommended to upgrade to version 11.0.25, 10.1.58, 9.0.121, which fixes the issue.",
+          "Severity": "CRITICAL",
+          "CweIDs": [
+            "CWE-284",
+            "CWE-863"
+          ],
+          "VendorSeverity": {
+            "alma": 3,
+            "amazon": 3,
+            "bitnami": 4,
+            "ghsa": 4,
+            "oracle-oval": 3,
+            "redhat": 3
+          },
+          "CVSS": {
+            "bitnami": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
+              "V3Score": 9.1
+            },
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
+              "V3Score": 9.1
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:N",
+              "V3Score": 8.2
+            }
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2026/08/26/1",
+            "https://access.redhat.com/errata/RHSA-2026:92869"
+          ],
+          "PublishedDate": "2026-08-25T22:17:04.9Z",
+          "LastModifiedDate": "2026-08-27T15:27:26.04Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-89407",
+          "VendorIDs": [
+            "GHSA-p6pp-m3f8-5c89"
+          ],
+          "PkgName": "tools.jackson.core:jackson-core",
+          "PkgPath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/jackson-core-3.1.5.jar",
+          "PkgIdentifier": {
+            "PURL": "pkg:maven/tools.jackson.core/jackson-core@3.1.5",
+            "UID": "c7698dab2b88dd7b"
+          },
+          "InstalledVersion": "3.1.5",
+          "FixedVersion": "3.1.7, 3.2.2",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-89407",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory Maven",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Amaven"
+          },
+          "Fingerprint": "sha256:fe9dc6fbc03361e277738776851154f8ece5faadc1ad4329f9b61207e6df0fd6",
+          "Title": "com.fasterxml.jackson/jackson-core: tools.jackson.core/jackson-core: Jackson-core: Denial of Service via regular expression backtracking",
+          "Description": "NumberInput.looksLikeValidNumber() in FasterXML jackson-core pre-validates \"stringified numbers\" with two regular expressions: PATTERN_FLOAT ([+-]?[0-9]*[\\.]?[0-9]+([eE][+-]?[0-9]+)?), present since 2.17.0, and PATTERN_FLOAT_TRAILING_DOT, added in 2.17.2. PATTERN_FLOAT places adjacent quantifiers over the same character class -- an optional [0-9]* run, an optional dot, then a required [0-9]+ run -- so input that ultimately fails to match forces Java's backtracking engine to retry every possible split point of the digit run. \n\n\n\nMatching cost therefore grows with the square of the input length. \n\n\n\nAn attacker who can supply JSON that an application deserializes into a numeric target type reaches this method through jackson-databind's default String-to-number coercion (StdDeserializer and NumberDeserializers for BigDecimal, BigInteger, Double and Float). \n\n\n\nBecause StreamReadConstraints.maxStringLength defaults to 20,000,000 characters, no constraint bounds the input before it reaches the regex. \n\n\n\nTesting by the reporter confirmed O(n^2) growth across five consecutive input-size doublings, with a single 160,000-character string consuming roughly 74 seconds in one call; a small number of concurrent requests of ordinary body size can therefore exhaust a server's request-handling thread pool. \n\n\n\nThe affected method does not exist before 2.17.0, so 2.16.x and earlier releases are not affected. \n\n\n\nThe fix replaces both regular expressions with a hand-rolled single-pass scan.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-400",
+            "CWE-1333"
+          ],
+          "VendorSeverity": {
+            "alma": 2,
+            "amazon": 3,
+            "ghsa": 3,
+            "oracle-oval": 3,
+            "redhat": 2,
+            "rocky": 3
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 5.9
+            }
+          },
+          "References": [
+            "https://access.redhat.com/errata/RHSA-2026:86706",
+            "https://access.redhat.com/errata/RHSA-2026:92408"
+          ],
+          "PublishedDate": "2026-09-22T15:17:21.053Z",
+          "LastModifiedDate": "2026-09-22T20:00:03.713Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2026-68497",
+          "VendorIDs": [
+            "GHSA-q4xh-88c3-wmh7"
+          ],
+          "PkgName": "tools.jackson.core:jackson-databind",
+          "PkgPath": "reporter-web-api-0.1.0-SNAPSHOT.jar/BOOT-INF/lib/jackson-databind-3.1.5.jar",
+          "PkgIdentifier": {
+            "PURL": "pkg:maven/tools.jackson.core/jackson-databind@3.1.5",
+            "UID": "501a46259123c6d9"
+          },
+          "InstalledVersion": "3.1.5",
+          "FixedVersion": "3.2.2, 3.1.6",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-68497",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory Maven",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Amaven"
+          },
+          "Fingerprint": "sha256:64925f94bedf57ffe938e2ed80f68afd9007cf02ece8fa000177306fa97421b1",
+          "Title": "com.fasterxml.jackson.core/jackson-databind: tools.jackson.core/jackson-databind: jackson-databind: CPU Denial of Service via unbounded numeric parsing",
+          "Description": "jackson-databind binds a JSON string to a javax.xml.datatype.Duration or javax.xml.datatype.XMLGregorianCalendar field by passing the raw string verbatim to DatatypeFactory.newDuration(value) or newXMLGregorianCalendar(value) in CoreXMLDeserializers.Std._deserialize. These deserializers are registered by default with no opt-in, so a plain ObjectMapper or JsonMapper with no polymorphic typing and no special configuration reaches this path. The XML Schema lexical grammar permits numeric components of arbitrary length, which the JDK materializes through the native BigInteger(String) and BigDecimal(String) constructors, both quadratic in digit count. Because the digits sit inside a JSON string token rather than a JSON number token, jackson-core's StreamReadConstraints.maxNumberLength guard never applies; jackson's own NumberDeserializers call validateIntegerLength or validateFPLength before parsing a stringified number, but the XML datatype deserializer omits that pre-check. An unauthenticated attacker can therefore submit a single request of a few megabytes, such as a Duration value consisting of the letter P followed by several million digits and the letter Y, and force tens of seconds to several minutes of single-threaded CPU work; a handful of concurrent requests can saturate a server's worker threads. This affects com.fasterxml.jackson.core:jackson-databind from 2.0.0 before 2.18.10, from 2.19.0 before 2.21.6, and from 2.22.0 before 2.22.2, and tools.jackson.core:jackson-databind from 3.0.0 before 3.1.6 and from 3.2.0 before 3.2.2. Users should upgrade to 2.18.10, 2.21.6, 2.22.2, 3.1.6, or 3.2.2.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-400",
+            "CWE-1333"
+          ],
+          "VendorSeverity": {
+            "alma": 3,
+            "amazon": 3,
+            "ghsa": 3,
+            "oracle-oval": 3,
+            "redhat": 3,
+            "rocky": 3,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/errata/RHSA-2026:77648",
+            "https://access.redhat.com/errata/RHSA-2026:80504"
+          ],
+          "PublishedDate": "2026-09-11T16:17:39.61Z",
+          "LastModifiedDate": "2026-09-18T19:34:36.657Z"
+        }
+      ]
+    }
+  ]
+}

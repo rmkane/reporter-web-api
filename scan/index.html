@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trivy Scan</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #ffffff;
+      --fg: #1f2328;
+      --muted: #656d76;
+      --border: #d0d7de;
+      --row-alt: #f6f8fa;
+      --link: #0969da;
+      --critical: #b42318;
+      --high: #c4320a;
+      --medium: #9a6700;
+      --low: #1a7f37;
+      --unknown: #656d76;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0d1117;
+        --fg: #e6edf3;
+        --muted: #8d96a0;
+        --border: #30363d;
+        --row-alt: #161b22;
+        --link: #4493f8;
+        --critical: #ff7b72;
+        --high: #ffa657;
+        --medium: #d29922;
+        --low: #3fb950;
+        --unknown: #8d96a0;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px 16px;
+      background: var(--bg);
+      color: var(--fg);
+      font: 14px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+    main { max-width: 1200px; margin: 0 auto; }
+    h1 { margin: 0 0 4px; font-size: 20px; }
+    .meta { margin: 0 0 16px; color: var(--muted); }
+    .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 16px; }
+    .count { padding: 2px 10px; border: 1px solid var(--border); border-radius: 999px; }
+    input {
+      margin-left: auto;
+      min-width: 280px;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg);
+      color: var(--fg);
+      font: inherit;
+    }
+    .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 6px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
+    th { position: sticky; top: 0; background: var(--row-alt); white-space: nowrap; }
+    tbody tr:nth-child(even) { background: var(--row-alt); }
+    tbody tr:last-child td { border-bottom: 0; }
+    td.nowrap { white-space: nowrap; }
+    a { color: var(--link); }
+    .sev { font-weight: 600; }
+    .sev-CRITICAL { color: var(--critical); }
+    .sev-HIGH { color: var(--high); }
+    .sev-MEDIUM { color: var(--medium); }
+    .sev-LOW { color: var(--low); }
+    .sev-UNKNOWN { color: var(--unknown); }
+    .empty { padding: 24px; text-align: center; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Trivy scan</h1>
+    <p class="meta" id="meta">Loading…</p>
+    <div class="bar">
+      <div id="counts" class="bar"></div>
+      <input id="filter" type="search" placeholder="Filter by package, CVE, or title">
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Severity</th>
+            <th>Package</th>
+            <th>Installed</th>
+            <th>Fixed</th>
+            <th>Vulnerability</th>
+            <th>Title</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </main>
+  <!-- trivy.js sets window.TRIVY_REPORT so the page also works from file://. -->
+  <script src="trivy.js" onerror="void 0"></script>
+  <script>
+    const SEVERITIES = ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW', 'UNKNOWN'];
+
+    async function loadReport() {
+      if (window.TRIVY_REPORT) {
+        return window.TRIVY_REPORT;
+      }
+      const response = await fetch('trivy.json');
+      if (!response.ok) {
+        throw new Error(`trivy.json: HTTP ${response.status}`);
+      }
+      return response.json();
+    }
+
+    function cell(text, className) {
+      const td = document.createElement('td');
+      td.textContent = text ?? '';
+      if (className) {
+        td.className = className;
+      }
+      return td;
+    }
+
+    function flatten(report) {
+      return (report.Results ?? [])
+        .flatMap((result) => (result.Vulnerabilities ?? []).map((v) => ({ ...v, Target: result.Target })))
+        .sort((a, b) =>
+          SEVERITIES.indexOf(a.Severity) - SEVERITIES.indexOf(b.Severity)
+            || a.PkgName.localeCompare(b.PkgName)
+            || a.VulnerabilityID.localeCompare(b.VulnerabilityID));
+    }
+
+    function renderCounts(vulns) {
+      const counts = document.getElementById('counts');
+      counts.replaceChildren(...SEVERITIES
+        .map((severity) => [severity, vulns.filter((v) => v.Severity === severity).length])
+        .filter(([, n]) => n > 0)
+        .map(([severity, n]) => {
+          const span = document.createElement('span');
+          span.className = `count sev sev-${severity}`;
+          span.textContent = `${severity} ${n}`;
+          return span;
+        }));
+    }
+
+    function renderRows(vulns) {
+      const rows = document.getElementById('rows');
+      if (vulns.length === 0) {
+        const tr = document.createElement('tr');
+        const td = cell('No vulnerabilities', 'empty');
+        td.colSpan = 6;
+        tr.append(td);
+        rows.replaceChildren(tr);
+        return;
+      }
+      rows.replaceChildren(...vulns.map((v) => {
+        const tr = document.createElement('tr');
+        const id = cell('', 'nowrap');
+        if (v.PrimaryURL) {
+          const link = document.createElement('a');
+          link.href = v.PrimaryURL;
+          link.target = '_blank';
+          link.rel = 'noopener';
+          link.textContent = v.VulnerabilityID;
+          id.append(link);
+        } else {
+          id.textContent = v.VulnerabilityID;
+        }
+        tr.append(
+          cell(v.Severity, `nowrap sev sev-${v.Severity}`),
+          cell(v.PkgName),
+          cell(v.InstalledVersion, 'nowrap'),
+          cell(v.FixedVersion),
+          id,
+          cell(v.Title));
+        return tr;
+      }));
+    }
+
+    loadReport()
+      .then((report) => {
+        const vulns = flatten(report);
+        const created = report.CreatedAt ? new Date(report.CreatedAt).toLocaleString() : 'unknown time';
+        document.getElementById('meta').textContent =
+          `${report.ArtifactName ?? 'Unknown artifact'} · scanned ${created} · ${vulns.length} findings`;
+        renderCounts(vulns);
+        renderRows(vulns);
+        document.getElementById('filter').addEventListener('input', (event) => {
+          const query = event.target.value.trim().toLowerCase();
+          renderRows(vulns.filter((v) =>
+            [v.PkgName, v.VulnerabilityID, v.Title, v.Severity].some((s) => s?.toLowerCase().includes(query))));
+        });
+      })
+      .catch((error) => {
+        document.getElementById('meta').textContent =
+          `Could not load the report (${error.message}). Run make scan, or serve this directory over HTTP.`;
+      });
+  </script>
+</body>
+</html>

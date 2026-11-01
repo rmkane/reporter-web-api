@@ -10,6 +10,10 @@ Docker:
 
 `make format` rewrites Java with Google Java Format. `make lint` checks that formatting and fails when a file would change. `make hooks` points this clone at `.githooks`, where the pre-commit hook runs that check.
 
+`make scan` packages the jar and runs [scripts/scan.sh](../scripts/scan.sh) ([scripts/scan.ps1](../scripts/scan.ps1) from `.\make.ps1 scan`), which scans it with [Trivy](https://trivy.dev) and writes the findings to `target/scan/trivy.json`. It uses `trivy rootfs` because `trivy fs` skips jar files. The scan fails on HIGH and CRITICAL findings. Set `TRIVY_SEVERITY` to change that, for example `make scan TRIVY_SEVERITY=MEDIUM,HIGH,CRITICAL`.
+
+When Trivy finishes, with or without findings, the scan converts that JSON with `trivy convert` into `trivy.csv` ([scan/csv.tpl](../scan/csv.tpl)) and `report.html` (Trivy's stock template, vendored as [scan/html.tpl](../scan/html.tpl)). It also copies [scan/index.html](../scan/index.html), a viewer with dark mode and a filter, to `target/scan/` and writes `trivy.js`, which wraps the report for that page. Open `target/scan/index.html` straight from disk. No web server is needed. To work on the page against the sample report in [scan/trivy.json](../scan/trivy.json), serve that directory with `python3 -m http.server -d scan` and open <http://localhost:8000/>.
+
 Logs are written under `logs/` and rolled once a day. That directory is gitignored.
 
 Local URLs after startup:

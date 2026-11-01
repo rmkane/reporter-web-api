@@ -59,24 +59,37 @@ function Show-Help {
     Write-Host '  .\make.ps1 ' -NoNewline
     Write-Host '<target>' -ForegroundColor Cyan
     Write-Host ''
-    Write-Host 'Application'
-    @(
-        @{ Name = 'install'; Help = 'Resolve Maven dependencies' },
-        @{ Name = 'build'; Help = 'Compile, test, and package the jar' },
-        @{ Name = 'package'; Help = 'Package the jar without tests' },
-        @{ Name = 'run'; Help = 'Start the packaged jar in the background' },
-        @{ Name = 'stop'; Help = 'Stop the packaged jar' },
-        @{ Name = 'debug'; Help = 'Run from source with the dev profile and JDWP on port 8787' },
-        @{ Name = 'dev'; Help = 'Run from source with DevTools restart and LiveReload' },
-        @{ Name = 'test'; Help = 'Run the unit tests' },
-        @{ Name = 'integration'; Help = 'Run the integration tests' },
-        @{ Name = 'lint'; Help = 'Check Java formatting' },
-        @{ Name = 'format'; Help = 'Format Java with Google Java Format' },
-        @{ Name = 'clean'; Help = 'Remove build output' }
-    ) | ForEach-Object {
-        Write-Host ('  {0,-12} {1}' -f $_.Name, $_.Help) -ForegroundColor Green
+    $groups = [ordered]@{
+        'General' = @(
+            @{ Name = 'help'; Help = 'Show available commands' }
+        )
+        'Build'   = @(
+            @{ Name = 'install'; Help = 'Resolve Maven dependencies' },
+            @{ Name = 'build'; Help = 'Compile, test, and package the jar' },
+            @{ Name = 'package'; Help = 'Package the jar without tests' },
+            @{ Name = 'clean'; Help = 'Remove build output' }
+        )
+        'Run'     = @(
+            @{ Name = 'run'; Help = 'Start the packaged jar in the background' },
+            @{ Name = 'stop'; Help = 'Stop the packaged jar' },
+            @{ Name = 'dev'; Help = 'Run from source with DevTools restart and LiveReload' },
+            @{ Name = 'debug'; Help = 'Run from source with the dev profile and JDWP on port 8787' }
+        )
+        'Quality' = @(
+            @{ Name = 'test'; Help = 'Run the unit tests' },
+            @{ Name = 'integration'; Help = 'Run the integration tests' },
+            @{ Name = 'lint'; Help = 'Check Java formatting' },
+            @{ Name = 'format'; Help = 'Format Java with Google Java Format' },
+            @{ Name = 'scan'; Help = 'Scan the jar with Trivy and write JSON, CSV, and HTML reports' }
+        )
     }
-    Write-Host ''
+    foreach ($group in $groups.Keys) {
+        Write-Host $group -ForegroundColor White
+        $groups[$group] | ForEach-Object {
+            Write-Host ('  {0,-12} {1}' -f $_.Name, $_.Help) -ForegroundColor Green
+        }
+        Write-Host ''
+    }
 }
 
 switch ($Target) {
@@ -112,9 +125,10 @@ switch ($Target) {
     'integration' { Invoke-Maven @('test', '-Pintegration') }
     'lint' { Invoke-Maven @('spotless:check') }
     'format' { Invoke-Maven @('spotless:apply') }
-    'clean' {
-        Invoke-Maven @('clean')
-        Stop-Quiet
+    'scan' {
+        Invoke-Maven @('-DskipTests', 'package')
+        & (Join-Path $Root 'scripts/scan.ps1') $Jar
+        exit $LASTEXITCODE
     }
     default {
         Write-Host "Unknown target: $Target" -ForegroundColor Yellow

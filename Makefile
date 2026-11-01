@@ -6,17 +6,21 @@ CYAN   := $(shell bash -c 'printf "\033[36m"')
 
 SHELL := bash
 .DEFAULT_GOAL := help
-.PHONY: help install build package run stop debug dev test integration lint format hooks clean image up down dev-up dev-down
+.PHONY: help hooks install build package clean run stop dev debug test integration lint format scan image up down dev-up dev-down stop-quiet
 
 JAR := target/reporter-web-api-0.1.0-SNAPSHOT.jar
 PID_FILE := .reporter-web-api.pid
 DEBUG_OPTS := -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8787
 
-##@ Application
+##@ General
 help: ## Show available commands
 	@printf '\n$(BOLD)Usage$(RESET)\n  make $(CYAN)<target>$(RESET)\n'
 	@awk -v bold='$(BOLD)' -v reset='$(RESET)' -v green='$(GREEN)' -v yellow='$(YELLOW)' 'BEGIN { FS = ":.*##" } /^##@/ { printf "\n%s%s%s\n", bold, substr($$0, 5), reset } /^[a-zA-Z0-9_-]+:.*##/ { printf "  %s%-12s%s %s\n", green, $$1, reset, $$2 }' $(MAKEFILE_LIST)
 
+hooks: ## Install the git hooks
+	bash scripts/setup-git-hooks.sh
+
+##@ Build
 install: ## Resolve Maven dependencies
 	mvn -B -DskipTests dependency:go-offline
 
@@ -26,6 +30,11 @@ build: ## Compile, test, and package the jar
 package: ## Package the jar without tests
 	mvn -B -DskipTests package
 
+clean: ## Remove build output
+	mvn -B clean
+	@rm -f $(PID_FILE)
+
+##@ Run
 run: package ## Start the packaged jar in the background
 	@$(MAKE) --no-print-directory stop-quiet
 	@mkdir -p logs
@@ -42,12 +51,13 @@ stop: ## Stop the packaged jar
 		printf '$(YELLOW)Not running$(RESET)\n'; \
 	fi
 
-debug: ## Run from source with the dev profile and JDWP on port 8787
-	mvn -B spring-boot:run -Dspring-boot.run.profiles=dev -Dspring-boot.run.jvmArguments="$(DEBUG_OPTS)"
-
 dev: ## Run from source with DevTools restart and LiveReload
 	mvn -B spring-boot:run -Dspring-boot.run.profiles=dev
 
+debug: ## Run from source with the dev profile and JDWP on port 8787
+	mvn -B spring-boot:run -Dspring-boot.run.profiles=dev -Dspring-boot.run.jvmArguments="$(DEBUG_OPTS)"
+
+##@ Quality
 test: ## Run the unit tests
 	mvn -B test
 
@@ -60,12 +70,8 @@ lint: ## Check Java formatting
 format: ## Format Java with Google Java Format
 	mvn -B spotless:apply
 
-hooks: ## Install the git hooks
-	bash scripts/setup-git-hooks.sh
-
-clean: ## Remove build output
-	mvn -B clean
-	@rm -f $(PID_FILE)
+scan: package ## Scan the jar with Trivy and write JSON, CSV, and HTML reports
+	@bash scripts/scan.sh $(JAR)
 
 ##@ Docker
 image: ## Build the production image
