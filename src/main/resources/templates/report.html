@@ -12,13 +12,14 @@
     <dl class="facts">
         <div><dt>Author</dt><dd th:text="${report.author}">author</dd></div>
         <div><dt>Assignee</dt><dd th:text="${report.assignee}">assignee</dd></div>
-        <div><dt>Created</dt><dd th:text="${#temporals.format(report.createdOn, 'yyyy-MM-dd HH:mm')}">created</dd></div>
-        <div><dt>Updated</dt><dd th:text="${#temporals.format(report.updatedOn, 'yyyy-MM-dd HH:mm')}">updated</dd></div>
+        <div><dt>Created</dt><dd><time th:attr="datetime=${report.createdOn}" th:text="${#temporals.format(report.createdOn, 'yyyy-MM-dd HH:mm')}">created</time></dd></div>
+        <div><dt>Updated</dt><dd><time th:attr="datetime=${report.updatedOn}" th:text="${#temporals.format(report.updatedOn, 'yyyy-MM-dd HH:mm')}">updated</time></dd></div>
     </dl>
     <ul class="tags">
         <li th:each="tag : ${report.tags}" th:text="${tag}">tag</li>
     </ul>
     <p class="actions">
+        <a class="button secondary" th:href="@{/reports/{id}/edit(id=${report.id})}">Edit</a>
         <button type="button" id="delete-report" class="danger" aria-haspopup="dialog">Delete</button>
     </p>
     <dialog id="delete-dialog" class="dialog" aria-labelledby="delete-title" aria-describedby="delete-description" th:data-id="${report.id}">

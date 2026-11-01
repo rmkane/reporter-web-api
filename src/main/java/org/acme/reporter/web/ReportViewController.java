@@ -8,11 +8,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import org.acme.reporter.model.Priority;
 import org.acme.reporter.model.Report;
 import org.acme.reporter.model.ReportStatus;
+import org.acme.reporter.model.ReportType;
 import org.acme.reporter.service.ReportService;
 
 @Controller
@@ -20,6 +22,21 @@ import org.acme.reporter.service.ReportService;
 public class ReportViewController {
 
   private final ReportService reports;
+
+  @ModelAttribute("types")
+  public ReportType[] types() {
+    return ReportType.values();
+  }
+
+  @ModelAttribute("statuses")
+  public ReportStatus[] statuses() {
+    return ReportStatus.values();
+  }
+
+  @ModelAttribute("priorities")
+  public Priority[] priorities() {
+    return Priority.values();
+  }
 
   @GetMapping("/")
   public String home(Model model) {
@@ -40,6 +57,19 @@ public class ReportViewController {
     model.addAttribute(
         "crumbs", trail(new Crumb("Reports", "/reports"), new Crumb(report.id(), null)));
     return "report";
+  }
+
+  @GetMapping("/reports/{id}/edit")
+  public String edit(@PathVariable String id, Model model) {
+    Report report = reports.get(id);
+    model.addAttribute("report", report);
+    model.addAttribute(
+        "crumbs",
+        trail(
+            new Crumb("Reports", "/reports"),
+            new Crumb(report.id(), "/reports/" + report.id()),
+            new Crumb("Edit", null)));
+    return "edit";
   }
 
   private static List<Crumb> trail(Crumb... pages) {

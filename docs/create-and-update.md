@@ -6,6 +6,8 @@
 
 `PATCH /api/reports/{id}` accepts the same fields, all optional. A null field leaves the stored value. A blank or whitespace-only string is rejected, and text is trimmed. `updatedOn` is refreshed.
 
+In the UI, the report page's Edit button opens `/reports/{id}/edit`, the create form's fields filled in. It sends only the fields that changed. Because the API cannot clear a field, a field that already has a value can be changed but not emptied: its "None" option is hidden and a set assignee is required.
+
 `DELETE /api/reports/{id}` returns 204. A missing id on get, update, or delete is 404.
 
 Validation errors use one `ApiError` body: `status`, `message`, and `errors`. See [architecture](architecture.md).

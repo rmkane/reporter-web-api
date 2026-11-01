@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--/*
+  The report fields shared by the create and edit forms. Pass null to create.
+  The API cannot clear a field (null keeps the stored value and blanks are
+  rejected), so when editing, a field that has a value hides "None" and an
+  assignee that is set becomes required.
+*/-->
+<th:block th:fragment="fields(report)">
+    <p class="hint wide"><span class="mark">*</span> Required</p>
+    <div class="form-column">
+        <div>
+            <label for="type">Type</label>
+            <select id="type" name="type">
+                <option value="" th:if="${report == null or report.type == null}">None</option>
+                <option th:each="type : ${types}" th:value="${type}" th:selected="${report != null and report.type == type}"
+                        th:text="${#strings.capitalizeWords(#strings.toLowerCase(#strings.replace(type, '_', ' ')))}">Bug</option>
+            </select>
+        </div>
+        <div>
+            <label for="title">Title</label>
+            <input id="title" name="title" required maxlength="200" th:value="${report?.title}">
+        </div>
+        <div>
+            <label for="description">Description</label>
+            <textarea id="description" name="description" required rows="4" th:text="${report?.description}"></textarea>
+        </div>
+        <div>
+            <label for="tags">Tags</label>
+            <input id="tags" name="tags" placeholder="login, auth" th:value="${report?.tags == null ? null : #strings.listJoin(report.tags, ', ')}">
+        </div>
+    </div>
+    <div class="form-column">
+        <div>
+            <label for="author">Author</label>
+            <input id="author" name="author" required placeholder="jane.roe" th:value="${report?.author}">
+        </div>
+        <div>
+            <label for="assignee">Assignee</label>
+            <input id="assignee" name="assignee" placeholder="optional" th:value="${report?.assignee}" th:required="${report?.assignee != null}">
+        </div>
+        <div>
+            <label for="status">Status</label>
+            <select id="status" name="status">
+                <option th:each="status : ${statuses}" th:value="${status}" th:selected="${report != null ? report.status == status : status.name() == 'OPEN'}"
+                        th:text="${#strings.capitalizeWords(#strings.toLowerCase(#strings.replace(status, '_', ' ')))}">Open</option>
+            </select>
+        </div>
+        <div>
+            <label for="priority">Priority</label>
+            <select id="priority" name="priority">
+                <option value="" th:if="${report == null or report.priority == null}">None</option>
+                <option th:each="priority : ${priorities}" th:value="${priority}" th:selected="${report != null and report.priority == priority}"
+                        th:text="${#strings.capitalizeWords(#strings.toLowerCase(priority))}">Low</option>
+            </select>
+        </div>
+    </div>
+</th:block>
+</html>

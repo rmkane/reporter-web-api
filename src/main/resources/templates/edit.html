@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: page('Edit ' + ${report.id}, ~{::main})}">
+<main>
+    <p class="kicker" th:text="${report.id}">RPT-1</p>
+    <h1>Edit report</h1>
+    <form id="edit-form" class="report-form card" th:data-id="${report.id}">
+        <th:block th:replace="~{report-form :: fields(${report})}"></th:block>
+        <p id="edit-error" class="error" role="alert" hidden></p>
+        <div class="form-actions">
+            <button type="submit">Save changes</button>
+            <a class="button secondary" th:href="@{/reports/{id}(id=${report.id})}">Cancel</a>
+        </div>
+    </form>
+    <script type="module" src="/js/pages/edit.js"></script>
+</main>
+</html>

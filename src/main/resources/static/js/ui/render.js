@@ -1,3 +1,5 @@
+import { timeElement } from "./time.js";
+
 export function renderReports(page, sort, onSort, onPage) {
     const rows = document.querySelector("#report-rows");
     const summary = document.querySelector("#page-summary");
@@ -30,7 +32,7 @@ export function renderReports(page, sort, onSort, onPage) {
             cell(badge("status", report.status)),
             cell(text(report.author)),
             cell(badge("priority", report.priority)),
-            cell(text(formatWhen(report.updatedOn)))
+            cell(timeElement(report.updatedOn))
         );
         return row;
     }));
@@ -80,11 +82,4 @@ function link(label, href) {
     anchor.href = href;
     anchor.textContent = label == null ? "" : String(label);
     return anchor;
-}
-
-function formatWhen(value) {
-    if (!value) {
-        return "";
-    }
-    return String(value).replace("T", " ").replace("Z", " UTC");
 }

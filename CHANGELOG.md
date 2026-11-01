@@ -13,6 +13,8 @@ All notable changes to this project are documented here. The format follows [Kee
 - Health metrics and caching.
 - Trivy scans of the jar and the Docker image (`make scan`, `make scan-jar`, `make scan-image`), with JSON, CSV, and HTML reports in `target/scan/` and a viewer with dark mode, a text filter, severity toggles, and sortable columns. `TRIVY_FAIL_ON` sets which severities fail the scan.
 - `.java-version` pins JDK 21 for jenv.
+- Editing a report from its page, with the create form's fields filled in. Only changed fields are sent.
+- Timestamps show in the viewer's locale and time zone, with the full date and zone on hover.
 - Deleting a report asks for confirmation in a dialog that only enables the delete button once the report id is typed.
 
 ### Changed

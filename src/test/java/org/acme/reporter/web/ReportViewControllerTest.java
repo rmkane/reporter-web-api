@@ -1,6 +1,9 @@
 package org.acme.reporter.web;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.not;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -101,6 +104,8 @@ class ReportViewControllerTest {
         .andExpect(status().isOk())
         .andExpect(view().name("report"))
         .andExpect(model().attribute("report", report))
+        // The raw instant stays in the page for the browser to format.
+        .andExpect(content().string(containsString("<time datetime=\"2026-01-01T00:00:00Z\">")))
         .andExpect(
             model()
                 .attribute(
@@ -109,6 +114,79 @@ class ReportViewControllerTest {
                         new Crumb("Dashboard", "/"),
                         new Crumb("Reports", "/reports"),
                         new Crumb("RPT-1", null))));
+  }
+
+  @Test
+  void editPageIsPrefilled() throws Exception {
+    Instant now = Instant.parse("2026-01-01T00:00:00Z");
+    when(reports.get("RPT-1"))
+        .thenReturn(
+            new Report(
+                "RPT-1",
+                "Login",
+                "Body",
+                ReportStatus.IN_PROGRESS,
+                List.of("auth", "login"),
+                "john.doe",
+                "sam.patel",
+                Priority.HIGH,
+                ReportType.BUG,
+                now,
+                now));
+
+    mockMvc
+        .perform(get("/reports/RPT-1/edit"))
+        .andExpect(status().isOk())
+        .andExpect(view().name("edit"))
+        .andExpect(
+            model()
+                .attribute(
+                    "crumbs",
+                    List.of(
+                        new Crumb("Dashboard", "/"),
+                        new Crumb("Reports", "/reports"),
+                        new Crumb("RPT-1", "/reports/RPT-1"),
+                        new Crumb("Edit", null))))
+        .andExpect(
+            content()
+                .string(
+                    allOf(
+                        containsString("<option value=\"BUG\" selected=\"selected\">Bug</option>"),
+                        containsString(
+                            "<option value=\"IN_PROGRESS\" selected=\"selected\">In Progress</option>"),
+                        containsString(
+                            "<option value=\"HIGH\" selected=\"selected\">High</option>"),
+                        containsString("value=\"auth, login\""),
+                        containsString("value=\"sam.patel\" required=\"required\""),
+                        // Set fields cannot be cleared, so there is no None option.
+                        not(containsString(">None</option>")))));
+  }
+
+  @Test
+  void editPageOffersNoneForEmptyFields() throws Exception {
+    when(reports.get("RPT-1"))
+        .thenReturn(report("RPT-1", ReportStatus.OPEN, null, "2026-01-01T00:00:00Z"));
+
+    mockMvc
+        .perform(get("/reports/RPT-1/edit"))
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString(">None</option>")))
+        .andExpect(
+            content().string(not(containsString("required=\"required\" placeholder=\"optional\""))))
+        .andExpect(
+            content()
+                .string(
+                    not(containsString("name=\"assignee\" placeholder=\"optional\" required"))));
+  }
+
+  @Test
+  void editingAnUnknownReportShowsTheErrorPage() throws Exception {
+    when(reports.get("RPT-404")).thenThrow(new ReportNotFoundException("RPT-404"));
+
+    mockMvc
+        .perform(get("/reports/RPT-404/edit"))
+        .andExpect(status().isNotFound())
+        .andExpect(view().name("error"));
   }
 
   @Test

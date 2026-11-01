@@ -136,7 +136,9 @@ h2 { margin: 2rem 0 0.75rem; font-size: 1.1rem; font-weight: 650; }
 
 /* Buttons */
 
-button {
+/* .button styles a link as a button, such as Edit and Cancel. */
+button,
+.button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -152,16 +154,19 @@ button {
     transition: background-color 0.15s, border-color 0.15s, color 0.15s;
 }
 
-button:hover { background: var(--primary-hover); }
+button:hover,
+.button:hover { background: var(--primary-hover); text-decoration: none; }
 button[disabled] { opacity: 0.45; cursor: not-allowed; }
 
-button.secondary {
+button.secondary,
+.button.secondary {
     background: var(--surface);
     border-color: var(--border);
     color: var(--text);
 }
 
-button.secondary:hover:not([disabled]) { background: var(--surface-muted); }
+button.secondary:hover:not([disabled]),
+.button.secondary:hover { background: var(--surface-muted); }
 
 button.danger { background: var(--danger); color: var(--on-danger); }
 button.danger:hover { background: var(--danger-hover); }
@@ -295,7 +300,8 @@ label { display: block; margin-bottom: 0.3rem; color: var(--text-muted); font-si
 .create-panel[open] summary { border-bottom: 1px solid var(--border); }
 .create-panel[open] summary::before { content: "–"; }
 
-.create {
+/* The report form, shared by the create panel and the edit page. */
+.report-form {
     display: grid;
     grid-template-columns: 3fr 2fr;
     align-items: start;
@@ -303,15 +309,18 @@ label { display: block; margin-bottom: 0.3rem; color: var(--text-muted); font-si
     padding: 1.1rem;
 }
 
-.create-panel:not([open]) .create { display: none; }
-.create label:has(+ :required)::after { content: " *"; color: var(--danger); }
-.create .hint { margin: 0; color: var(--text-muted); font-size: 0.85rem; }
-.create-column { display: grid; gap: 0.9rem; }
-.create .mark { color: var(--danger); }
-.create .wide,
-.create #create-error,
-.create button { grid-column: 1 / -1; }
-.create button { justify-self: start; }
+.report-form.card { margin-top: 1.5rem; }
+.create-panel:not([open]) .report-form { display: none; }
+.report-form label:has(+ :required)::after { content: " *"; color: var(--danger); }
+.report-form .hint { margin: 0; color: var(--text-muted); font-size: 0.85rem; }
+.report-form .mark { color: var(--danger); }
+.form-column { display: grid; gap: 0.9rem; }
+.report-form .wide,
+.report-form > .error,
+.report-form > button,
+.report-form > .form-actions { grid-column: 1 / -1; }
+.report-form > button { justify-self: start; }
+.form-actions { display: flex; gap: 0.6rem; }
 
 .search {
     display: grid;
@@ -419,5 +428,5 @@ button[data-sort][aria-sort="descending"]::after { content: "↓"; }
     .stats { grid-template-columns: 1fr 1fr; }
     .tasks li { grid-template-columns: 1fr; gap: 0.4rem; }
     .tasks .badges { justify-content: start; }
-    .create { grid-template-columns: 1fr; }
+    .report-form { grid-template-columns: 1fr; }
 }

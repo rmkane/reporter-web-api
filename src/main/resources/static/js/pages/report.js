@@ -1,4 +1,7 @@
 import { deleteReport } from "../api/reports.js";
+import { localizeTimes } from "../ui/time.js";
+
+localizeTimes();
 
 // Deleting cannot be undone, so it goes through a dialog that only enables
 // the delete button once the report id is typed. Cancel has focus first.
