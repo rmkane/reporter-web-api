@@ -2,85 +2,67 @@ package org.acme.reporter.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-
-import org.acme.reporter.model.Priority;
-import org.acme.reporter.model.Report;
-import org.acme.reporter.model.ReportStatus;
-import org.acme.reporter.model.ReportType;
+import org.springframework.data.domain.Pageable;
 
 class PageSliceTest {
 
+  private final List<String> items = List.of("delta", "alpha", "echo", "charlie", "bravo");
+
   @Test
-  void slicesOffsetLimitAndSort() {
-    List<Report> reports =
-        List.of(
-            report("RPT-2", "Bravo", Instant.parse("2026-02-02T00:00:00Z")),
-            report("RPT-1", "Alpha", Instant.parse("2026-03-03T00:00:00Z")),
-            report("RPT-3", "Charlie", Instant.parse("2026-01-01T00:00:00Z")));
+  void firstPageIsSortedAndCut() {
+    Page<String> page = PageSlice.slice(items, PageRequest.of(0, 2), Comparator.naturalOrder());
 
-    Page<Report> page =
-        PageSlice.slice(reports, PageRequest.of(0, 2, Sort.by("title").ascending()));
-
-    assertThat(page.getContent()).extracting(Report::title).containsExactly("Alpha", "Bravo");
-    assertThat(page.getTotalElements()).isEqualTo(3);
-    assertThat(page.getTotalPages()).isEqualTo(2);
+    assertThat(page.getContent()).containsExactly("alpha", "bravo");
+    assertThat(page.getTotalElements()).isEqualTo(5);
+    assertThat(page.getTotalPages()).isEqualTo(3);
     assertThat(page.getNumber()).isZero();
   }
 
   @Test
-  void secondPageKeepsTheSortOrder() {
-    List<Report> reports =
-        List.of(
-            report("RPT-2", "Bravo", Instant.parse("2026-02-02T00:00:00Z")),
-            report("RPT-1", "Alpha", Instant.parse("2026-03-03T00:00:00Z")),
-            report("RPT-3", "Charlie", Instant.parse("2026-01-01T00:00:00Z")));
+  void laterPagesKeepTheOrder() {
+    Page<String> page =
+        PageSlice.slice(items, PageRequest.of(1, 2), Comparator.<String>naturalOrder().reversed());
 
-    Page<Report> page =
-        PageSlice.slice(reports, PageRequest.of(1, 2, Sort.by(Sort.Order.desc("updatedOn"))));
-
-    assertThat(page.getContent()).extracting(Report::id).containsExactly("RPT-3");
+    assertThat(page.getContent()).containsExactly("charlie", "bravo");
   }
 
   @Test
-  void idSortOrdersTheNumericSuffix() {
-    List<Report> reports =
-        List.of(
-            report("RPT-10", "Ten", Instant.parse("2026-01-10T00:00:00Z")),
-            report("RPT-2", "Two", Instant.parse("2026-01-02T00:00:00Z")),
-            report("RPT-1", "One", Instant.parse("2026-01-01T00:00:00Z")));
+  void lastPageMayBeShort() {
+    Page<String> page = PageSlice.slice(items, PageRequest.of(2, 2), Comparator.naturalOrder());
 
-    Page<Report> ascending =
-        PageSlice.slice(reports, PageRequest.of(0, 10, Sort.by("id").ascending()));
-    Page<Report> descending =
-        PageSlice.slice(reports, PageRequest.of(0, 10, Sort.by("id").descending()));
-
-    assertThat(ascending.getContent())
-        .extracting(Report::id)
-        .containsExactly("RPT-1", "RPT-2", "RPT-10");
-    assertThat(descending.getContent())
-        .extracting(Report::id)
-        .containsExactly("RPT-10", "RPT-2", "RPT-1");
+    assertThat(page.getContent()).containsExactly("echo");
+    assertThat(page.isLast()).isTrue();
   }
 
-  private static Report report(String id, String title, Instant updatedOn) {
-    return new Report(
-        id,
-        title,
-        "Body",
-        ReportStatus.OPEN,
-        List.of("demo"),
-        "author",
-        "assignee",
-        Priority.MEDIUM,
-        ReportType.TASK,
-        updatedOn.minusSeconds(3600),
-        updatedOn);
+  @Test
+  void unpagedReturnsEverythingSorted() {
+    Page<String> page = PageSlice.slice(items, Pageable.unpaged(), Comparator.naturalOrder());
+
+    assertThat(page.getContent()).containsExactly("alpha", "bravo", "charlie", "delta", "echo");
+    assertThat(page.getTotalElements()).isEqualTo(5);
+  }
+
+  @Test
+  void offsetPastTheEndIsEmptyButKeepsTheTotal() {
+    Page<String> page = PageSlice.slice(items, PageRequest.of(9, 10), Comparator.naturalOrder());
+
+    assertThat(page.getContent()).isEmpty();
+    assertThat(page.getTotalElements()).isEqualTo(5);
+  }
+
+  @Test
+  void theInputListIsNotModified() {
+    List<String> input = new ArrayList<>(items);
+
+    PageSlice.slice(input, PageRequest.of(0, 2), Comparator.naturalOrder());
+
+    assertThat(input).containsExactlyElementsOf(items);
   }
 }

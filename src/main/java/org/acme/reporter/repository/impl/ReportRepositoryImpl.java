@@ -17,6 +17,7 @@ import org.acme.reporter.query.ReportQuery;
 import org.acme.reporter.repository.PageSlice;
 import org.acme.reporter.repository.ReportRepository;
 import org.acme.reporter.repository.ReportSeed;
+import org.acme.reporter.repository.ReportSorts;
 
 @Slf4j
 @Repository
@@ -47,7 +48,8 @@ public class ReportRepositoryImpl implements ReportRepository {
   @Override
   public Page<Report> findAll(Pageable pageable) {
     log.debug("Query findAll pageable={}", pageable);
-    return PageSlice.slice(List.copyOf(reports.values()), pageable);
+    return PageSlice.slice(
+        List.copyOf(reports.values()), pageable, ReportSorts.of(pageable.getSort()));
   }
 
   @Override
@@ -72,6 +74,6 @@ public class ReportRepositoryImpl implements ReportRepository {
     log.debug("Query search query={} pageable={}", query, pageable);
     List<Report> matched =
         reports.values().stream().filter(report -> ReportQueries.matches(report, query)).toList();
-    return PageSlice.slice(matched, pageable);
+    return PageSlice.slice(matched, pageable, ReportSorts.of(pageable.getSort()));
   }
 }
