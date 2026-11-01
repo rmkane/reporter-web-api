@@ -14,5 +14,7 @@ jobs:
           distribution: temurin
           java-version: "21"
           cache: maven
+      - name: Lint
+        run: make lint
       - name: Build and test
         run: mvn -B verify
