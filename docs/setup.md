@@ -20,4 +20,4 @@ Local URLs after startup:
 - <http://localhost:8080/v3/api-docs>
 - <http://localhost:8080/actuator/health>
 
-See also [architecture](architecture.md), [search query](search-query.md), and [OpenAPI](openapi.md).
+See also [JDK with jenv](jdk.md), [architecture](architecture.md), [search query](search-query.md), and [OpenAPI](openapi.md).

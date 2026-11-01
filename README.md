@@ -18,6 +18,7 @@ Docker, formatting, and git hooks are covered in [Setup](docs/setup.md).
 ## Docs
 
 - [Setup](docs/setup.md)
+- [JDK with jenv](docs/jdk.md)
 - [Architecture](docs/architecture.md)
 - [Search query](docs/search-query.md)
 - [Pagination and sorting](docs/pagination-and-sorting.md)
