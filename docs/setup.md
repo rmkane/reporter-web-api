@@ -14,6 +14,8 @@ Docker:
 
 Each scan writes to `target/scan/jar/` or `target/scan/image/`: `trivy.json`, `trivy.csv` ([scan/csv.tpl](../scan/csv.tpl)), `report.html` (Trivy's stock template, vendored as [scan/html.tpl](../scan/html.tpl)), and `index.html`, a viewer from [scan/index.html](../scan/index.html) with dark mode and a filter. The viewer reads `trivy.js`, which wraps the JSON, so open `index.html` straight from disk. No web server is needed. To work on the page, open [scan/index.html](../scan/index.html) from disk. It loads the sample report in [scan/trivy.js](../scan/trivy.js), which holds made-up findings at every severity.
 
+The UI theme lives in `themes/`, one JSON file per theme with `light`, `dark`, and `shared` tokens. `make theme THEME=ember` regenerates `src/main/resources/static/css/theme.css` and the favicon from `themes/ember.json`, and `make themes` lists the choices. Redrawing `favicon.ico` needs Pillow (`brew install pillow` on macOS); without it only `favicon.svg` is updated. To make your own, copy a theme file, change its colors, and run `make theme THEME=<name>`. The script rejects a theme with missing or unknown tokens.
+
 Logs are written under `logs/` and rolled once a day. That directory is gitignored.
 
 Local URLs after startup:

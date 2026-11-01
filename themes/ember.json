@@ -1,0 +1,60 @@
+{
+  "name": "Ember",
+  "description": "Burnt orange primary to match the logo, teal secondary, violet accent on warm grays. The default.",
+  "light": {
+    "primary": "#c2410c",
+    "on-primary": "#ffffff",
+    "secondary": "#0f766e",
+    "on-secondary": "#ffffff",
+    "accent": "#7c3aed",
+    "on-accent": "#ffffff",
+    "success": "#15803d",
+    "warning": "#b45309",
+    "danger": "#dc2626",
+    "on-danger": "#ffffff",
+    "info": "#2563eb",
+    "background": "#faf8f5",
+    "surface": "#ffffff",
+    "surface-muted": "#f3efe9",
+    "border": "#e7e1d8",
+    "text": "#1c1917",
+    "text-muted": "#6b635a",
+    "shadow-sm": "0 1px 2px rgb(16 24 40 / 0.06)",
+    "shadow": "0 1px 3px rgb(16 24 40 / 0.08), 0 8px 24px rgb(16 24 40 / 0.06)"
+  },
+  "dark": {
+    "primary": "#fb923c",
+    "on-primary": "#1f0d02",
+    "secondary": "#2dd4bf",
+    "on-secondary": "#04201d",
+    "accent": "#a78bfa",
+    "on-accent": "#150a2e",
+    "success": "#4ade80",
+    "warning": "#fbbf24",
+    "danger": "#f87171",
+    "on-danger": "#1f0505",
+    "info": "#60a5fa",
+    "background": "#110f0d",
+    "surface": "#1a1715",
+    "surface-muted": "#24201c",
+    "border": "#36302a",
+    "text": "#f5f1ec",
+    "text-muted": "#a8a097",
+    "shadow-sm": "0 1px 2px rgb(0 0 0 / 0.4)",
+    "shadow": "0 1px 3px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.3)"
+  },
+  "shared": {
+    "radius-sm": "6px",
+    "radius": "10px",
+    "radius-lg": "16px",
+    "font-sans": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "font-mono": "ui-monospace, \"SF Mono\", \"Cascadia Code\", Menlo, Consolas, monospace"
+  },
+  "icon": {
+    "base": "#9a3412",
+    "bar": "#c2410c",
+    "paper": "#fffaf3",
+    "fold": "#ead9c6",
+    "line": "#d9d0c3"
+  }
+}

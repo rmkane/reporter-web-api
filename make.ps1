@@ -77,7 +77,9 @@ function Show-Help {
             @{ Name = 'install'; Help = 'Resolve Maven dependencies' },
             @{ Name = 'build'; Help = 'Compile, test, and package the jar' },
             @{ Name = 'package'; Help = 'Package the jar without tests' },
-            @{ Name = 'clean'; Help = 'Remove build output' }
+            @{ Name = 'clean'; Help = 'Remove build output' },
+            @{ Name = 'theme'; Help = 'Generate theme.css and the favicon from themes/$env:THEME.json (default ember)' },
+            @{ Name = 'themes'; Help = 'List the available UI themes' }
         )
         'Run'     = @(
             @{ Name = 'run'; Help = 'Start the packaged jar in the background' },
@@ -109,6 +111,16 @@ switch ($Target) {
     'install' { Invoke-Maven @('-DskipTests', 'dependency:go-offline') }
     'build' { Invoke-Maven @('package') }
     'package' { Invoke-Maven @('-DskipTests', 'package') }
+    'clean' {
+        Invoke-Maven @('clean')
+        Stop-Quiet
+    }
+    'theme' {
+        $theme = if ($env:THEME) { $env:THEME } else { 'ember' }
+        Invoke-Python @('scripts/theme.py', $theme)
+        Invoke-Python @('scripts/generate_icons.py', '--theme', $theme)
+    }
+    'themes' { Invoke-Python @('scripts/theme.py', '--list') }
     'run' {
         Invoke-Maven @('-DskipTests', 'package')
         Stop-Quiet

@@ -9,7 +9,7 @@ SHELL := bash
 # General
 .PHONY: help hooks
 # Build
-.PHONY: install build package clean
+.PHONY: install build package clean theme themes
 # Run
 .PHONY: run stop dev debug stop-quiet
 # Quality
@@ -21,6 +21,7 @@ JAR := target/reporter-web-api-0.1.0-SNAPSHOT.jar
 IMAGE := reporter-web-api:latest
 PID_FILE := .reporter-web-api.pid
 DEBUG_OPTS := -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8787
+THEME ?= ember
 
 ##@ General
 help: ## Show available commands
@@ -43,6 +44,13 @@ package: ## Package the jar without tests
 clean: ## Remove build output
 	mvn -B clean
 	@rm -f $(PID_FILE)
+
+theme: ## Generate theme.css and the favicon from themes/$(THEME).json (THEME=ember)
+	python3 scripts/theme.py $(THEME)
+	python3 scripts/generate_icons.py --theme $(THEME)
+
+themes: ## List the available UI themes
+	@python3 scripts/theme.py --list
 
 ##@ Run
 run: package ## Start the packaged jar in the background

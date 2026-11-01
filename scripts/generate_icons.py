@@ -1,21 +1,23 @@
 #!/usr/bin/env python
-"""Create the report favicon from one list of shapes.
+"""Create the report favicon from one list of shapes, in a theme's colors.
 
 Shapes draw themselves as SVG and as pixels. The SVG is written directly.
 The pixel image is drawn at 256 pixels and downscaled with Lanczos into
-favicon.ico at 16, 32, and 48.
+favicon.ico at 16, 32, and 48. Colors come from the theme's "icon" section.
 
-Requires Pillow: python -m pip install pillow
+The ICO needs Pillow (python -m pip install pillow); without it, only the SVG
+is written.
 
-    ./scripts/generate_icons.py
+    ./scripts/generate_icons.py --theme ember
 """
 
 import argparse
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Protocol
 
-from PIL import Image, ImageDraw
+from theme import InvalidTheme, load_theme, resolve
 
 ROOT = Path(__file__).resolve().parents[1]
 SVG_PATH = ROOT / "src/main/resources/static/favicon.svg"
@@ -24,17 +26,13 @@ VIEW = 64
 MASTER = 256
 SIZES = (16, 32, 48)
 
-RUST = "#9a3412"
-PAPER = "#fffaf3"
-FOLD = "#ead9c6"
-LINE = "#d9d0c3"
-BAR = "#c2410c"
+DEFAULT_THEME = "ember"
 
 
 class Shape(Protocol):
     def svg(self) -> str: ...
 
-    def draw(self, canvas: ImageDraw.ImageDraw, scale: float) -> None: ...
+    def draw(self, canvas, scale: float) -> None: ...
 
 
 @dataclass(frozen=True)
@@ -53,7 +51,7 @@ class Rect:
             f'rx="{num(self.radius)}" fill="{self.fill}"/>'
         )
 
-    def draw(self, canvas: ImageDraw.ImageDraw, scale: float) -> None:
+    def draw(self, canvas, scale: float) -> None:
         box = (
             self.x * scale,
             self.y * scale,
@@ -72,22 +70,23 @@ class Polygon:
         pairs = " ".join(f"{num(x)},{num(y)}" for x, y in self.points)
         return f'<polygon points="{pairs}" fill="{self.fill}"/>'
 
-    def draw(self, canvas: ImageDraw.ImageDraw, scale: float) -> None:
+    def draw(self, canvas, scale: float) -> None:
         scaled = [(x * scale, y * scale) for x, y in self.points]
         canvas.polygon(scaled, fill=rgba(self.fill))
 
 
-def report() -> tuple[Shape, ...]:
+def report(colors: dict[str, str]) -> tuple[Shape, ...]:
+    base, bar, paper, fold, line = (colors[key] for key in ("base", "bar", "paper", "fold", "line"))
     return (
-        Rect(0, 0, VIEW, VIEW, 12, RUST),
-        Rect(14, 8, 36, 48, 4, PAPER),
-        Polygon(((40, 8), (50, 8), (50, 18)), FOLD),
-        Rect(20, 26, 16, 3.2, 1.6, RUST),
-        Rect(20, 32, 24, 2.4, 1.2, LINE),
-        Rect(20, 37, 18, 2.4, 1.2, LINE),
-        Rect(20, 46, 4, 6, 1, BAR),
-        Rect(26, 42, 4, 10, 1, RUST),
-        Rect(32, 44, 4, 8, 1, BAR),
+        Rect(0, 0, VIEW, VIEW, 12, base),
+        Rect(14, 8, 36, 48, 4, paper),
+        Polygon(((40, 8), (50, 8), (50, 18)), fold),
+        Rect(20, 26, 16, 3.2, 1.6, base),
+        Rect(20, 32, 24, 2.4, 1.2, line),
+        Rect(20, 37, 18, 2.4, 1.2, line),
+        Rect(20, 46, 4, 6, 1, bar),
+        Rect(26, 42, 4, 10, 1, base),
+        Rect(32, 44, 4, 8, 1, bar),
     )
 
 
@@ -104,7 +103,9 @@ def write_svg(path: Path, shapes: tuple[Shape, ...]) -> None:
     path.write_text(svg_document(shapes), encoding="utf-8")
 
 
-def rasterize(shapes: tuple[Shape, ...], master: int) -> Image.Image:
+def rasterize(shapes: tuple[Shape, ...], master: int):
+    from PIL import Image, ImageDraw
+
     image = Image.new("RGBA", (master, master), (0, 0, 0, 0))
     canvas = ImageDraw.Draw(image)
     scale = master / VIEW
@@ -113,11 +114,13 @@ def rasterize(shapes: tuple[Shape, ...], master: int) -> Image.Image:
     return image
 
 
-def downscale(image: Image.Image, size: int) -> Image.Image:
+def downscale(image, size: int):
+    from PIL import Image
+
     return image.resize((size, size), Image.Resampling.LANCZOS)
 
 
-def write_ico(master: Image.Image, path: Path, sizes: tuple[int, ...]) -> None:
+def write_ico(master, path: Path, sizes: tuple[int, ...]) -> None:
     ordered = tuple(sorted(sizes, reverse=True))
     frames = [downscale(master, size) for size in ordered]
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -145,6 +148,7 @@ def rgba(fill: str) -> tuple[int, int, int, int]:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Generate the report favicon SVG and ICO")
+    parser.add_argument("--theme", default=DEFAULT_THEME, help="theme name in themes/ or a JSON path")
     parser.add_argument("--svg", type=Path, default=SVG_PATH)
     parser.add_argument("--ico", type=Path, default=ICO_PATH)
     parser.add_argument("--sizes", type=icon_sizes, default=SIZES)
@@ -155,15 +159,31 @@ def icon_sizes(value: str) -> tuple[int, ...]:
     return tuple(int(size) for size in value.split(",") if size.strip())
 
 
-def main() -> None:
+def has_pillow() -> bool:
+    try:
+        import PIL  # noqa: F401
+    except ImportError:
+        return False
+    return True
+
+
+def main() -> int:
     args = parse_args()
-    shapes = report()
+    try:
+        shapes = report(load_theme(resolve(args.theme))["icon"])
+    except InvalidTheme as error:
+        print(error, file=sys.stderr)
+        return 1
     write_svg(args.svg, shapes)
+    print(f"Wrote {args.svg}")
+    if not has_pillow():
+        print(f"Skipped {args.ico}: install Pillow to redraw it (python -m pip install pillow)")
+        return 0
     write_ico(rasterize(shapes, MASTER), args.ico, args.sizes)
     listed = ", ".join(str(size) for size in sorted(args.sizes))
-    print(f"Wrote {args.svg}")
     print(f"Wrote {args.ico} ({listed})")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
