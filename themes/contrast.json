@@ -1,0 +1,61 @@
+{
+  "name": "Contrast",
+  "description": "Accessibility first: pure black text, strong borders, saturated status colors.",
+  "light": {
+    "primary": "#0040c1",
+    "on-primary": "#ffffff",
+    "secondary": "#005a3c",
+    "on-secondary": "#ffffff",
+    "accent": "#a3009f",
+    "on-accent": "#ffffff",
+    "success": "#166534",
+    "warning": "#92400e",
+    "danger": "#b91c1c",
+    "on-danger": "#ffffff",
+    "info": "#1d4ed8",
+    "background": "#ffffff",
+    "surface": "#ffffff",
+    "surface-muted": "#f2f2f2",
+    "border": "#767676",
+    "text": "#000000",
+    "text-muted": "#333333",
+    "shadow-sm": "0 1px 2px rgb(16 24 40 / 0.06)",
+    "shadow": "0 1px 3px rgb(16 24 40 / 0.08), 0 8px 24px rgb(16 24 40 / 0.06)"
+  },
+  "dark": {
+    "primary": "#8ab4ff",
+    "on-primary": "#000000",
+    "secondary": "#5ce0a8",
+    "on-secondary": "#000000",
+    "accent": "#ff8cf6",
+    "on-accent": "#000000",
+    "success": "#86efac",
+    "warning": "#fcd34d",
+    "danger": "#fca5a5",
+    "on-danger": "#1f0505",
+    "info": "#93c5fd",
+    "background": "#000000",
+    "surface": "#0a0a0a",
+    "surface-muted": "#1a1a1a",
+    "border": "#8a8a8a",
+    "text": "#ffffff",
+    "text-muted": "#d9d9d9",
+    "shadow-sm": "0 1px 2px rgb(0 0 0 / 0.4)",
+    "shadow": "0 1px 3px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.3)"
+  },
+  "shared": {
+    "radius-sm": "6px",
+    "radius": "10px",
+    "radius-lg": "16px",
+    "font-sans": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "font-mono": "ui-monospace, \"SF Mono\", \"Cascadia Code\", Menlo, Consolas, monospace"
+  },
+  "icon": {
+    "base": "#000000",
+    "bar": "#0040c1",
+    "paper": "#ffffff",
+    "fold": "#d9d9d9",
+    "line": "#767676",
+    "ring": "#d9d9d9"
+  }
+}

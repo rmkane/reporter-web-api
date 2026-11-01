@@ -1,0 +1,61 @@
+{
+  "name": "Sand",
+  "description": "Blue primary, teal secondary, magenta accent on low-glare cream.",
+  "light": {
+    "primary": "#1f6aa5",
+    "on-primary": "#ffffff",
+    "secondary": "#1d6f66",
+    "on-secondary": "#ffffff",
+    "accent": "#a8336e",
+    "on-accent": "#ffffff",
+    "success": "#166534",
+    "warning": "#92400e",
+    "danger": "#b91c1c",
+    "on-danger": "#ffffff",
+    "info": "#1d4ed8",
+    "background": "#fdf6e3",
+    "surface": "#fffbef",
+    "surface-muted": "#f5ecd3",
+    "border": "#e6dcc0",
+    "text": "#2b2a24",
+    "text-muted": "#5f5a49",
+    "shadow-sm": "0 1px 2px rgb(16 24 40 / 0.06)",
+    "shadow": "0 1px 3px rgb(16 24 40 / 0.08), 0 8px 24px rgb(16 24 40 / 0.06)"
+  },
+  "dark": {
+    "primary": "#6cb4ee",
+    "on-primary": "#061827",
+    "secondary": "#5fc7b8",
+    "on-secondary": "#03201c",
+    "accent": "#f08fc0",
+    "on-accent": "#2a0a1b",
+    "success": "#86efac",
+    "warning": "#fcd34d",
+    "danger": "#fca5a5",
+    "on-danger": "#1f0505",
+    "info": "#93c5fd",
+    "background": "#002b36",
+    "surface": "#073642",
+    "surface-muted": "#0b404e",
+    "border": "#1b5563",
+    "text": "#eee8d5",
+    "text-muted": "#a7b3b2",
+    "shadow-sm": "0 1px 2px rgb(0 0 0 / 0.4)",
+    "shadow": "0 1px 3px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.3)"
+  },
+  "shared": {
+    "radius-sm": "6px",
+    "radius": "10px",
+    "radius-lg": "16px",
+    "font-sans": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "font-mono": "ui-monospace, \"SF Mono\", \"Cascadia Code\", Menlo, Consolas, monospace"
+  },
+  "icon": {
+    "base": "#1f6aa5",
+    "bar": "#b58900",
+    "paper": "#fdf6e3",
+    "fold": "#eee8d5",
+    "line": "#d9cfb2",
+    "ring": "#b58900"
+  }
+}

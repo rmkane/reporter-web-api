@@ -75,6 +75,42 @@ class Polygon:
         canvas.polygon(scaled, fill=rgba(self.fill))
 
 
+@dataclass(frozen=True)
+class Ring:
+    """An outline around the tile, so it stays visible on dark backgrounds."""
+
+    fill: str
+    width: float = 2
+
+    def svg(self) -> str:
+        inset = self.width / 2
+        return (
+            f'<rect class="ring" x="{num(inset)}" y="{num(inset)}" '
+            f'width="{num(VIEW - self.width)}" height="{num(VIEW - self.width)}" '
+            f'rx="{num(12 - inset)}" fill="none" stroke="{self.fill}" '
+            f'stroke-width="{num(self.width)}"/>'
+        )
+
+    def draw(self, canvas, scale: float) -> None:
+        canvas.rounded_rectangle(
+            (0, 0, VIEW * scale - 1, VIEW * scale - 1),
+            radius=12 * scale,
+            outline=rgba(self.fill),
+            width=round(self.width * scale),
+        )
+
+
+# Shows the ring only when the viewer prefers dark mode, in the page header and browser tabs.
+DARK_RING_STYLE = (
+    "<style>.ring{display:none}"
+    "@media (prefers-color-scheme:dark){.ring{display:inline}}</style>"
+)
+
+
+def ring(colors: dict[str, str]) -> Ring:
+    return Ring(colors["ring"])
+
+
 def report(colors: dict[str, str]) -> tuple[Shape, ...]:
     base, bar, paper, fold, line = (colors[key] for key in ("base", "bar", "paper", "fold", "line"))
     return (
@@ -90,17 +126,20 @@ def report(colors: dict[str, str]) -> tuple[Shape, ...]:
     )
 
 
-def svg_document(shapes: tuple[Shape, ...]) -> str:
-    body = "\n".join(f"  {shape.svg()}" for shape in shapes)
+def svg_document(shapes: tuple[Shape, ...], outline: Ring | None = None) -> str:
+    parts = [DARK_RING_STYLE] if outline else []
+    parts += [shape.svg() for shape in shapes]
+    parts += [outline.svg()] if outline else []
+    body = "\n".join(f"  {part}" for part in parts)
     return (
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {VIEW} {VIEW}" '
         f'role="img" aria-label="Report">\n{body}\n</svg>\n'
     )
 
 
-def write_svg(path: Path, shapes: tuple[Shape, ...]) -> bool:
+def write_svg(path: Path, shapes: tuple[Shape, ...], outline: Ring | None = None) -> bool:
     """Write the SVG unless it already has this content. Returns whether it wrote."""
-    document = svg_document(shapes)
+    document = svg_document(shapes, outline)
     if path.exists() and path.read_text(encoding="utf-8") == document:
         return False
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -200,11 +239,13 @@ def has_pillow() -> bool:
 def main() -> int:
     args = parse_args()
     try:
-        shapes = report(load_theme(resolve(args.theme))["icon"])
+        colors = load_theme(resolve(args.theme))["icon"]
     except InvalidTheme as error:
         print(error, file=sys.stderr)
         return 1
-    print(f"{status(write_svg(args.svg, shapes))} {args.svg}")
+    shapes = report(colors)
+    # The SVG adds the dark-mode ring; the ICO is a fixed bitmap, so it goes without.
+    print(f"{status(write_svg(args.svg, shapes, ring(colors)))} {args.svg}")
     if not has_pillow():
         print(f"Skipped {args.ico}: install Pillow to redraw it (python -m pip install pillow)")
         return 0

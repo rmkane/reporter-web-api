@@ -1,0 +1,61 @@
+{
+  "name": "Midnight",
+  "description": "Lavender light mode and deep navy dark mode with a cyan primary.",
+  "light": {
+    "primary": "#4338ca",
+    "on-primary": "#ffffff",
+    "secondary": "#155e75",
+    "on-secondary": "#ffffff",
+    "accent": "#be185d",
+    "on-accent": "#ffffff",
+    "success": "#166534",
+    "warning": "#92400e",
+    "danger": "#b91c1c",
+    "on-danger": "#ffffff",
+    "info": "#1d4ed8",
+    "background": "#f5f5ff",
+    "surface": "#ffffff",
+    "surface-muted": "#ededfb",
+    "border": "#dddff5",
+    "text": "#14152b",
+    "text-muted": "#585a7d",
+    "shadow-sm": "0 1px 2px rgb(16 24 40 / 0.06)",
+    "shadow": "0 1px 3px rgb(16 24 40 / 0.08), 0 8px 24px rgb(16 24 40 / 0.06)"
+  },
+  "dark": {
+    "primary": "#22d3ee",
+    "on-primary": "#03222a",
+    "secondary": "#a5b4fc",
+    "on-secondary": "#0d0f2a",
+    "accent": "#f472b6",
+    "on-accent": "#2a0818",
+    "success": "#86efac",
+    "warning": "#fcd34d",
+    "danger": "#fca5a5",
+    "on-danger": "#1f0505",
+    "info": "#93c5fd",
+    "background": "#05061a",
+    "surface": "#0b0d26",
+    "surface-muted": "#121535",
+    "border": "#1f2350",
+    "text": "#e6e8ff",
+    "text-muted": "#9da1cf",
+    "shadow-sm": "0 1px 2px rgb(0 0 0 / 0.4)",
+    "shadow": "0 1px 3px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.3)"
+  },
+  "shared": {
+    "radius-sm": "6px",
+    "radius": "10px",
+    "radius-lg": "16px",
+    "font-sans": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "font-mono": "ui-monospace, \"SF Mono\", \"Cascadia Code\", Menlo, Consolas, monospace"
+  },
+  "icon": {
+    "base": "#1e1b4b",
+    "bar": "#22d3ee",
+    "paper": "#ffffff",
+    "fold": "#e0e7ff",
+    "line": "#c7d2fe",
+    "ring": "#22d3ee"
+  }
+}

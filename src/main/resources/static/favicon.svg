@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Report">
+  <style>.ring{display:none}@media (prefers-color-scheme:dark){.ring{display:inline}}</style>
   <rect x="0" y="0" width="64" height="64" rx="12" fill="#9a3412"/>
   <rect x="14" y="8" width="36" height="48" rx="4" fill="#fffaf3"/>
   <polygon points="40,8 50,8 50,18" fill="#ead9c6"/>
@@ -8,4 +9,5 @@
   <rect x="20" y="46" width="4" height="6" rx="1" fill="#c2410c"/>
   <rect x="26" y="42" width="4" height="10" rx="1" fill="#9a3412"/>
   <rect x="32" y="44" width="4" height="8" rx="1" fill="#c2410c"/>
+  <rect class="ring" x="1" y="1" width="62" height="62" rx="11" fill="none" stroke="#c2410c" stroke-width="2"/>
 </svg>

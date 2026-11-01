@@ -1,0 +1,61 @@
+{
+  "name": "Arctic",
+  "description": "Muted frost blue with a soft orange accent. A calm Nordic look.",
+  "light": {
+    "primary": "#3b5f8a",
+    "on-primary": "#ffffff",
+    "secondary": "#2f6f73",
+    "on-secondary": "#ffffff",
+    "accent": "#a8501f",
+    "on-accent": "#ffffff",
+    "success": "#166534",
+    "warning": "#92400e",
+    "danger": "#b91c1c",
+    "on-danger": "#ffffff",
+    "info": "#1d4ed8",
+    "background": "#eceff4",
+    "surface": "#f8f9fb",
+    "surface-muted": "#e5e9f0",
+    "border": "#d8dee9",
+    "text": "#2e3440",
+    "text-muted": "#4c566a",
+    "shadow-sm": "0 1px 2px rgb(16 24 40 / 0.06)",
+    "shadow": "0 1px 3px rgb(16 24 40 / 0.08), 0 8px 24px rgb(16 24 40 / 0.06)"
+  },
+  "dark": {
+    "primary": "#88c0d0",
+    "on-primary": "#0d1b26",
+    "secondary": "#8fbcbb",
+    "on-secondary": "#0c1f1f",
+    "accent": "#e0a088",
+    "on-accent": "#24110a",
+    "success": "#86efac",
+    "warning": "#fcd34d",
+    "danger": "#fca5a5",
+    "on-danger": "#1f0505",
+    "info": "#93c5fd",
+    "background": "#242933",
+    "surface": "#2e3440",
+    "surface-muted": "#3b4252",
+    "border": "#434c5e",
+    "text": "#eceff4",
+    "text-muted": "#c0c8d6",
+    "shadow-sm": "0 1px 2px rgb(0 0 0 / 0.4)",
+    "shadow": "0 1px 3px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.3)"
+  },
+  "shared": {
+    "radius-sm": "6px",
+    "radius": "10px",
+    "radius-lg": "16px",
+    "font-sans": "system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "font-mono": "ui-monospace, \"SF Mono\", \"Cascadia Code\", Menlo, Consolas, monospace"
+  },
+  "icon": {
+    "base": "#3b5f8a",
+    "bar": "#5e81ac",
+    "paper": "#eceff4",
+    "fold": "#d8dee9",
+    "line": "#c5cedb",
+    "ring": "#5e81ac"
+  }
+}

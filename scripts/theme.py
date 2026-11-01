@@ -9,7 +9,8 @@ A theme defines every token in TOKENS: colors and shadows for light and dark,
 shared shape and font values, and logo colors. The script writes the CSS
 variables to src/main/resources/static/css/theme.css; generate_icons.py draws
 the logo from the same theme. Exits 1 on a theme with missing or unknown
-tokens.
+tokens, or with a color pairing below WCAG AA contrast (4.5:1 for text, 3:1
+for icons).
 """
 
 import argparse
@@ -35,8 +36,9 @@ SHARED_GROUPS = [
     ("Shape", ["radius-sm", "radius", "radius-lg"]),
     ("Type", ["font-sans", "font-mono"]),
 ]
-# Logo colors, read by generate_icons.py: tile, accent bars, page, page fold, text lines.
-ICON_TOKENS = ["base", "bar", "paper", "fold", "line"]
+# Logo colors, read by generate_icons.py: tile, accent bars, page, page fold, text lines,
+# and the outline drawn around the tile on dark backgrounds.
+ICON_TOKENS = ["base", "bar", "paper", "fold", "line", "ring"]
 TOKENS = {
     "light": [token for _, tokens in MODE_GROUPS for token in tokens],
     "dark": [token for _, tokens in MODE_GROUPS for token in tokens],
@@ -81,6 +83,7 @@ def load_theme(path):
     except FileNotFoundError as error:
         raise InvalidTheme(f"{path}: not found; see --list") from error
     validate(theme, path)
+    check_contrast(theme, path)
     return theme
 
 
@@ -95,6 +98,78 @@ def validate(theme, path):
             problems.append(f"{section}: missing {', '.join(missing)}")
         if unknown:
             problems.append(f"{section}: unknown {', '.join(unknown)}")
+    if problems:
+        raise InvalidTheme("\n".join(f"{path}: {problem}" for problem in problems))
+
+
+# --- Contrast ----------------------------------------------------------------
+
+TEXT = 4.5  # WCAG AA for normal-size text
+GRAPHIC = 3.0  # WCAG AA for icons and other non-text marks
+
+# Tint amounts from the derived block, so the check sees the colors the CSS draws.
+SOFT = {"primary": 0.14, "secondary": 0.14, "success": 0.14, "warning": 0.16, "danger": 0.14,
+        "info": 0.14}
+HOVER = 0.85
+
+
+def rgb(color):
+    value = color.removeprefix("#")
+    return tuple(int(value[i : i + 2], 16) for i in (0, 2, 4))
+
+
+def mix(color, base, amount):
+    """Approximates color-mix(in oklch, ...) with an sRGB blend; close enough to gate on."""
+    return "#" + "".join(
+        f"{round(c * amount + b * (1 - amount)):02x}" for c, b in zip(rgb(color), rgb(base))
+    )
+
+
+def luminance(color):
+    channels = [value / 255 for value in rgb(color)]
+    linear = [c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4 for c in channels]
+    return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2]
+
+
+def contrast(first, second):
+    lighter, darker = sorted((luminance(first), luminance(second)), reverse=True)
+    return (lighter + 0.05) / (darker + 0.05)
+
+
+def contrast_pairs(colors):
+    """(label, foreground, background, minimum) for every pairing the UI draws."""
+    surface = colors["surface"]
+    soft = {token: mix(colors[token], surface, amount) for token, amount in SOFT.items()}
+    hover = {token: mix(colors[token], colors["text"], HOVER) for token in ("primary", "danger")}
+    pairs = [(f"on-{token} on {token}", colors[f"on-{token}"], colors[token], TEXT)
+             for token in ("primary", "secondary", "accent", "danger")]
+    pairs += [(f"on-{token} on {token} hover", colors[f"on-{token}"], hover[token], TEXT)
+              for token in hover]
+    pairs += [
+        ("text on background", colors["text"], colors["background"], TEXT),
+        ("text on surface", colors["text"], surface, TEXT),
+        ("text-muted on surface", colors["text-muted"], surface, TEXT),
+        ("text-muted on surface-muted", colors["text-muted"], colors["surface-muted"], TEXT),
+        ("primary links on surface", colors["primary"], surface, TEXT),
+        ("accent badges on surface", colors["accent"], surface, TEXT),
+        ("secondary tags on their tint", colors["secondary"], soft["secondary"], TEXT),
+        ("primary glyph on its tint", colors["primary"], soft["primary"], GRAPHIC),
+    ]
+    pairs += [(f"{token} badges on their tint", colors[token], soft[token], TEXT)
+              for token in ("success", "warning", "danger", "info")]
+    return pairs
+
+
+def check_contrast(theme, path):
+    problems = [
+        f"{mode}: {label} is {ratio:.2f}:1, needs {minimum}:1"
+        for mode in ("light", "dark")
+        for label, fg, bg, minimum in contrast_pairs(theme[mode])
+        if (ratio := contrast(fg, bg)) < minimum
+    ]
+    ring = contrast(theme["icon"]["ring"], theme["dark"]["background"])
+    if ring < GRAPHIC:
+        problems.append(f"icon: ring on the dark background is {ring:.2f}:1, needs {GRAPHIC}:1")
     if problems:
         raise InvalidTheme("\n".join(f"{path}: {problem}" for problem in problems))
 
