@@ -7,54 +7,57 @@
     <summary>New report</summary>
     <form id="create-form" class="create">
         <p class="hint wide"><span class="mark">*</span> Required</p>
-        <div>
-            <label for="title">Title</label>
-            <input id="title" name="title" required maxlength="200">
+        <div class="create-column">
+            <div>
+                <label for="type">Type</label>
+                <select id="type" name="type">
+                    <option value="">None</option>
+                    <option value="BUG">Bug</option>
+                    <option value="STORY">Story</option>
+                    <option value="TASK">Task</option>
+                </select>
+            </div>
+            <div>
+                <label for="title">Title</label>
+                <input id="title" name="title" required maxlength="200">
+            </div>
+            <div>
+                <label for="description">Description</label>
+                <textarea id="description" name="description" required rows="4"></textarea>
+            </div>
+            <div>
+                <label for="tags">Tags</label>
+                <input id="tags" name="tags" placeholder="login, auth">
+            </div>
         </div>
-        <div>
-            <label for="author">Author</label>
-            <input id="author" name="author" required placeholder="jane.roe">
-        </div>
-        <div class="wide">
-            <label for="description">Description</label>
-            <textarea id="description" name="description" required rows="3"></textarea>
-        </div>
-        <div>
-            <label for="assignee">Assignee</label>
-            <input id="assignee" name="assignee" placeholder="optional">
-        </div>
-        <div>
-            <label for="tags">Tags</label>
-            <input id="tags" name="tags" placeholder="login, auth">
-        </div>
-        <div>
-            <label for="status">Status</label>
-            <select id="status" name="status">
-                <option value="">Open</option>
-                <option>OPEN</option>
-                <option>IN_PROGRESS</option>
-                <option>RESOLVED</option>
-                <option>CLOSED</option>
-            </select>
-        </div>
-        <div>
-            <label for="priority">Priority</label>
-            <select id="priority" name="priority">
-                <option value="">None</option>
-                <option>LOW</option>
-                <option>MEDIUM</option>
-                <option>HIGH</option>
-                <option>CRITICAL</option>
-            </select>
-        </div>
-        <div>
-            <label for="type">Type</label>
-            <select id="type" name="type">
-                <option value="">None</option>
-                <option>BUG</option>
-                <option>STORY</option>
-                <option>TASK</option>
-            </select>
+        <div class="create-column">
+            <div>
+                <label for="author">Author</label>
+                <input id="author" name="author" required placeholder="jane.roe">
+            </div>
+            <div>
+                <label for="assignee">Assignee</label>
+                <input id="assignee" name="assignee" placeholder="optional">
+            </div>
+            <div>
+                <label for="status">Status</label>
+                <select id="status" name="status">
+                    <option value="OPEN" selected>Open</option>
+                    <option value="IN_PROGRESS">In Progress</option>
+                    <option value="RESOLVED">Resolved</option>
+                    <option value="CLOSED">Closed</option>
+                </select>
+            </div>
+            <div>
+                <label for="priority">Priority</label>
+                <select id="priority" name="priority">
+                    <option value="">None</option>
+                    <option value="LOW">Low</option>
+                    <option value="MEDIUM">Medium</option>
+                    <option value="HIGH">High</option>
+                    <option value="CRITICAL">Critical</option>
+                </select>
+            </div>
         </div>
         <p id="create-error" class="error" hidden></p>
         <button type="submit">Create</button>
