@@ -28,6 +28,21 @@
 - `ReportApiIntegrationTest` extends it and starts its own server.
 - `LocalhostReportIntegrationTest` in `src/integration/test/java` extends it, checks that the server accepts a connection, and then calls that server. Host, port, and path come from `reporter.integration.host`, `reporter.integration.port`, and `reporter.integration.path`, or `REPORTER_INTEGRATION_HOST`, `REPORTER_INTEGRATION_PORT`, and `REPORTER_INTEGRATION_PATH`. The default is `http://localhost:8080`.
 
+## Commits
+
+- Use [Conventional Commits](https://www.conventionalcommits.org/): `type(scope): summary`. Types are `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, and `chore`. Scope is optional, for example `build(deps)` or `feat(scan)`.
+- Subject at most 50 characters, imperative mood, lowercase after the colon, no trailing period.
+- Blank line after the subject. Wrap the body at 72 characters. Explain what changed and why, not how.
+- Mark breaking changes with `!` after the type or a `BREAKING CHANGE:` footer.
+- One logical change per commit. Commit only when asked.
+- No attribution in commit messages or PR descriptions: no `Co-Authored-By` trailers, no "Generated with" lines.
+
+## Changelog
+
+- Follow [Keep a Changelog](https://keepachangelog.com/). Group entries under `Added`, `Changed`, `Fixed`, `Removed`, and `Security`.
+- Add an entry for each user-visible `feat`, `fix`, `perf`, or `build(deps)` change. Skip `style`, `test`, `ci`, and `chore`.
+- Unreleased work goes under the current `-SNAPSHOT` version. On release, drop `-SNAPSHOT` from the pom and the heading, add the date, and tag `vX.Y.Z`. Do not tag snapshots.
+
 ## Dependencies and security
 
 - Pin CVE patches for Spring-managed dependencies in two places:
