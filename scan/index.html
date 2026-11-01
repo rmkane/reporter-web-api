@@ -67,6 +67,9 @@
     }
     .count[hidden] { display: none; }
     .verdict { border-color: currentColor; }
+    button.count { background: none; font-family: inherit; font-size: inherit; cursor: pointer; }
+    button.count[aria-pressed="false"] { opacity: 0.4; text-decoration: line-through; }
+    button.count:focus-visible, th button:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
     input {
       width: 100%;
       padding: 6px 10px;
@@ -80,6 +83,20 @@
     table { width: 100%; border-collapse: collapse; }
     th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
     th { position: sticky; top: 0; background: var(--row-alt); white-space: nowrap; }
+    th button {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 0;
+      border: 0;
+      background: none;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+    }
+    th button::after { content: "↕"; color: var(--muted); font-size: 12px; }
+    th[aria-sort="ascending"] button::after { content: "▲"; color: inherit; }
+    th[aria-sort="descending"] button::after { content: "▼"; color: inherit; }
     tbody tr:nth-child(even) { background: var(--row-alt); }
     tbody tr:last-child td { border-bottom: 0; }
     td.nowrap { white-space: nowrap; }
@@ -108,13 +125,13 @@
       <table>
         <thead>
           <tr>
-            <th>Severity</th>
-            <th>Target</th>
-            <th>Package</th>
-            <th>Installed</th>
-            <th>Fixed</th>
-            <th>Vulnerability</th>
-            <th>Title</th>
+            <th data-key="Severity"><button type="button">Severity</button></th>
+            <th data-key="Target"><button type="button">Target</button></th>
+            <th data-key="PkgName"><button type="button">Package</button></th>
+            <th data-key="InstalledVersion"><button type="button">Installed</button></th>
+            <th data-key="FixedVersion"><button type="button">Fixed</button></th>
+            <th data-key="VulnerabilityID"><button type="button">Vulnerability</button></th>
+            <th data-key="Title"><button type="button">Title</button></th>
           </tr>
         </thead>
         <tbody id="rows"></tbody>
@@ -125,6 +142,56 @@
   <script src="trivy.js" onerror="void 0"></script>
   <script>
     const SEVERITIES = ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW', 'UNKNOWN'];
+    const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
+    const state = { query: '', hidden: new Set(), sortKey: 'Severity', sortDir: 'desc' };
+
+    // Higher rank is more severe, so a descending sort puts CRITICAL first.
+    function severityRank(severity) {
+      const index = SEVERITIES.indexOf(severity);
+      return index === -1 ? 0 : SEVERITIES.length - index;
+    }
+
+    // CVE-2026-102473 sorts after CVE-2026-65182: compare year, then number, as integers.
+    function compareIds(a, b) {
+      const pa = /^([A-Z]+)-(\d+)-(\d+)$/i.exec(a);
+      const pb = /^([A-Z]+)-(\d+)-(\d+)$/i.exec(b);
+      if (pa && pb) {
+        return collator.compare(pa[1], pb[1]) || pa[2] - pb[2] || pa[3] - pb[3];
+      }
+      return collator.compare(a, b);
+    }
+
+    const COMPARATORS = {
+      Severity: (a, b) => severityRank(a.Severity) - severityRank(b.Severity),
+      VulnerabilityID: (a, b) => compareIds(a.VulnerabilityID, b.VulnerabilityID),
+    };
+
+    function compareText(key) {
+      return (a, b) => collator.compare(a[key] ?? '', b[key] ?? '');
+    }
+
+    function sortVulns(vulns) {
+      const { sortKey, sortDir } = state;
+      const primary = COMPARATORS[sortKey] ?? compareText(sortKey);
+      const sign = sortDir === 'asc' ? 1 : -1;
+      return [...vulns].sort((a, b) => {
+        // Rows without a value (such as no fixed version) stay last in either direction.
+        if (!a[sortKey] !== !b[sortKey]) {
+          return a[sortKey] ? -1 : 1;
+        }
+        return sign * primary(a, b)
+          || severityRank(b.Severity) - severityRank(a.Severity)
+          || collator.compare(a.PkgName, b.PkgName)
+          || compareIds(a.VulnerabilityID, b.VulnerabilityID);
+      });
+    }
+
+    function filterVulns(vulns) {
+      const query = state.query;
+      return vulns.filter((v) => !state.hidden.has(v.Severity)
+        && (!query || [v.Target, v.PkgName, v.VulnerabilityID, v.Title, v.Severity]
+          .some((s) => s?.toLowerCase().includes(query))));
+    }
 
     async function loadReport() {
       if (window.TRIVY_REPORT) {
@@ -148,31 +215,50 @@
 
     function flatten(report) {
       return (report.Results ?? [])
-        .flatMap((result) => (result.Vulnerabilities ?? []).map((v) => ({ ...v, Target: result.Target })))
-        .sort((a, b) =>
-          SEVERITIES.indexOf(a.Severity) - SEVERITIES.indexOf(b.Severity)
-            || a.PkgName.localeCompare(b.PkgName)
-            || a.VulnerabilityID.localeCompare(b.VulnerabilityID));
+        .flatMap((result) => (result.Vulnerabilities ?? []).map((v) => ({ ...v, Target: result.Target })));
     }
 
-    function renderCounts(vulns) {
+    function renderCounts(vulns, onChange) {
       const counts = document.getElementById('counts');
       counts.replaceChildren(...SEVERITIES
         .map((severity) => [severity, vulns.filter((v) => v.Severity === severity).length])
         .filter(([, n]) => n > 0)
         .map(([severity, n]) => {
-          const span = document.createElement('span');
-          span.className = `count sev sev-${severity}`;
-          span.textContent = `${severity} ${n}`;
-          return span;
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = `count sev sev-${severity}`;
+          button.textContent = `${severity} ${n}`;
+          button.title = `Show or hide ${severity} findings`;
+          button.setAttribute('aria-pressed', 'true');
+          button.addEventListener('click', () => {
+            const shown = state.hidden.has(severity);
+            if (shown) {
+              state.hidden.delete(severity);
+            } else {
+              state.hidden.add(severity);
+            }
+            button.setAttribute('aria-pressed', String(shown));
+            onChange();
+          });
+          return button;
         }));
     }
 
-    function renderRows(vulns) {
+    function renderSortHeaders() {
+      document.querySelectorAll('th[data-key]').forEach((th) => {
+        if (th.dataset.key === state.sortKey) {
+          th.setAttribute('aria-sort', state.sortDir === 'asc' ? 'ascending' : 'descending');
+        } else {
+          th.removeAttribute('aria-sort');
+        }
+      });
+    }
+
+    function renderRows(vulns, total) {
       const rows = document.getElementById('rows');
       if (vulns.length === 0) {
         const tr = document.createElement('tr');
-        const td = cell('No vulnerabilities', 'empty');
+        const td = cell(total ? 'No matching vulnerabilities' : 'No vulnerabilities', 'empty');
         td.colSpan = 7;
         tr.append(td);
         rows.replaceChildren(tr);
@@ -218,13 +304,29 @@
           verdict.className = `count verdict sev ${failing ? 'sev-CRITICAL' : 'sev-LOW'}`;
           verdict.hidden = false;
         }
-        renderCounts(vulns);
-        renderRows(vulns);
+        const render = () => {
+          renderSortHeaders();
+          renderRows(sortVulns(filterVulns(vulns)), vulns.length);
+        };
+        renderCounts(vulns, render);
         document.getElementById('filter').addEventListener('input', (event) => {
-          const query = event.target.value.trim().toLowerCase();
-          renderRows(vulns.filter((v) =>
-            [v.Target, v.PkgName, v.VulnerabilityID, v.Title, v.Severity].some((s) => s?.toLowerCase().includes(query))));
+          state.query = event.target.value.trim().toLowerCase();
+          render();
         });
+        document.querySelectorAll('th[data-key] button').forEach((button) => {
+          button.addEventListener('click', () => {
+            const key = button.parentElement.dataset.key;
+            if (state.sortKey === key) {
+              state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc';
+            } else {
+              state.sortKey = key;
+              // Severity starts most severe first; text columns start A to Z.
+              state.sortDir = key === 'Severity' ? 'desc' : 'asc';
+            }
+            render();
+          });
+        });
+        render();
       })
       .catch((error) => {
         document.getElementById('meta').textContent =
