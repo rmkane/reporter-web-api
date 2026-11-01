@@ -1,6 +1,9 @@
+<!-- markdownlint-disable-next-line MD033 MD041 -->
+<p align="center"><img src="src/main/resources/static/favicon.svg" alt="" width="96" height="96"></p>
+
 # Reporter Web API
 
-In-memory report catalog with a Jira-style search page. Spring Boot 4.1.1, Java 21.
+In-memory report catalog with a Jira-style search page. Spring Boot 4.1.2, Java 21.
 
 ## Getting started
 
