@@ -1,10 +1,15 @@
 package org.acme.reporter.web;
 
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.not;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -22,6 +27,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import org.acme.reporter.error.InvalidReportQueryException;
 import org.acme.reporter.error.ReportNotFoundException;
 import org.acme.reporter.model.Priority;
 import org.acme.reporter.model.Report;
@@ -103,6 +109,72 @@ class ReportControllerTest {
         .delete("missing");
 
     mockMvc.perform(delete("/api/reports/missing")).andExpect(status().isNotFound());
+  }
+
+  @Test
+  void blankUpdateFieldIsRejected() throws Exception {
+    mockMvc
+        .perform(
+            patch("/api/reports/RPT-1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+                    {"title":"  ","priority":"HIGH"}
+                    """))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.errors[0].field").value("title"))
+        .andExpect(jsonPath("$.errors[0].message").value("must not be blank"));
+  }
+
+  @Test
+  void nullUpdateFieldsAreAllowed() throws Exception {
+    when(reports.update(eq("RPT-1"), any())).thenReturn(sample());
+
+    mockMvc
+        .perform(
+            patch("/api/reports/RPT-1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+                    {"title":null,"priority":"HIGH"}
+                    """))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void malformedBodyIsABadRequest() throws Exception {
+    mockMvc
+        .perform(post("/api/reports").contentType(MediaType.APPLICATION_JSON).content("{"))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message").value("Request body could not be read"));
+  }
+
+  @Test
+  void invalidQueryIsABadRequest() throws Exception {
+    when(reports.search(any(), any()))
+        .thenThrow(new InvalidReportQueryException("Unknown priority: URGENT"));
+
+    mockMvc
+        .perform(
+            post("/api/reports/search")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+                    {"type":"clause","field":"priority","operator":"=","value":"URGENT"}
+                    """))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message").value("Unknown priority: URGENT"));
+  }
+
+  @Test
+  void unexpectedErrorsHideTheirDetails() throws Exception {
+    when(reports.get("RPT-1")).thenThrow(new IllegalStateException("password=hunter2"));
+
+    mockMvc
+        .perform(get("/api/reports/RPT-1"))
+        .andExpect(status().isInternalServerError())
+        .andExpect(jsonPath("$.message").value("Unexpected error"))
+        .andExpect(content().string(not(containsString("hunter2"))));
   }
 
   private static Report sample() {

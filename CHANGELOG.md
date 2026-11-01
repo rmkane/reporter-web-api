@@ -20,6 +20,16 @@ All notable changes to this project are documented here. The format follows [Kee
 - The compose image is tagged `reporter-web-api:latest`.
 - Make targets are grouped into General, Build, Run, Quality, and Docker.
 
+### Fixed
+
+- `priority`, `status`, and `type` compare and sort in declared order instead of alphabetically, so `priority > LOW` no longer skips `HIGH` and `CRITICAL`.
+- A bare date in a `createdOn` or `updatedOn` equality matches the whole UTC day instead of only midnight.
+- Range queries no longer match reports whose field is empty.
+- Unknown enum names, unparseable dates, list values on range operators, and range operators on `tags` are rejected up front with a 400.
+- Sorting descending keeps empty values last.
+- Update rejects whitespace-only text, matching create.
+- Create no longer fails on ids outside the `RPT-n` format, and concurrent creates get distinct ids.
+
 ### Security
 
 - Pin Jackson 3 to 3.1.7 and Jackson 2 to 2.21.7, patching CVE-2026-89407, CVE-2026-89425, CVE-2026-19032, CVE-2026-68497, CVE-2026-83557, CVE-2026-91776, and CVE-2026-91777.

@@ -3,6 +3,8 @@ package org.acme.reporter.manager.impl;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,6 +26,8 @@ import org.acme.reporter.web.UpdateReportRequest;
 @RequiredArgsConstructor
 public class ReportManagerImpl implements ReportManager {
 
+  private static final Pattern REPORT_ID = Pattern.compile("RPT-(\\d+)");
+
   private final ReportRepository repository;
 
   @Override
@@ -44,8 +48,9 @@ public class ReportManagerImpl implements ReportManager {
     return repository.search(query, pageable);
   }
 
+  // Synchronized so two creates cannot pick the same id and overwrite each other.
   @Override
-  public Report create(CreateReportRequest request) {
+  public synchronized Report create(CreateReportRequest request) {
     Instant now = Instant.now();
     Report report =
         new Report(
@@ -90,8 +95,10 @@ public class ReportManagerImpl implements ReportManager {
     int max =
         repository.findAll(Pageable.unpaged()).getContent().stream()
             .map(Report::id)
-            .filter(id -> id != null && id.startsWith("RPT-"))
-            .mapToInt(id -> Integer.parseInt(id.substring(4)))
+            .filter(id -> id != null)
+            .map(REPORT_ID::matcher)
+            .filter(Matcher::matches)
+            .mapToInt(matcher -> Integer.parseInt(matcher.group(1)))
             .max()
             .orElse(0);
     return "RPT-" + (max + 1);
