@@ -18,10 +18,22 @@
     <ul class="tags">
         <li th:each="tag : ${report.tags}" th:text="${tag}">tag</li>
     </ul>
-    <p id="delete-error" class="error" hidden></p>
     <p class="actions">
-        <button type="button" id="delete-report" class="danger" th:data-id="${report.id}">Delete</button>
+        <button type="button" id="delete-report" class="danger" aria-haspopup="dialog">Delete</button>
     </p>
+    <dialog id="delete-dialog" class="dialog" aria-labelledby="delete-title" aria-describedby="delete-description" th:data-id="${report.id}">
+        <form id="delete-form" method="dialog">
+            <h2 id="delete-title">Delete <span th:text="${report.id}">RPT-1</span>?</h2>
+            <p id="delete-description">This permanently deletes <strong th:text="${report.title}">Title</strong>. It cannot be undone.</p>
+            <label for="delete-confirm">Type <code th:text="${report.id}">RPT-1</code> to confirm</label>
+            <input id="delete-confirm" name="confirm" autocomplete="off" spellcheck="false" autocapitalize="off">
+            <p id="delete-error" class="error" role="alert" hidden></p>
+            <div class="dialog-actions">
+                <button type="button" id="delete-cancel" class="secondary" autofocus>Cancel</button>
+                <button type="submit" id="delete-submit" class="danger" disabled>Delete report</button>
+            </div>
+        </form>
+    </dialog>
     <script type="module" src="/js/pages/report.js"></script>
 </main>
 </html>

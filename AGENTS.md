@@ -17,6 +17,7 @@
 - `theme.css` and the favicon are generated: edit a theme in `themes/` and run `make theme THEME=<name>`, and `make themes` lists them. A new token goes in `scripts/theme/themes.py` and in every theme file. No literal colors outside `themes/`.
 - After adding or editing a theme, run `make previews` to redraw its card in `themes/previews/` and the gallery in `themes/README.md`.
 - The reports page keeps the create form collapsed. Mark required fields. Open Swagger and OpenAPI links in a new tab.
+- Irreversible actions, such as delete, open a custom `<dialog>` that names what will be lost and says it cannot be undone. The confirm button stays disabled until the user types the item's id, and Cancel has focus first, so Enter or Esc backs out. Never use `window.confirm`.
 - The startup log is a ready line, a blank line, then a bulleted list of URLs.
 
 ## Code style
