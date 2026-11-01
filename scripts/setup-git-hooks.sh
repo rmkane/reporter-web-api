@@ -11,4 +11,4 @@ fi
 
 git config core.hooksPath .githooks
 chmod +x .githooks/pre-commit
-echo "Git hooks installed from .githooks (pre-commit runs make lint)."
+echo "Git hooks installed from .githooks (pre-commit checks Java format and class annotation order)."

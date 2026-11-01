@@ -3,4 +3,6 @@ set -euo pipefail
 
 cd "$(git rev-parse --show-toplevel)"
 echo "Checking Java format..."
-mvn -B spotless:check
+mvn -B -q spotless:check
+echo "Checking class annotation order..."
+python3 scripts/annotation_order.py --check
