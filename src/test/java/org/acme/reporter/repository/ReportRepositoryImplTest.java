@@ -1,6 +1,7 @@
 package org.acme.reporter.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -32,6 +33,15 @@ class ReportRepositoryImplTest {
     repository.deleteById("RPT-1");
     assertThat(repository.findById("RPT-1")).isEmpty();
     assertThat(repository.count()).isEqualTo(1);
+  }
+
+  @Test
+  void duplicateSeedIdsAreRejected() {
+    List<Report> seed = List.of(sample("RPT-1"), sample("RPT-1"));
+
+    assertThatThrownBy(() -> new ReportRepositoryImpl(seed))
+        .isInstanceOf(IllegalStateException.class)
+        .hasMessage("Duplicate report id: RPT-1");
   }
 
   private static Report sample(String id) {
