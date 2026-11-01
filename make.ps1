@@ -29,6 +29,15 @@ function Invoke-Maven {
     }
 }
 
+function Invoke-Python {
+    param([Parameter(Mandatory = $true)][string[]]$PythonArgs)
+    $python = if (Get-Command python3 -ErrorAction SilentlyContinue) { 'python3' } else { 'python' }
+    & $python @PythonArgs
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+}
+
 function Stop-Quiet {
     if (-not (Test-Path $PidFile)) {
         return
@@ -79,8 +88,8 @@ function Show-Help {
         'Quality' = @(
             @{ Name = 'test'; Help = 'Run the unit tests' },
             @{ Name = 'integration'; Help = 'Run the integration tests' },
-            @{ Name = 'lint'; Help = 'Check Java formatting' },
-            @{ Name = 'format'; Help = 'Format Java with Google Java Format' },
+            @{ Name = 'lint'; Help = 'Check Java formatting and class annotation order' },
+            @{ Name = 'format'; Help = 'Format Java and fix class annotation order' },
             @{ Name = 'scan'; Help = 'Scan the jar and the Docker image with Trivy' },
             @{ Name = 'scan-jar'; Help = 'Scan the jar and write reports to target/scan/jar' },
             @{ Name = 'scan-image'; Help = 'Scan the Docker image and write reports to target/scan/image' }
@@ -126,8 +135,14 @@ switch ($Target) {
     'dev' { Invoke-Maven @('spring-boot:run', '-Dspring-boot.run.profiles=dev') }
     'test' { Invoke-Maven @('test') }
     'integration' { Invoke-Maven @('test', '-Pintegration') }
-    'lint' { Invoke-Maven @('spotless:check') }
-    'format' { Invoke-Maven @('spotless:apply') }
+    'lint' {
+        Invoke-Maven @('spotless:check')
+        Invoke-Python @('scripts/annotation_order.py', '--check')
+    }
+    'format' {
+        Invoke-Maven @('spotless:apply')
+        Invoke-Python @('scripts/annotation_order.py', '--fix')
+    }
     'scan-jar' {
         Invoke-Maven @('-DskipTests', 'package')
         & (Join-Path $Root 'scripts/scan.ps1') jar $Jar

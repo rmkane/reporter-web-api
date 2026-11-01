@@ -74,11 +74,13 @@ test: ## Run the unit tests
 integration: ## Run the integration tests
 	mvn -B test -Pintegration
 
-lint: ## Check Java formatting
+lint: ## Check Java formatting and class annotation order
 	mvn -B spotless:check
+	python3 scripts/annotation_order.py --check
 
-format: ## Format Java with Google Java Format
+format: ## Format Java and fix class annotation order
 	mvn -B spotless:apply
+	python3 scripts/annotation_order.py --fix
 
 scan: ## Scan the jar and the Docker image with Trivy
 	@status=0; \

@@ -1,0 +1,116 @@
+{
+  "_comment": "Class annotation tiers, from what a reader must notice first to how the class is built. Within a tier, source order is kept. Prefixes match families such as ConditionalOnBean.",
+  "tiers": [
+    {
+      "name": "status",
+      "annotations": [
+        "Deprecated",
+        "Disabled"
+      ]
+    },
+    {
+      "name": "logging",
+      "annotations": [
+        "CommonsLog",
+        "Log4j2",
+        "Slf4j"
+      ]
+    },
+    {
+      "name": "documentation",
+      "annotations": [
+        "DisplayName",
+        "Hidden",
+        "Schema",
+        "Tag"
+      ]
+    },
+    {
+      "name": "role",
+      "annotations": [
+        "Aspect",
+        "Component",
+        "Configuration",
+        "ConfigurationProperties",
+        "Controller",
+        "ControllerAdvice",
+        "JsonTest",
+        "Repository",
+        "RestClientTest",
+        "RestController",
+        "RestControllerAdvice",
+        "Service",
+        "SpringBootApplication",
+        "SpringBootTest",
+        "TestConfiguration",
+        "WebMvcTest"
+      ]
+    },
+    {
+      "name": "role modifiers",
+      "annotations": [
+        "ActiveProfiles",
+        "ConfigurationPropertiesScan",
+        "CrossOrigin",
+        "DirtiesContext",
+        "ExtendWith",
+        "Import",
+        "Lazy",
+        "Order",
+        "Primary",
+        "Profile",
+        "RequestMapping",
+        "Scope",
+        "TestInstance",
+        "TestMethodOrder",
+        "TestPropertySource",
+        "Validated"
+      ],
+      "prefixes": [
+        "Enable",
+        "ConditionalOn",
+        "AutoConfigure"
+      ]
+    },
+    {
+      "name": "serialization",
+      "annotations": [
+        "JsonDeserialize",
+        "JsonIgnoreProperties",
+        "JsonInclude",
+        "JsonNaming",
+        "JsonPropertyOrder",
+        "JsonSerialize",
+        "JsonSubTypes",
+        "JsonTypeInfo"
+      ]
+    },
+    {
+      "name": "lombok structure",
+      "annotations": [
+        "AllArgsConstructor",
+        "Builder",
+        "Data",
+        "EqualsAndHashCode",
+        "FieldDefaults",
+        "Getter",
+        "Jacksonized",
+        "NoArgsConstructor",
+        "RequiredArgsConstructor",
+        "Setter",
+        "SuperBuilder",
+        "ToString",
+        "UtilityClass",
+        "Value",
+        "With"
+      ]
+    },
+    {
+      "name": "compiler",
+      "annotations": [
+        "FunctionalInterface",
+        "SuppressWarnings"
+      ]
+    }
+  ]
+}
