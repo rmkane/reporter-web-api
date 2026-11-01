@@ -6,6 +6,10 @@ logs/
 *.log
 .reporter-web-api.pid
 
+# Python
+__pycache__/
+*.py[cod]
+
 # Eclipse
 .classpath
 .project
