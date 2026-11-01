@@ -55,9 +55,8 @@ public class ReportServiceImpl implements ReportService {
   @CacheEvict(
       cacheNames = {REPORTS, REPORT_LISTS, REPORT_SEARCHES},
       allEntries = true)
-  public Report update(String id, UpdateReportRequest request) {
-    Report current = manager.find(id).orElseThrow(() -> new ReportNotFoundException(id));
-    return manager.update(current, request);
+  public Report update(String id, UpdateReportRequest request, String expectedVersion) {
+    return manager.update(id, request, expectedVersion);
   }
 
   @Override

@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,10 +20,12 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.acme.reporter.model.Report;
+import org.acme.reporter.model.ReportVersion;
 import org.acme.reporter.query.ReportQuery;
 import org.acme.reporter.service.ReportService;
 
@@ -57,8 +60,8 @@ public class ReportController {
 
   @GetMapping("/{id}")
   @Operation(summary = "Get a report")
-  public Report get(@PathVariable String id) {
-    return reports.get(id);
+  public ResponseEntity<Report> get(@PathVariable String id) {
+    return withVersion(reports.get(id));
   }
 
   @PostMapping
@@ -69,9 +72,20 @@ public class ReportController {
   }
 
   @PatchMapping("/{id}")
-  @Operation(summary = "Update a report")
-  public Report update(@PathVariable String id, @Valid @RequestBody UpdateReportRequest request) {
-    return reports.update(id, request);
+  @Operation(
+      summary = "Update a report",
+      description =
+          "Send the ETag from a GET as If-Match to update only an unchanged report. A stale"
+              + " version is a 409 whose body holds the current report.")
+  public ResponseEntity<Report> update(
+      @PathVariable String id,
+      @RequestHeader(value = HttpHeaders.IF_MATCH, required = false) String ifMatch,
+      @Valid @RequestBody UpdateReportRequest request) {
+    return withVersion(reports.update(id, request, ReportVersion.fromIfMatch(ifMatch)));
+  }
+
+  private static ResponseEntity<Report> withVersion(Report report) {
+    return ResponseEntity.ok().eTag(ReportVersion.of(report)).body(report);
   }
 
   @DeleteMapping("/{id}")

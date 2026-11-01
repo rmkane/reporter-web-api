@@ -10,6 +10,7 @@
 - Keep the layering web, service, manager, repository. Do not catch exceptions in those layers. Handle them in one `@RestControllerAdvice`.
 - Store reports in memory and seed them from the classpath JSON file. Do not add a database.
 - Create and update bodies are partial request records with Jakarta validation. A null field on update leaves the stored value.
+- A report's version is its `updatedOn` (`ReportVersion`). `GET` and `PATCH` send it as an `ETag`; a `PATCH` with a stale `If-Match` is a 409 whose body holds the current report. The manager checks the version and saves under one lock.
 
 ## UI and logging
 

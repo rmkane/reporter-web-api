@@ -13,21 +13,44 @@ export async function fetchReports({ query, page, size, sort }) {
     return body;
 }
 
+export async function fetchReport(id) {
+    // no-store: this read checks the version, so it must never come from a cache.
+    const response = await fetch("/api/reports/" + encodeURIComponent(id), { cache: "no-store", headers: { "Accept": "application/json" } });
+    const body = await response.json().catch(() => ({}));
+    if (!response.ok) {
+        throw new Error(body.message || "Could not load the report");
+    }
+    return body;
+}
+
 export function createReport(report) {
     return sendReport("/api/reports", "POST", report, "Could not create the report");
 }
 
-export function updateReport(id, changes) {
-    return sendReport("/api/reports/" + encodeURIComponent(id), "PATCH", changes, "Could not save the report");
+// Thrown when the report changed since the page loaded it; carries the report as it is now.
+export class ReportConflict extends Error {
+    constructor(message, current) {
+        super(message);
+        this.current = current;
+    }
 }
 
-async function sendReport(url, method, payload, fallback) {
+// Sends the loaded version as If-Match, so the server refuses to overwrite newer changes.
+export function updateReport(id, changes, version) {
+    const headers = version ? { "If-Match": '"' + version + '"' } : {};
+    return sendReport("/api/reports/" + encodeURIComponent(id), "PATCH", changes, "Could not save the report", headers);
+}
+
+async function sendReport(url, method, payload, fallback, extraHeaders = {}) {
     const response = await fetch(url, {
         method,
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        headers: { "Content-Type": "application/json", "Accept": "application/json", ...extraHeaders },
         body: JSON.stringify(payload)
     });
     const body = await response.json().catch(() => ({}));
+    if (response.status === 409 && body.current) {
+        throw new ReportConflict(body.message, body.current);
+    }
     if (!response.ok) {
         const details = (body.errors || [])
             .filter((error) => error.field)

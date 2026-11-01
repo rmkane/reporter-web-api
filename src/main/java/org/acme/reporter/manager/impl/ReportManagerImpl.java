@@ -12,9 +12,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import org.acme.reporter.error.ReportConflictException;
+import org.acme.reporter.error.ReportNotFoundException;
 import org.acme.reporter.manager.ReportManager;
 import org.acme.reporter.model.Report;
 import org.acme.reporter.model.ReportStatus;
+import org.acme.reporter.model.ReportVersion;
 import org.acme.reporter.query.ReportFields;
 import org.acme.reporter.query.ReportQueries;
 import org.acme.reporter.query.ReportQuery;
@@ -68,8 +71,19 @@ public class ReportManagerImpl implements ReportManager {
     return repository.save(report);
   }
 
+  // Synchronized with create and the checked update, so a version check and its save are atomic.
   @Override
-  public Report update(Report current, UpdateReportRequest request) {
+  public synchronized Report update(
+      String id, UpdateReportRequest request, String expectedVersion) {
+    Report current = repository.findById(id).orElseThrow(() -> new ReportNotFoundException(id));
+    if (expectedVersion != null && !expectedVersion.equals(ReportVersion.of(current))) {
+      throw new ReportConflictException(current);
+    }
+    return update(current, request);
+  }
+
+  @Override
+  public synchronized Report update(Report current, UpdateReportRequest request) {
     Report updated =
         new Report(
             current.id(),
@@ -82,7 +96,7 @@ public class ReportManagerImpl implements ReportManager {
             keep(request.priority(), current.priority()),
             keep(request.type(), current.type()),
             current.createdOn(),
-            Instant.now());
+            nextUpdatedOn(current));
     return repository.save(updated);
   }
 
@@ -102,6 +116,13 @@ public class ReportManagerImpl implements ReportManager {
             .max()
             .orElse(0);
     return "RPT-" + (max + 1);
+  }
+
+  /** Always later than the current value, since updatedOn doubles as the report's version. */
+  private static Instant nextUpdatedOn(Report current) {
+    Instant now = Instant.now();
+    Instant previous = current.updatedOn();
+    return previous == null || now.isAfter(previous) ? now : previous.plusNanos(1);
   }
 
   private static <T> T keep(T incoming, T current) {

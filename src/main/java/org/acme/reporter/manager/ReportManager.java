@@ -22,5 +22,12 @@ public interface ReportManager {
 
   Report update(Report current, UpdateReportRequest request);
 
+  /**
+   * Updates the report when it is still at {@code expectedVersion}, or always when that is null.
+   *
+   * @throws org.acme.reporter.error.ReportConflictException when the report has moved on
+   */
+  Report update(String id, UpdateReportRequest request, String expectedVersion);
+
   void delete(String id);
 }

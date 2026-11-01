@@ -4,12 +4,14 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -28,6 +30,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import org.acme.reporter.error.InvalidReportQueryException;
+import org.acme.reporter.error.ReportConflictException;
 import org.acme.reporter.error.ReportNotFoundException;
 import org.acme.reporter.model.Priority;
 import org.acme.reporter.model.Report;
@@ -128,7 +131,7 @@ class ReportControllerTest {
 
   @Test
   void nullUpdateFieldsAreAllowed() throws Exception {
-    when(reports.update(eq("RPT-1"), any())).thenReturn(sample());
+    when(reports.update(eq("RPT-1"), any(), any())).thenReturn(sample());
 
     mockMvc
         .perform(
@@ -139,6 +142,56 @@ class ReportControllerTest {
                     {"title":null,"priority":"HIGH"}
                     """))
         .andExpect(status().isOk());
+  }
+
+  @Test
+  void getSendsTheVersionAsAnETag() throws Exception {
+    when(reports.get("RPT-1")).thenReturn(sample());
+
+    mockMvc
+        .perform(get("/api/reports/RPT-1"))
+        .andExpect(status().isOk())
+        .andExpect(header().string("ETag", "\"2026-05-01T00:00:00Z\""));
+  }
+
+  @Test
+  void ifMatchVersionReachesTheService() throws Exception {
+    when(reports.update(eq("RPT-1"), any(), any())).thenReturn(sample());
+
+    mockMvc
+        .perform(
+            patch("/api/reports/RPT-1")
+                .header("If-Match", "\"2026-05-01T00:00:00Z\"")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+                    {"priority":"LOW"}
+                    """))
+        .andExpect(status().isOk())
+        .andExpect(header().string("ETag", "\"2026-05-01T00:00:00Z\""));
+
+    verify(reports).update(eq("RPT-1"), any(), eq("2026-05-01T00:00:00Z"));
+  }
+
+  @Test
+  void staleVersionIsAConflictWithTheCurrentReport() throws Exception {
+    when(reports.update(eq("RPT-1"), any(), any()))
+        .thenThrow(new ReportConflictException(sample()));
+
+    mockMvc
+        .perform(
+            patch("/api/reports/RPT-1")
+                .header("If-Match", "\"2026-04-01T00:00:00Z\"")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(
+                    """
+                    {"priority":"LOW"}
+                    """))
+        .andExpect(status().isConflict())
+        .andExpect(header().string("ETag", "\"2026-05-01T00:00:00Z\""))
+        .andExpect(jsonPath("$.message").value("Report RPT-1 changed since it was loaded"))
+        .andExpect(jsonPath("$.current.id").value("RPT-1"))
+        .andExpect(jsonPath("$.current.priority").value("HIGH"));
   }
 
   @Test

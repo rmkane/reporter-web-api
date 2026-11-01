@@ -18,7 +18,8 @@ public interface ReportService {
 
   Report create(CreateReportRequest request);
 
-  Report update(String id, UpdateReportRequest request);
+  /** Updates the report; a non-null {@code expectedVersion} must match its current version. */
+  Report update(String id, UpdateReportRequest request, String expectedVersion);
 
   void delete(String id);
 }

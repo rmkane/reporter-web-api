@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 import org.acme.reporter.error.InvalidReportQueryException;
+import org.acme.reporter.error.ReportConflictException;
 import org.acme.reporter.error.ReportNotFoundException;
+import org.acme.reporter.model.ReportVersion;
 
 @Slf4j
 @RestControllerAdvice(annotations = RestController.class)
@@ -65,6 +67,15 @@ public class ApiExceptionHandler {
   ResponseEntity<ApiError> missing(ReportNotFoundException exception) {
     return ResponseEntity.status(HttpStatus.NOT_FOUND)
         .body(new ApiError(HttpStatus.NOT_FOUND.value(), exception.getMessage()));
+  }
+
+  @ExceptionHandler(ReportConflictException.class)
+  ResponseEntity<ApiConflict> conflict(ReportConflictException exception) {
+    return ResponseEntity.status(HttpStatus.CONFLICT)
+        .eTag(ReportVersion.of(exception.getCurrent()))
+        .body(
+            new ApiConflict(
+                HttpStatus.CONFLICT.value(), exception.getMessage(), exception.getCurrent()));
   }
 
   @ExceptionHandler(Exception.class)

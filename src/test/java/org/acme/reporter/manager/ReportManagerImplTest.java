@@ -18,11 +18,14 @@ import org.springframework.data.domain.Sort;
 import tools.jackson.databind.json.JsonMapper;
 
 import org.acme.reporter.error.InvalidReportQueryException;
+import org.acme.reporter.error.ReportConflictException;
+import org.acme.reporter.error.ReportNotFoundException;
 import org.acme.reporter.manager.impl.ReportManagerImpl;
 import org.acme.reporter.model.Priority;
 import org.acme.reporter.model.Report;
 import org.acme.reporter.model.ReportStatus;
 import org.acme.reporter.model.ReportType;
+import org.acme.reporter.model.ReportVersion;
 import org.acme.reporter.query.ReportQuery;
 import org.acme.reporter.repository.impl.ReportRepositoryImpl;
 import org.acme.reporter.web.CreateReportRequest;
@@ -162,6 +165,64 @@ class ReportManagerImplTest {
 
     assertThat(updated.title()).isEqualTo("Login form");
     assertThat(updated.assignee()).isEqualTo("sam.patel");
+  }
+
+  @Test
+  void checkedUpdateSavesWhenTheVersionMatches() {
+    String version = ReportVersion.of(repository.findById("RPT-1").orElseThrow());
+
+    Report updated = manager.update("RPT-1", priority(Priority.LOW), version);
+
+    assertThat(updated.priority()).isEqualTo(Priority.LOW);
+    assertThat(ReportVersion.of(updated)).isNotEqualTo(version);
+  }
+
+  @Test
+  void checkedUpdateRejectsAStaleVersionAndReturnsTheCurrentReport() {
+    String loaded = ReportVersion.of(repository.findById("RPT-1").orElseThrow());
+    Report changed = manager.update("RPT-1", priority(Priority.LOW), loaded);
+
+    assertThatThrownBy(() -> manager.update("RPT-1", priority(Priority.CRITICAL), loaded))
+        .isInstanceOfSatisfying(
+            ReportConflictException.class,
+            conflict -> assertThat(conflict.getCurrent()).isEqualTo(changed));
+    assertThat(repository.findById("RPT-1").orElseThrow().priority()).isEqualTo(Priority.LOW);
+  }
+
+  @Test
+  void updateWithoutAVersionSkipsTheCheck() {
+    assertThat(manager.update("RPT-1", priority(Priority.LOW), null).priority())
+        .isEqualTo(Priority.LOW);
+  }
+
+  @Test
+  void checkedUpdateOfAnUnknownReportIsNotFound() {
+    assertThatThrownBy(() -> manager.update("RPT-404", priority(Priority.LOW), null))
+        .isInstanceOf(ReportNotFoundException.class);
+  }
+
+  @Test
+  void everySaveMovesTheVersionForward() {
+    Set<String> versions = new HashSet<>();
+    for (int i = 0; i < 20; i++) {
+      versions.add(ReportVersion.of(manager.update("RPT-1", priority(Priority.LOW), null)));
+    }
+
+    assertThat(versions).hasSize(20);
+  }
+
+  @Test
+  void ifMatchHeadersParseToTheVersion() {
+    assertThat(ReportVersion.fromIfMatch("\"2026-01-01T00:00:00Z\""))
+        .isEqualTo("2026-01-01T00:00:00Z");
+    assertThat(ReportVersion.fromIfMatch("W/\"2026-01-01T00:00:00Z\""))
+        .isEqualTo("2026-01-01T00:00:00Z");
+    assertThat(ReportVersion.fromIfMatch("*")).isNull();
+    assertThat(ReportVersion.fromIfMatch(null)).isNull();
+  }
+
+  private static UpdateReportRequest priority(Priority priority) {
+    return new UpdateReportRequest(null, null, null, null, null, null, priority, null);
   }
 
   private static CreateReportRequest request(String title) {
