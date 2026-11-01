@@ -28,6 +28,7 @@ Docker, formatting, and git hooks are covered in [Setup](docs/setup.md).
 - [Create and update](docs/create-and-update.md)
 - [Seed data](docs/seed-data.md)
 - [OpenAPI](docs/openapi.md)
+- [To do](docs/todo.md)
 - [Changelog](CHANGELOG.md)
 
 ## License
