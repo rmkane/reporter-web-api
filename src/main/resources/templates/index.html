@@ -5,18 +5,20 @@
     <h1>Tasks that still need attention.</h1>
     <p class="lede">Open and in-progress reports, highest priority first.</p>
     <section class="stats" aria-label="Report counts">
-        <div><strong th:text="${dashboard.open}">0</strong><span>Open</span></div>
-        <div><strong th:text="${dashboard.inProgress}">0</strong><span>In progress</span></div>
-        <div><strong th:text="${dashboard.resolved}">0</strong><span>Resolved</span></div>
-        <div><strong th:text="${dashboard.closed}">0</strong><span>Closed</span></div>
+        <div class="stat" data-status="OPEN"><strong th:text="${dashboard.open}">0</strong><span>Open</span></div>
+        <div class="stat" data-status="IN_PROGRESS"><strong th:text="${dashboard.inProgress}">0</strong><span>In progress</span></div>
+        <div class="stat" data-status="RESOLVED"><strong th:text="${dashboard.resolved}">0</strong><span>Resolved</span></div>
+        <div class="stat" data-status="CLOSED"><strong th:text="${dashboard.closed}">0</strong><span>Closed</span></div>
     </section>
     <ol class="tasks" th:if="${!dashboard.tasks.empty}">
-        <li th:each="task : ${dashboard.tasks}" th:classappend="${task.priority}">
-            <a th:href="@{/reports/{id}(id=${task.id})}" th:text="${task.id}">RPT-1</a>
+        <li th:each="task : ${dashboard.tasks}">
+            <a class="id" th:href="@{/reports/{id}(id=${task.id})}" th:text="${task.id}">RPT-1</a>
             <a class="title" th:href="@{/reports/{id}(id=${task.id})}" th:text="${task.title}">Login</a>
-            <span class="pill" th:text="${task.status}">OPEN</span>
-            <span class="pill" th:text="${task.priority}">HIGH</span>
-            <span class="pill" th:text="${task.type}">BUG</span>
+            <span class="badges">
+                <span class="badge" th:if="${task.status != null}" th:attr="data-status=${task.status}" th:text="${#strings.replace(task.status, '_', ' ')}">Open</span>
+                <span class="badge" th:if="${task.priority != null}" th:attr="data-priority=${task.priority}" th:text="${task.priority}">High</span>
+                <span class="badge" th:if="${task.type != null}" th:attr="data-type=${task.type}" th:text="${task.type}">Bug</span>
+            </span>
         </li>
     </ol>
     <p class="lede" th:if="${dashboard.tasks.empty}">Nothing is open or in progress.</p>

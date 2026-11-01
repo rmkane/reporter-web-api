@@ -19,6 +19,7 @@ All notable changes to this project are documented here. The format follows [Kee
 - Spring Boot 4.1.2.
 - The compose image is tagged `reporter-web-api:latest`.
 - Make targets are grouped into General, Build, Run, Quality, and Docker.
+- Modern UI theme: system sans type, cards, a sticky header, and colored badges for status, priority, and type. Colors come from primary, secondary, accent, status, and neutral tokens, with light and dark values, generated into `theme.css` from a theme in `themes/` (`ember` by default, or `indigo`, `forest`, or `slate`) by `make theme THEME=<name>`.
 
 ### Fixed
 

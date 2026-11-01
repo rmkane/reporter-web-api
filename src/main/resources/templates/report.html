@@ -3,11 +3,13 @@
 <main>
     <p class="kicker" th:text="${report.id}">RPT-1</p>
     <h1 th:text="${report.title}">Title</h1>
+    <p class="badges">
+        <span class="badge" th:if="${report.status != null}" th:attr="data-status=${report.status}" th:text="${#strings.replace(report.status, '_', ' ')}">Open</span>
+        <span class="badge" th:if="${report.priority != null}" th:attr="data-priority=${report.priority}" th:text="${report.priority}">High</span>
+        <span class="badge" th:if="${report.type != null}" th:attr="data-type=${report.type}" th:text="${report.type}">Bug</span>
+    </p>
     <p class="lede" th:text="${report.description}">Description</p>
     <dl class="facts">
-        <div><dt>Status</dt><dd th:text="${report.status}">OPEN</dd></div>
-        <div><dt>Priority</dt><dd th:text="${report.priority}">HIGH</dd></div>
-        <div><dt>Type</dt><dd th:text="${report.type}">BUG</dd></div>
         <div><dt>Author</dt><dd th:text="${report.author}">author</dd></div>
         <div><dt>Assignee</dt><dd th:text="${report.assignee}">assignee</dd></div>
         <div><dt>Created</dt><dd th:text="${#temporals.format(report.createdOn, 'yyyy-MM-dd HH:mm')}">created</dd></div>
@@ -18,7 +20,7 @@
     </ul>
     <p id="delete-error" class="error" hidden></p>
     <p class="actions">
-        <button type="button" id="delete-report" th:data-id="${report.id}">Delete</button>
+        <button type="button" id="delete-report" class="danger" th:data-id="${report.id}">Delete</button>
     </p>
     <script type="module" src="/js/pages/report.js"></script>
 </main>

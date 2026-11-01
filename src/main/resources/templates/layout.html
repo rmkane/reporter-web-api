@@ -6,12 +6,13 @@
     <title th:text="${title}">Reporter</title>
     <link rel="icon" th:href="@{/favicon.ico}" sizes="32x32">
     <link rel="icon" th:href="@{/favicon.svg}" type="image/svg+xml">
+    <link rel="stylesheet" th:href="@{/css/theme.css}">
     <link rel="stylesheet" th:href="@{/css/app.css}">
 </head>
 <body>
 <header class="site">
     <nav aria-label="Site">
-        <a class="brand" href="/">Reporter</a>
+        <a class="brand" href="/"><img th:src="@{/favicon.svg}" src="/favicon.svg" alt=""> Reporter</a>
         <a href="/reports">Reports</a>
         <!--/*@thymesVar id="swagger" type="java.lang.String"*/-->
         <a th:href="${swagger}" target="_blank" rel="noopener noreferrer">API</a>

@@ -27,9 +27,9 @@ export function renderReports(page, sort, onSort, onPage) {
         row.append(
             cell(link(report.id, "/reports/" + encodeURIComponent(report.id))),
             cell(link(report.title, "/reports/" + encodeURIComponent(report.id))),
-            cell(text(report.status)),
+            cell(badge("status", report.status)),
             cell(text(report.author)),
-            cell(text(report.priority)),
+            cell(badge("priority", report.priority)),
             cell(text(formatWhen(report.updatedOn)))
         );
         return row;
@@ -38,11 +38,13 @@ export function renderReports(page, sort, onSort, onPage) {
     pager.replaceChildren();
     const previous = document.createElement("button");
     previous.type = "button";
+    previous.className = "secondary";
     previous.textContent = "Previous";
     previous.disabled = number <= 0;
     previous.onclick = () => onPage(number - 1);
     const next = document.createElement("button");
     next.type = "button";
+    next.className = "secondary";
     next.textContent = "Next";
     next.disabled = number + 1 >= totalPages;
     next.onclick = () => onPage(number + 1);
@@ -59,6 +61,18 @@ function cell(node) {
 
 function text(value) {
     return document.createTextNode(value == null ? "" : String(value));
+}
+
+// Enum values such as IN_PROGRESS; CSS colors them by data attribute and sets the case.
+function badge(kind, value) {
+    if (value == null) {
+        return text(null);
+    }
+    const span = document.createElement("span");
+    span.className = "badge";
+    span.dataset[kind] = value;
+    span.textContent = String(value).replaceAll("_", " ");
+    return span;
 }
 
 function link(label, href) {
